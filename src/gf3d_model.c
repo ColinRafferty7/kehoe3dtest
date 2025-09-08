@@ -614,7 +614,7 @@ void gf3d_model_draw_index(
     Uint32      frame)
 { 
     int c,i;
-    Light *light;
+    Light *light2;
     Mesh *mesh;
     GFC_Matrix4 matrix = {0};
     GFC_Vector4D modColor = {0};
@@ -633,7 +633,7 @@ void gf3d_model_draw_index(
     if(light)
     {
         c = gfc_list_count(light);
-        for (i = 0; i < MIN(c,LIGHT_UBO_MAX)li++)
+        for (i = 0; i < MIN(c,LIGHT_UBO_MAX); i++)
         {
             light = gfc_list_nth(light,i);
             if (!light)continue;
