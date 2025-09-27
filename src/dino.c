@@ -67,8 +67,9 @@ void dino_think(Entity *self)
         gf3d_camera_enable_free_look(data->freeLook);
     }
     SDL_GetRelativeMouseState(&dx,&dy);
-    self->rotation.z += dx *0.01;
+    self->rotation.z += dx *-0.01;
     data->cameraPitch += dy *0.01;
+    self->rotation.y += dy *0.01;
     if (gfc_input_command_down("walkforward"))
     {
         gfc_vector2d_add(self->position,self->position,dir);

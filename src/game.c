@@ -94,7 +94,13 @@ int main(int argc,char *argv[])
     gf3d_camera_set_move_step(0.2);
     gf3d_camera_set_rotate_step(0.05);
     
-    dino_spawn(gfc_vector3d(0,0,0));
+    dino_spawn(gfc_vector3d(-5,-5,-5));
+
+    Entity *dino2;
+    dino2 = entity_new();
+    dino2->model = gf3d_model_load("models/primitives/icylinder.model");
+    dino2->position = gfc_vector3d(0, 0, 0);
+
     //windows
 
     
