@@ -189,6 +189,9 @@
     <ClCompile Include="..\..\gfc\src\gfc_decode.c">
       <Filter>Source Files\gfc</Filter>
     </ClCompile>
+    <ClCompile Include="gf3d_mesh.c.cpp">
+      <Filter>Source Files\gf3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\gf2d_actor.h">
