@@ -59,6 +59,11 @@ typedef struct
 }Mesh;
 
 /**
+ * @brief closes mesh subsystem, called atexit
+ */
+void gf3d_mesh_close();
+
+/**
  * @brief initializes the mesh system / configures internal data about mesh based rendering
  * @param mesh_max the maximum allowed simultaneous meshes supported at once.  Must be > 0
  * @note keep in mind that many models will be comprised of multiple sub meshes.  So this number may need to be very large
