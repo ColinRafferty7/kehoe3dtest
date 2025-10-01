@@ -19,6 +19,7 @@
 #include "gf3d_vgraphics.h"
 #include "gf3d_pipeline.h"
 #include "gf3d_swapchain.h"
+#include "gf3d_mesh.h"
 
 extern int __DEBUG;
 
@@ -57,6 +58,9 @@ int main(int argc,char *argv[])
     slog_sync();
     bg = gf2d_sprite_load_image("images/bg_flat.png");
     gf2d_mouse_load("actors/mouse.actor");
+
+    gf3d_mesh_load_obj("models/dino/dino.obj");
+
     // main game loop    
     while(!_done)
     {
