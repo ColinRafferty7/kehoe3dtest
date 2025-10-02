@@ -79,7 +79,7 @@ void gf3d_mesh_init(Uint32 mesh_max)
 
     gf3d_mesh.pipe = gf3d_pipeline_create_from_config(
         gf3d_vgraphics_get_default_logical_device(),
-        "config/overlay_pipeline.cfg",
+        "config/mesh_pipeline.cfg",
         gf3d_vgraphics_get_view_extent(),
         mesh_max,
         gf3d_mesh_get_bind_description(),
@@ -172,8 +172,6 @@ void gf3d_mesh_submit_pipe_commands();
 
 VkCommandBuffer gf3d_mesh_get_model_command_buffer();
 
-void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* texture);
-
 void gf3d_mesh_render(Mesh* mesh, VkCommandBuffer commandBuffer, VkDescriptorSet* descriptorSet);
 
 void gf3d_mesh_render_generic(Mesh* mesh, Pipeline* pipe, VkDescriptorSet* descriptorSet);
@@ -222,12 +220,27 @@ void gf3d_mesh_create_vertex_buffer_from_vertices(MeshPrimitive* primitive)
 
 Pipeline* gf3d_mesh_get_pipeline()
 {
-    return NULL;
+    return gf3d_mesh.pipe;
 }
 
 MeshUBO gf3d_mesh_get_ubo(
     GFC_Matrix4 modelMat,
-    GFC_Color colorMod);
+    GFC_Color colorMod)
+{
+    ModelViewProjection mvp;
+    MeshUBO meshUBO = { 0 };
+    GFC_Vector4D color = gfc_color_to_vector4f(colorMod);
+
+    mvp = gf3d_vgraphics_get_mvp();
+    gfc_matrix4_copy(meshUBO.model, modelMat);
+    gfc_matrix4_copy(meshUBO.view, mvp.view);
+    gfc_matrix4_copy(meshUBO.proj, mvp.proj);
+    gfc_vector4d_copy(meshUBO.color, color);
+
+    meshUBO.camera = gfc_vector3dw(gfc_vector3d(1, 0, 0), 1.0);
+
+    return meshUBO;
+}
 
 Mesh *gf3d_mesh_get_by_filename(const char *filename)
 {
@@ -326,6 +339,40 @@ void gf3d_mesh_setup_face_buffers(MeshPrimitive* mesh, Face* faces, Uint32 fcoun
     mesh->faceCount = fcount;
     vkDestroyBuffer(device, stagingBuffer, NULL);
     vkFreeMemory(device, stagingBufferMemory, NULL);
+}
+
+void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* texture)
+{
+    int count;
+    MeshPrimitive* primitive;
+    if (!mesh)
+    {
+        slog("cannot render a NULL mesh");
+        return;
+    }
+    if (!pipe)
+    {
+        slog("cannot render with NULL pipe");
+        return;
+    }
+    if (!uboData)
+    {
+        slog("cannot render with NULL descriptor set");
+        return;
+    }
+    count = gfc_list_get_count(mesh->primitives);
+    for (int i = 0; i < count; i++)
+    {
+        primitive = gfc_list_get_nth(mesh->primitives, i);
+        if (!primitive)continue;
+        gf3d_pipeline_queue_render(
+            pipe,
+            primitive->vertexBuffer,
+            primitive->faceCount * 3,
+            primitive->faceBuffer,
+            uboData,
+            texture);
+    }
 }
 
 /*eol@eof*/

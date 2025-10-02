@@ -76,7 +76,10 @@ void gf3d_pipeline_call_render(
     vkCmdBindVertexBuffers(pipe->commandBuffer, 0, 1, &vertexBuffer, offsets);
     if (indexBuffer != VK_NULL_HANDLE)vkCmdBindIndexBuffer(pipe->commandBuffer, indexBuffer, 0, pipe->indexType);
     vkCmdBindDescriptorSets(pipe->commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipe->pipelineLayout, 0, 1, descriptorSet, 0, NULL);
-    if (indexBuffer != VK_NULL_HANDLE)vkCmdDrawIndexed(pipe->commandBuffer, vertexCount, 1, 0, 0, 0);
+    if (indexBuffer != VK_NULL_HANDLE)
+    {
+        vkCmdDrawIndexed(pipe->commandBuffer, vertexCount, 1, 0, 0, 0);
+    }
     else vkCmdDraw(pipe->commandBuffer, vertexCount,1,0,0);
 }
 
