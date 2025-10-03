@@ -75,6 +75,15 @@ int main(int argc,char *argv[])
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
     slog("skyUBO set");
 
+    Mesh* modelMesh;
+    Texture* modelTexture;
+    MeshUBO modelUBO;
+    GFC_Matrix4 modelMat;
+
+    modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
+    modelTexture = gf3d_texture_load("models/dino/dino.png");
+    gfc_matrix4_identity(modelMat);
+    modelUBO = gf3d_mesh_get_ubo(modelMat, GFC_COLOR_WHITE);
 
     // main game loop    
     while(!_done)
@@ -88,7 +97,8 @@ int main(int argc,char *argv[])
                 gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
-                gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
+                gf3d_mesh_queue_render(modelMesh, gf3d_mesh_get_pipeline(), &modelUBO, modelTexture);
+                //gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
 
         gf3d_vgraphics_render_end();
         if (gfc_input_command_down("exit"))_done = 1; // exit condition

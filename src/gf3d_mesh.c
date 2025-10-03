@@ -9,6 +9,7 @@
 #include "gf3d_commands.h"
 #include "gf3d_mesh.h"
 #include "gf3d_obj_load.h"
+#include "gf2d_camera.h"
 
 #define ATTRIBUTE_COUNT 3
 
@@ -257,7 +258,7 @@ MeshUBO gf3d_mesh_get_ubo(
     gfc_matrix4_copy(meshUBO.proj, mvp.proj);
     gfc_vector4d_copy(meshUBO.color, color);
 
-    meshUBO.camera = gfc_vector3dw(gfc_vector3d(1, 0, 0), 1.0);
+    meshUBO.camera = gfc_vector2dzw(gf2d_camera_get_position(), 0.0, 1.0);
 
     return meshUBO;
 }

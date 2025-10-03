@@ -1,19 +1,45 @@
+
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
+const uint MAX_LIGHTS = 16;
+
+struct MeshUBO
+{
+    mat4    model;
+    mat4    view;
+    mat4    proj;
+    vec4    color; 
+    vec4    camera;            //needed for many light calculations
+};
+
+struct MaterialUBO
+{
+    vec4    ambient;        //how much ambient light affects this material
+    vec4    diffuse;        //how much diffuse light affects this material - primary influcen for material color
+    vec4    specular;       //color of the shine on the materials
+    vec4    emission;       //color that shows regardless of light
+    float   transparency;   //how translucent the material should be overall
+    float   shininess;      //how shiny the materials is.  // how pronounced the specular is
+    vec2    padding;        //for alignment
+};
+
+struct LightUBO
+{
+    vec4            lightPos;
+    vec4            lightDir;
+    vec4            lightColor;
+    float           angle;
+    float           brightness;
+    float           falloff;
+    float           inUse;
+};
+
 layout(binding = 0) uniform UniformBufferObject
 {
-    mat4    rotation;
-    vec4    colorMod;
-    vec4    clip;
-    vec2    size;
-    vec2    extent;
-    vec2    position;
-    vec2    scale;
-    vec2    frame_offset;
-    vec2    center;
-    float   drawOrder;
-    vec3    padding;
+    MeshUBO         mesh;
+    MaterialUBO     material;   //this may become an array
+    LightUBO        light[16];  //THIS MUST AGREE WITH WHAT COMES FROM C
 } ubo;
 
 out gl_PerVertex
@@ -21,53 +47,27 @@ out gl_PerVertex
     vec4 gl_Position;
 };
 
-layout(location = 0) in vec2 inPosition;
-layout(location = 1) in vec2 inTexCoord;
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec3 inNormal;
+layout(location = 2) in vec2 inTexCoord;
+layout(location = 3) in vec4 boneIndices;
+layout(location = 4) in vec4 boneWeights;
 
-layout(location = 0) out vec2 fragTexCoord;
-layout(location = 1) out vec4 colorMod;
-layout(location = 2) out float drawOrder;
+layout(location = 0) out vec3 fragNormal;
+layout(location = 1) out vec2 fragTexCoord;
+layout(location = 2) out vec3 position;
 
 void main()
 {
-    vec2 center;
-    mat4 scale_m = mat4(ubo.scale.x,0,0,0,
-                        0,ubo.scale.y,0,0,
-                        0,0,1,0,
-                        0,0,0,1);
-    
-    fragTexCoord = inTexCoord + ubo.frame_offset;
-    vec4 clip_position = vec4(inPosition,0,1);
-    
-    switch (gl_VertexIndex)
-    {
-        case 0:
-            clip_position = vec4(inPosition.x + ubo.clip.x*2,inPosition.y + ubo.clip.y*2,0,1);
-            fragTexCoord.x = fragTexCoord.x + ubo.clip.x/ubo.size.x;
-            fragTexCoord.y = fragTexCoord.y + ubo.clip.y/ubo.size.y;
-        break;
-        case 1:
-            clip_position = vec4(inPosition.x - ubo.clip.z*2,inPosition.y + ubo.clip.y*2,0,1);
-            fragTexCoord.x = fragTexCoord.x - ubo.clip.z/ubo.size.x;
-            fragTexCoord.y = fragTexCoord.y + ubo.clip.y/ubo.size.y;
-        break;
-        case 2:
-            clip_position = vec4(inPosition.x + ubo.clip.x*2,inPosition.y - ubo.clip.w*2,0,1);
-            fragTexCoord.x = fragTexCoord.x + ubo.clip.x/ubo.size.x;
-            fragTexCoord.y = fragTexCoord.y - ubo.clip.w/ubo.size.y;
-        break;
-        case 3:
-            clip_position = vec4(inPosition.x - ubo.clip.z*2,inPosition.y - ubo.clip.w*2,0,1);
-            fragTexCoord.x = fragTexCoord.x - ubo.clip.z/ubo.size.x;
-            fragTexCoord.y = fragTexCoord.y - ubo.clip.w/ubo.size.y;
-        break;
-    }
-    center = ubo.center*2;
-    clip_position.xy = clip_position.xy - center;
-    vec4 r_position = scale_m * ubo.rotation * clip_position;
-    r_position.xy = r_position.xy + center;
-    vec4 drawOffset = vec4((ubo.position * 2)/ubo.extent,0,0);
-    gl_Position = vec4(r_position.xy/ubo.extent,0,1) - vec4(1,1,0,0) + drawOffset;
-    colorMod = ubo.colorMod;
-    drawOrder = ubo.drawOrder;
+    vec4 tempPosition;
+    mat4 bone;
+    mat4 mvp = ubo.mesh.proj * ubo.mesh.view * ubo.mesh.model;
+    mat3 normalMatrix;
+    fragTexCoord = inTexCoord;
+
+    gl_Position = mvp * vec4(inPosition, 1.0);
+    tempPosition = ubo.mesh.model * vec4(inPosition, 1.0);//now in world space
+    normalMatrix = transpose(inverse(mat3(ubo.mesh.model)));
+    fragNormal = normalize(inNormal * normalMatrix);
+    position = tempPosition.xyz;
 }
