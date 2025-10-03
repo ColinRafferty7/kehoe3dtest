@@ -65,25 +65,24 @@ int main(int argc,char *argv[])
     GFC_Matrix4 skyMat;
 
     skyMesh = gf3d_mesh_load_obj("models/sky/sky.obj");
-    slog("skyMesh loaded");
     skyTexture = gf3d_texture_load("models/sky/sky.png");
-    slog("skyTexture loaded");
-
     gfc_matrix4_identity(skyMat);
-    slog("skyMat set to identity");
-
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
-    slog("skyUBO set");
 
-    Mesh* modelMesh;
-    Texture* modelTexture;
+    Mesh *modelMesh;
+    Texture *modelTexture;
     MeshUBO modelUBO;
     GFC_Matrix4 modelMat;
 
     modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
+    if (modelMesh) slog("ModelMesh");
     modelTexture = gf3d_texture_load("models/dino/dino.png");
+    if (modelTexture) slog("ModelTexture");
     gfc_matrix4_identity(modelMat);
+    gfc_matrix4_scale(modelMat, modelMat, gfc_vector3d(10, 10, 10));
+    gfc_matrix4_translate(modelMat, modelMat, gfc_vector3d(0, 0, 0));     
     modelUBO = gf3d_mesh_get_ubo(modelMat, GFC_COLOR_WHITE);
+    if (&modelUBO) slog("ModelUBO");
 
     // main game loop    
     while(!_done)

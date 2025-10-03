@@ -21,10 +21,6 @@
     <Filter Include="Source Files\simple">
       <UniqueIdentifier>{91abc336-ff26-4c5b-98cd-46f71159a805}</UniqueIdentifier>
     </Filter>
-    <Filter Include="config">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\gf2d">
       <UniqueIdentifier>{38856762-756b-4345-9e60-eb0bfaf53701}</UniqueIdentifier>
     </Filter>
@@ -36,6 +32,16 @@
     </Filter>
     <Filter Include="Header Files\simple">
       <UniqueIdentifier>{eb5339f5-4144-40d8-ae55-0a9e090d3e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Other\config">
+      <UniqueIdentifier>{d814dd6a-e817-4ee8-93bd-581aabf51653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other\shaders">
+      <UniqueIdentifier>{c6a30719-faaf-465f-8a9e-6eefc4a50081}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="..\..\gfc\src\gfc_decode.c">
       <Filter>Source Files\gfc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_mesh.c">
+      <Filter>Source Files\gf3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,23 +361,44 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\config\sky_pipeline.cfg">
+      <Filter>Other\config</Filter>
+    </None>
     <None Include="..\..\config\audio.cfg">
-      <Filter>config</Filter>
+      <Filter>Other\config</Filter>
     </None>
     <None Include="..\..\config\font.cfg">
-      <Filter>config</Filter>
+      <Filter>Other\config</Filter>
     </None>
     <None Include="..\..\config\input.cfg">
-      <Filter>config</Filter>
+      <Filter>Other\config</Filter>
     </None>
     <None Include="..\..\config\overlay_pipeline.cfg">
-      <Filter>config</Filter>
+      <Filter>Other\config</Filter>
     </None>
     <None Include="..\..\config\setup.cfg">
-      <Filter>config</Filter>
+      <Filter>Other\config</Filter>
     </None>
-    <None Include="..\..\config\sky_pipeline.cfg">
-      <Filter>config</Filter>
+    <None Include="..\..\shaders\mesh.frag">
+      <Filter>Other\shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\mesh.vert">
+      <Filter>Other\shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\sky.frag">
+      <Filter>Other\shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\sky.vert">
+      <Filter>Other\shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\sprite.frag">
+      <Filter>Other\shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\sprite.vert">
+      <Filter>Other\shaders</Filter>
+    </None>
+    <None Include="..\..\config\mesh_pipeline.cfg">
+      <Filter>Other\config</Filter>
     </None>
   </ItemGroup>
 </Project>
