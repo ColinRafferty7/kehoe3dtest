@@ -40,12 +40,6 @@ int main(int argc,char *argv[])
 {
     //local variables
     Sprite *bg;
-    SJson *json, *config;
-    GFC_Matrix4 mat;
-    GFC_Color color;
-    Texture *texture;
-    Mesh *mesh;
-    const char *modelFile;
     //initializtion    
     parse_arguments(argc,argv);
     init_logger("gf3d.log",0);
@@ -65,29 +59,21 @@ int main(int argc,char *argv[])
     bg = gf2d_sprite_load_image("images/bg_flat.png");
     gf2d_mouse_load("actors/mouse.actor");
 
-    Pipeline* pipe = gf3d_mesh_get_pipeline();
-    if (pipe) slog("Pipe");
+    Mesh *skyMesh;
+    Texture *skyTexture;
+    MeshUBO skyUBO;
+    GFC_Matrix4 skyMat;
 
-    json = sj_load("models/dino.model");
-    if (json) slog("Json");
+    skyMesh = gf3d_mesh_load_obj("models/sky/sky.obj");
+    slog("skyMesh loaded");
+    skyTexture = gf3d_texture_load("models/sky/sky.png");
+    slog("skyTexture loaded");
 
-    config = sj_object_get_value(json, "model");
+    gfc_matrix4_identity(skyMat);
+    slog("skyMat set to identity");
 
-    modelFile = sj_get_string_value(sj_object_get_value(config, "obj"));
-
-    mesh = gf3d_mesh_load_obj(modelFile);
-    if (mesh) slog(mesh->filename);
-
-    color = gfc_color8(255, 255, 255, 255);
-
-    texture = gf3d_texture_load("models/dino/dino.png");
-    if (texture) slog("Texture");
-
-    gfc_matrix4_identity(mat);
-
-    MeshUBO meshUBO = gf3d_mesh_get_ubo(mat, color);
-    if (&meshUBO) slog("MeshUBO");
-
+    skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
+    slog("skyUBO set");
 
 
     // main game loop    
@@ -102,7 +88,7 @@ int main(int argc,char *argv[])
                 gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
-                gf3d_mesh_queue_render(mesh, pipe, &meshUBO, texture);
+                gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
 
         gf3d_vgraphics_render_end();
         if (gfc_input_command_down("exit"))_done = 1; // exit condition

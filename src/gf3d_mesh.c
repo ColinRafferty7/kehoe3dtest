@@ -25,9 +25,24 @@ typedef struct
 
 MeshSystem gf3d_mesh = { 0 };
 
+void gf3d_mesh_free_all()
+{
+    int i;
+    for (i = 0; i < gf3d_mesh.mesh_max; i++)
+    {
+        gf3d_mesh_delete(&gf3d_mesh.mesh_list[i]);
+    }
+}
+
 void gf3d_mesh_close()
 {
-    return;
+    if (gf3d_mesh.mesh_list)
+    {
+        gf3d_mesh_free_all();
+        // TODO: iterate through mesh data and free all data
+        free(gf3d_mesh.mesh_list);
+        gf3d_mesh.mesh_list = NULL;
+    }
 }
 
 void gf3d_mesh_init(Uint32 mesh_max)
@@ -221,6 +236,11 @@ void gf3d_mesh_create_vertex_buffer_from_vertices(MeshPrimitive* primitive)
 Pipeline* gf3d_mesh_get_pipeline()
 {
     return gf3d_mesh.pipe;
+}
+
+Pipeline* gf3d_mesh_get_sky_pipeline()
+{
+    return gf3d_mesh.sky_pipe;
 }
 
 MeshUBO gf3d_mesh_get_ubo(
