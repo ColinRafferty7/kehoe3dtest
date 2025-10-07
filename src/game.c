@@ -79,9 +79,10 @@ int main(int argc,char *argv[])
     modelTexture = gf3d_texture_load("models/dino/dino.png");
     if (modelTexture) slog("ModelTexture");
     gfc_matrix4_identity(modelMat);
-    gfc_matrix4_scale(modelMat, modelMat, gfc_vector3d(10, 10, 10));
-    gfc_matrix4_translate(modelMat, modelMat, gfc_vector3d(0, 0, 0));     
-    modelUBO = gf3d_mesh_get_ubo(modelMat, GFC_COLOR_WHITE);
+    gfc_matrix4_scale(modelMat, modelMat, gfc_vector3d(1, 1, 1));
+    gfc_matrix4_rotate_y(modelMat, modelMat, GFC_HALF_PI * -1);
+    gfc_matrix4_translate(modelMat, modelMat, gfc_vector3d(0, 0, -50));  
+    
     if (&modelUBO) slog("ModelUBO");
 
     // main game loop    
@@ -91,13 +92,17 @@ int main(int argc,char *argv[])
         gf2d_mouse_update();
         gf2d_font_update();
         //camera updaes
+        gfc_matrix4_rotate_z(modelMat, modelMat, 0.01);
+        modelUBO = gf3d_mesh_get_ubo(modelMat, GFC_COLOR_WHITE);
+
         gf3d_vgraphics_render_start();
                 //2D draws
-                gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
+                
+                gf3d_mesh_queue_render(modelMesh, gf3d_mesh_get_pipeline(), &modelUBO, modelTexture);
+                gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
+                //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
-                gf3d_mesh_queue_render(modelMesh, gf3d_mesh_get_pipeline(), &modelUBO, modelTexture);
-                //gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
 
         gf3d_vgraphics_render_end();
         if (gfc_input_command_down("exit"))_done = 1; // exit condition

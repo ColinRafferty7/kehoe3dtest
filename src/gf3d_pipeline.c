@@ -188,7 +188,11 @@ void gf3d_pipeline_queue_render(
     Texture *texture)
 {
     PipelineDrawCall *drawCall;
-    if (!pipe)return;
+    if (!pipe)
+    {
+        slog("No Pipeline");
+        return;
+    }
     drawCall = gf3d_pipeline_draw_call_new(pipe);
     if (!drawCall)
     {
