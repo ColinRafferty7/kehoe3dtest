@@ -35,16 +35,37 @@ void entity_init(Uint32 entity_max)
     atexit(entity_close);
 }
 
-Entity entity_spawn()
+Entity* entity_new()
 {
-    Entity ent;
+    for (int i = 0; i < ent_system.ent_max; i++)
+    {
+        if (ent_system.ent_list[i]._inuse) continue;
 
-    ent.modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
-    ent.modelTexture = gf3d_texture_load("models/dino/dino.png");
-    gfc_matrix4_identity(ent.modelMat);
-    gfc_matrix4_scale(ent.modelMat, ent.modelMat, gfc_vector3d(1, 1, 1));
-    gfc_matrix4_rotate_y(ent.modelMat, ent.modelMat, GFC_HALF_PI * -1);
-    gfc_matrix4_translate(ent.modelMat, ent.modelMat, gfc_vector3d(0, 0, -50));
+        memset(&ent_system.ent_list[i], 0, sizeof(Entity));
+        ent_system.ent_list->_inuse = 1;
+        return &ent_system.ent_list[i];
+    }
 
-    return ent;
+    return NULL;
 }
+
+void entity_think(Entity* ent)
+{
+    if (!ent) return;
+
+    if (ent->think)
+    {
+        ent->think(ent);
+    }
+}
+
+void entity_think_all()
+{
+    if (!ent_system.ent_list) return;
+
+    for (int i = 0; i < ent_system.ent_max; i++)
+    {
+        entity_think(&ent_system.ent_list[i]);
+    }
+}
+

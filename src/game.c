@@ -36,6 +36,17 @@ void exitGame()
     _done = 1;
 }
 
+void dino_think(Entity* dino)
+{
+    gfc_matrix4_rotate_z(dino->modelMat, dino->modelMat, 0.01);
+    dino->modelUBO = gf3d_mesh_get_ubo(dino->modelMat, GFC_COLOR_WHITE);
+}
+
+void dino_thunk(Entity* dino)
+{
+    gfc_matrix4_rotate_z(dino->modelMat, dino->modelMat, 0.1);
+    dino->modelUBO = gf3d_mesh_get_ubo(dino->modelMat, GFC_COLOR_WHITE);
+}
 
 int main(int argc,char *argv[])
 {
@@ -72,9 +83,31 @@ int main(int argc,char *argv[])
     gfc_matrix4_identity(skyMat);
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
 
-    Entity ent;
+    Entity *ent2;
 
-    ent = entity_spawn();
+    ent2 = entity_new();
+
+    ent2->think = dino_thunk;
+
+    ent2->modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
+    ent2->modelTexture = gf3d_texture_load("models/dino/dino.png");
+    gfc_matrix4_identity(ent2->modelMat);
+    gfc_matrix4_scale(ent2->modelMat, ent2->modelMat, gfc_vector3d(1, 1, 1));
+    gfc_matrix4_rotate_y(ent2->modelMat, ent2->modelMat, GFC_HALF_PI * -1);
+    gfc_matrix4_translate(ent2->modelMat, ent2->modelMat, gfc_vector3d(10, 0, -50));
+
+    Entity* ent;
+
+    ent = entity_new();
+
+    ent->think = dino_think;
+
+    ent->modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
+    ent->modelTexture = gf3d_texture_load("models/dino/dino.png");
+    gfc_matrix4_identity(ent->modelMat);
+    gfc_matrix4_scale(ent->modelMat, ent->modelMat, gfc_vector3d(1, 1, 1));
+    gfc_matrix4_rotate_y(ent->modelMat, ent->modelMat, GFC_HALF_PI * -1);
+    gfc_matrix4_translate(ent->modelMat, ent->modelMat, gfc_vector3d(0, 0, -50));
 
     // main game loop    
     while(!_done)
@@ -83,13 +116,13 @@ int main(int argc,char *argv[])
         gf2d_mouse_update();
         gf2d_font_update();
         //camera updaes
-        gfc_matrix4_rotate_z(ent.modelMat, ent.modelMat, 0.1);
-        ent.modelUBO = gf3d_mesh_get_ubo(ent.modelMat, GFC_COLOR_WHITE);
+        entity_think_all();
 
         gf3d_vgraphics_render_start();
                 //2D draws
                 
-                gf3d_mesh_queue_render(ent.modelMesh, gf3d_mesh_get_pipeline(), &ent.modelUBO, ent.modelTexture);
+                gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_pipeline(), &ent->modelUBO, ent->modelTexture);
+                gf3d_mesh_queue_render(ent2->modelMesh, gf3d_mesh_get_pipeline(), &ent2->modelUBO, ent2->modelTexture);
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
@@ -136,4 +169,7 @@ void game_frame_delay()
     fps = 1000.0/MAX(SDL_GetTicks() - then,0.001);
 //     slog("fps: %f",fps);
 }
+
+
+
 /*eol@eof*/

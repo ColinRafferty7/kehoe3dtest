@@ -238,6 +238,7 @@
     <ClInclude Include="..\..\include\gf3d_extensions.h" />
     <ClInclude Include="..\..\include\gf3d_gltf_parse.h" />
     <ClInclude Include="..\..\include\gf3d_mesh.h" />
+    <ClInclude Include="..\..\include\gf3d_model.h" />
     <ClInclude Include="..\..\include\gf3d_obj_load.h" />
     <ClInclude Include="..\..\include\gf3d_pipeline.h" />
     <ClInclude Include="..\..\include\gf3d_shaders.h" />
