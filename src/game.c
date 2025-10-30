@@ -20,6 +20,7 @@
 #include "gf3d_pipeline.h"
 #include "gf3d_swapchain.h"
 #include "gf3d_mesh.h"
+#include "entity.h"
 
 extern int __DEBUG;
 
@@ -52,6 +53,8 @@ int main(int argc,char *argv[])
     gf3d_vgraphics_init("config/setup.cfg");
     gf2d_font_init("config/font.cfg");
     gf2d_actor_init(1000);
+
+    entity_init(1024);
     
     //game init
     srand(SDL_GetTicks());
@@ -69,21 +72,9 @@ int main(int argc,char *argv[])
     gfc_matrix4_identity(skyMat);
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
 
-    Mesh *modelMesh;
-    Texture *modelTexture;
-    MeshUBO modelUBO;
-    GFC_Matrix4 modelMat;
+    Entity ent;
 
-    modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
-    if (modelMesh) slog("ModelMesh");
-    modelTexture = gf3d_texture_load("models/dino/dino.png");
-    if (modelTexture) slog("ModelTexture");
-    gfc_matrix4_identity(modelMat);
-    gfc_matrix4_scale(modelMat, modelMat, gfc_vector3d(1, 1, 1));
-    gfc_matrix4_rotate_y(modelMat, modelMat, GFC_HALF_PI * -1);
-    gfc_matrix4_translate(modelMat, modelMat, gfc_vector3d(0, 0, -50));  
-    
-    if (&modelUBO) slog("ModelUBO");
+    ent = entity_spawn();
 
     // main game loop    
     while(!_done)
@@ -92,13 +83,13 @@ int main(int argc,char *argv[])
         gf2d_mouse_update();
         gf2d_font_update();
         //camera updaes
-        gfc_matrix4_rotate_z(modelMat, modelMat, 0.01);
-        modelUBO = gf3d_mesh_get_ubo(modelMat, GFC_COLOR_WHITE);
+        gfc_matrix4_rotate_z(ent.modelMat, ent.modelMat, 0.1);
+        ent.modelUBO = gf3d_mesh_get_ubo(ent.modelMat, GFC_COLOR_WHITE);
 
         gf3d_vgraphics_render_start();
                 //2D draws
                 
-                gf3d_mesh_queue_render(modelMesh, gf3d_mesh_get_pipeline(), &modelUBO, modelTexture);
+                gf3d_mesh_queue_render(ent.modelMesh, gf3d_mesh_get_pipeline(), &ent.modelUBO, ent.modelTexture);
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
