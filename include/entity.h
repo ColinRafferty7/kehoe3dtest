@@ -27,4 +27,6 @@ Entity* entity_new();
 
 void entity_think_all();
 
+void entity_draw_all();
+
 #endif

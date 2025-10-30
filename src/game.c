@@ -121,14 +121,29 @@ int main(int argc,char *argv[])
         gf3d_vgraphics_render_start();
                 //2D draws
                 
-                gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_pipeline(), &ent->modelUBO, ent->modelTexture);
-                gf3d_mesh_queue_render(ent2->modelMesh, gf3d_mesh_get_pipeline(), &ent2->modelUBO, ent2->modelTexture);
+                entity_draw_all();
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
 
         gf3d_vgraphics_render_end();
+
+        if (gfc_input_key_pressed("w"))
+        {
+            Entity* newEnt;
+            newEnt = entity_new();
+
+            newEnt->think = dino_thunk;
+
+            newEnt->modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
+            newEnt->modelTexture = gf3d_texture_load("models/dino/dino.png");
+            gfc_matrix4_identity(newEnt->modelMat);
+            gfc_matrix4_scale(newEnt->modelMat, newEnt->modelMat, gfc_vector3d(1, 1, 1));
+            gfc_matrix4_rotate_y(newEnt->modelMat, newEnt->modelMat, GFC_HALF_PI * -1);
+            gfc_matrix4_translate(newEnt->modelMat, newEnt->modelMat, gfc_vector3d(-10, 0, -50));
+        }
+
         if (gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();
     }    

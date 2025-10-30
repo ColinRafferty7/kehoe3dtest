@@ -42,7 +42,8 @@ Entity* entity_new()
         if (ent_system.ent_list[i]._inuse) continue;
 
         memset(&ent_system.ent_list[i], 0, sizeof(Entity));
-        ent_system.ent_list->_inuse = 1;
+        slog("%p", (void*) &ent_system.ent_list[i]);
+        ent_system.ent_list[i]._inuse = 1;
         return &ent_system.ent_list[i];
     }
 
@@ -69,3 +70,20 @@ void entity_think_all()
     }
 }
 
+void entity_draw(Entity* ent)
+{
+    gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_pipeline(), &ent->modelUBO, ent->modelTexture);
+}
+
+void entity_draw_all()
+{
+    if (!ent_system.ent_list) return;
+
+    for (int i = 0; i < ent_system.ent_max; i++)
+    {
+        if (ent_system.ent_list[i]._inuse)
+        {
+            entity_draw(&ent_system.ent_list[i]);
+        }
+    }
+}
