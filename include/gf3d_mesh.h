@@ -224,6 +224,7 @@ void gf3d_mesh_setup_face_buffers(MeshPrimitive* mesh, Face* faces, Uint32 fcoun
 //TODO
 void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* texture);
 
+//TODO
 Pipeline *gf3d_mesh_get_sky_pipeline();
 
 #endif
