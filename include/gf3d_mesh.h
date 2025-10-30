@@ -59,6 +59,11 @@ typedef struct
 }Mesh;
 
 /**
+ * @brief closes mesh subsystem, called atexit
+ */
+void gf3d_mesh_close();
+
+/**
  * @brief initializes the mesh system / configures internal data about mesh based rendering
  * @param mesh_max the maximum allowed simultaneous meshes supported at once.  Must be > 0
  * @note keep in mind that many models will be comprised of multiple sub meshes.  So this number may need to be very large
@@ -181,5 +186,45 @@ MeshUBO gf3d_mesh_get_ubo(
     GFC_Matrix4 modelMat,
     GFC_Color colorMod);
 
+/**
+ * @brief retrieves mesh from meshlist with filename
+ * @param filename the filename to look for
+ * @return returns mesh matching filename, null if no match
+ */
+Mesh *gf3d_mesh_get_by_filename(const char* filename);
+
+/**
+ * @brief create and add new mesh to mesh list
+ * @param index the index that the mesh is added into
+ * @return address of mesh added into list
+ */
+Mesh* gf3d_mesh_list_add(int index);
+
+/**
+ * @brief deletes all primitives from a mesh and then frees up the memory
+ * @param mesh the mesh that is deleted
+ */
+void gf3d_mesh_delete(Mesh *mesh);
+
+/**
+ * @brief deletes primitive and object data
+ * @param primitive the primitive that is deleted
+ */
+void gf3d_mesh_primitive_free(MeshPrimitive *primitive);
+
+/**
+ * @brief deletes primitive buffers from gpu through vulkan
+ * @param primitive the primitive that is deleted
+ */
+void gf3d_mesh_primitive_delete_buffers(MeshPrimitive *primitive);
+
+//TODO
+void gf3d_mesh_setup_face_buffers(MeshPrimitive* mesh, Face* faces, Uint32 fcount);
+
+//TODO
+void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* texture);
+
+//TODO
+Pipeline *gf3d_mesh_get_sky_pipeline();
 
 #endif

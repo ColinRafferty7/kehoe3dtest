@@ -180,6 +180,7 @@
     <ClCompile Include="..\..\src\gf3d_device.c" />
     <ClCompile Include="..\..\src\gf3d_extensions.c" />
     <ClCompile Include="..\..\src\gf3d_gltf_parse.c" />
+    <ClCompile Include="..\..\src\gf3d_mesh.c" />
     <ClCompile Include="..\..\src\gf3d_obj_load.c" />
     <ClCompile Include="..\..\src\gf3d_pipeline.c" />
     <ClCompile Include="..\..\src\gf3d_shaders.c" />
@@ -250,9 +251,16 @@
     <None Include="..\..\config\audio.cfg" />
     <None Include="..\..\config\font.cfg" />
     <None Include="..\..\config\input.cfg" />
+    <None Include="..\..\config\mesh_pipeline.cfg" />
     <None Include="..\..\config\overlay_pipeline.cfg" />
     <None Include="..\..\config\setup.cfg" />
     <None Include="..\..\config\sky_pipeline.cfg" />
+    <None Include="..\..\shaders\mesh.frag" />
+    <None Include="..\..\shaders\mesh.vert" />
+    <None Include="..\..\shaders\sky.frag" />
+    <None Include="..\..\shaders\sky.vert" />
+    <None Include="..\..\shaders\sprite.frag" />
+    <None Include="..\..\shaders\sprite.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
