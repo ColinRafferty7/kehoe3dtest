@@ -42,7 +42,6 @@ Entity* entity_new()
         if (ent_system.ent_list[i]._inuse) continue;
 
         memset(&ent_system.ent_list[i], 0, sizeof(Entity));
-        slog("%p", (void*) &ent_system.ent_list[i]);
         ent_system.ent_list[i]._inuse = 1;
         return &ent_system.ent_list[i];
     }
@@ -72,6 +71,7 @@ void entity_think_all()
 
 void entity_draw(Entity* ent)
 {
+    ent->modelUBO = gf3d_mesh_get_ubo(ent->modelMat, GFC_COLOR_WHITE);
     gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_pipeline(), &ent->modelUBO, ent->modelTexture);
 }
 

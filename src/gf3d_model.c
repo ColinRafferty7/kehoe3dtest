@@ -45,7 +45,7 @@ Entity* gf3d_model_load(Entity* ent, char* filename)
 		slog("No Texture");
 		return NULL;
 	}
-
+		
 	gfc_matrix4_identity(ent->modelMat);
 	gfc_matrix4_scale(ent->modelMat, ent->modelMat, gfc_vector3d(1, 1, 1));
 

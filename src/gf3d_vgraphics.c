@@ -585,6 +585,11 @@ void gf3d_vgraphics_get_projection_matrix(GFC_Matrix4 *proj)
     memcpy(proj,gf3d_vgraphics.ubo.proj,sizeof(GFC_Matrix4));
 }
 
+void gf3d_vgraphics_set_view(GFC_Matrix4 view)
+{
+    gfc_matrix4_copy(gf3d_vgraphics.ubo.view, view);
+}
+
 void gf3d_vgraphics_get_view(GFC_Matrix4 *view)
 {
     if (!view)return;

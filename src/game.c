@@ -22,6 +22,7 @@
 #include "gf3d_mesh.h"
 #include "entity.h"
 #include "gf3d_model.h"
+#include "gf3d_camera.h"
 
 extern int __DEBUG;
 
@@ -39,14 +40,10 @@ void exitGame()
 
 void dino_think(Entity* dino)
 {
-    gfc_matrix4_rotate_z(dino->modelMat, dino->modelMat, 0.01);
-    dino->modelUBO = gf3d_mesh_get_ubo(dino->modelMat, GFC_COLOR_WHITE);
-}
-
-void dino_thunk(Entity* dino)
-{
-    gfc_matrix4_rotate_z(dino->modelMat, dino->modelMat, 0.1);
-    dino->modelUBO = gf3d_mesh_get_ubo(dino->modelMat, GFC_COLOR_WHITE);
+    if (gfc_input_key_pressed("w"))
+    {
+        slog("Dino is thinking");
+    }
 }
 
 int main(int argc,char *argv[])
@@ -74,8 +71,8 @@ int main(int argc,char *argv[])
     bg = gf2d_sprite_load_image("images/bg_flat.png");
     gf2d_mouse_load("actors/mouse.actor");
 
-    Mesh *skyMesh;
-    Texture *skyTexture;
+    Mesh* skyMesh;
+    Texture* skyTexture;
     MeshUBO skyUBO;
     GFC_Matrix4 skyMat;
 
@@ -84,31 +81,27 @@ int main(int argc,char *argv[])
     gfc_matrix4_identity(skyMat);
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
 
-    Entity *ent2;
+    Entity* dino;
+    dino = entity_new();
+    dino->think = dino_think;
+    dino = gf3d_model_load(dino, "models/dino.model");
 
-    ent2 = entity_new();
+    gfc_matrix4_scale(dino->modelMat, dino->modelMat, gfc_vector3d(1, 1, 1));
+    gfc_matrix4_rotate_y(dino->modelMat, dino->modelMat, GFC_HALF_PI * -1);
+    gfc_matrix4_translate(dino->modelMat, dino->modelMat, gfc_vector3d(0, 0, -50));
 
-    ent2->think = dino_thunk;
+    Entity* world;
+    world = entity_new();
+    world = gf3d_model_load(world, "models/primitives/cube.model");
 
-    ent2->modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
-    ent2->modelTexture = gf3d_texture_load("models/dino/dino.png");
-    gfc_matrix4_identity(ent2->modelMat);
-    gfc_matrix4_scale(ent2->modelMat, ent2->modelMat, gfc_vector3d(1, 1, 1));
-    gfc_matrix4_rotate_y(ent2->modelMat, ent2->modelMat, GFC_HALF_PI * -1);
-    gfc_matrix4_translate(ent2->modelMat, ent2->modelMat, gfc_vector3d(10, 0, -50));
+    gfc_matrix4_scale(world->modelMat, world->modelMat, gfc_vector3d(200, 200, 2));
+    gfc_matrix4_rotate_y(world->modelMat, world->modelMat, GFC_HALF_PI * -1);
+    gfc_matrix4_translate(world->modelMat, world->modelMat, gfc_vector3d(0, -10, -50));
 
-    Entity* ent;
+    GFC_Vector3D camera = {0, 0, 50};
 
-    ent = entity_new();
-
-    ent->think = dino_think;
-
-    ent->modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
-    ent->modelTexture = gf3d_texture_load("models/dino/dino.png");
-    gfc_matrix4_identity(ent->modelMat);
-    gfc_matrix4_scale(ent->modelMat, ent->modelMat, gfc_vector3d(1, 1, 1));
-    gfc_matrix4_rotate_y(ent->modelMat, ent->modelMat, GFC_HALF_PI * -1);
-    gfc_matrix4_translate(ent->modelMat, ent->modelMat, gfc_vector3d(0, 0, -50));
+    gf3d_camera_set_position(gfc_vector3d(0, 0, 50));
+    gf3d_camera_look_at(gfc_vector3d(0, 0, 0), &camera);
 
     // main game loop    
     while(!_done)
@@ -117,31 +110,20 @@ int main(int argc,char *argv[])
         gf2d_mouse_update();
         gf2d_font_update();
         //camera updaes
+
+        gf3d_camera_update_view();
         entity_think_all();
 
         gf3d_vgraphics_render_start();
                 //2D draws
-                
-                entity_draw_all();
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
+                entity_draw_all();
+                
                 //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
 
         gf3d_vgraphics_render_end();
-
-        if (gfc_input_key_pressed("w"))
-        {
-            Entity* newEnt;
-            newEnt = entity_new();
-
-            newEnt = gf3d_model_load(newEnt, "models/dino.model");
-
-            newEnt->think = dino_thunk;
-            
-            gfc_matrix4_rotate_y(newEnt->modelMat, newEnt->modelMat, GFC_HALF_PI * -1);
-            gfc_matrix4_translate(newEnt->modelMat, newEnt->modelMat, gfc_vector3d(-10, 0, -50));
-        }
 
         if (gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();
