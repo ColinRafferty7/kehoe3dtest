@@ -21,6 +21,7 @@
 #include "gf3d_swapchain.h"
 #include "gf3d_mesh.h"
 #include "entity.h"
+#include "gf3d_model.h"
 
 extern int __DEBUG;
 
@@ -134,12 +135,10 @@ int main(int argc,char *argv[])
             Entity* newEnt;
             newEnt = entity_new();
 
-            newEnt->think = dino_thunk;
+            newEnt = gf3d_model_load(newEnt, "models/dino.model");
 
-            newEnt->modelMesh = gf3d_mesh_load_obj("models/dino/dino.obj");
-            newEnt->modelTexture = gf3d_texture_load("models/dino/dino.png");
-            gfc_matrix4_identity(newEnt->modelMat);
-            gfc_matrix4_scale(newEnt->modelMat, newEnt->modelMat, gfc_vector3d(1, 1, 1));
+            newEnt->think = dino_thunk;
+            
             gfc_matrix4_rotate_y(newEnt->modelMat, newEnt->modelMat, GFC_HALF_PI * -1);
             gfc_matrix4_translate(newEnt->modelMat, newEnt->modelMat, gfc_vector3d(-10, 0, -50));
         }

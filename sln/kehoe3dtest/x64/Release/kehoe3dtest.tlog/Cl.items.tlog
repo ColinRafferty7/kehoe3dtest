@@ -41,6 +41,7 @@ C:\dev\kehoe3dtest\src\gf3d_device.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Rele
 C:\dev\kehoe3dtest\src\gf3d_extensions.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_extensions.obj
 C:\dev\kehoe3dtest\src\gf3d_gltf_parse.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_gltf_parse.obj
 C:\dev\kehoe3dtest\src\gf3d_mesh.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_mesh.obj
+C:\dev\kehoe3dtest\src\gf3d_model.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_model.obj
 C:\dev\kehoe3dtest\src\gf3d_obj_load.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_obj_load.obj
 C:\dev\kehoe3dtest\src\gf3d_pipeline.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_pipeline.obj
 C:\dev\kehoe3dtest\src\gf3d_shaders.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_shaders.obj
