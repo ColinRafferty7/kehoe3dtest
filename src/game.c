@@ -30,6 +30,9 @@ static int _done = 0;
 static Uint32 frame_delay = 33;
 static float fps = 0;
 
+GFC_Vector3D camera = { 0, 0, 0 };
+GFC_Vector3D cameraPos = { 0, 50, 10 };
+
 void parse_arguments(int argc,char *argv[]);
 void game_frame_delay();
 
@@ -40,9 +43,50 @@ void exitGame()
 
 void dino_think(Entity* dino)
 {
-    if (gfc_input_key_pressed("w"))
+    GFC_Vector3D direction;
+
+    direction = cameraPos;
+    gfc_vector3d_normalize(&direction);
+    direction.z = 0;
+    gfc_vector3d_rotate_about_z(&direction, GFC_PI);
+
+    if (gfc_input_key_down("w"))
     {
-        slog("Dino is thinking");
+        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+    }
+    if (gfc_input_key_down("s"))
+    {
+        gfc_vector3d_rotate_about_z(&direction, GFC_PI);
+        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+    }    
+    if (gfc_input_key_down("a"))
+    {
+        gfc_vector3d_rotate_about_z(&direction, GFC_HALF_PI);
+        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+    }
+    if (gfc_input_key_down("d"))
+    {
+        gfc_vector3d_rotate_about_z(&direction, -1 * GFC_HALF_PI);
+        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+    }
+    if (gf2d_mouse_moved())
+    {
+        GFC_Vector3D pos, inverse;
+        gfc_vector3d_rotate_about_z(&cameraPos, -0.01 * gf2d_mouse_get_movement().x);
+        gfc_matrix4_to_vectors(dino->modelMat, &pos, NULL, NULL);
+        gfc_vector3d_negate(inverse, pos);
+        gfc_matrix4_translate(dino->modelMat, dino->modelMat, inverse);
+        gfc_matrix4_rotate_z(dino->modelMat, dino->modelMat, -0.01 * gf2d_mouse_get_movement().x);
+        gfc_matrix4_translate(dino->modelMat, dino->modelMat, pos);
+    }
+
+    if (gfc_input_key_pressed("p"))
+    {
+        SDL_SetRelativeMouseMode(SDL_TRUE);
+    }
+    if (gfc_input_key_pressed("o"))
+    {
+        SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 }
 
@@ -86,22 +130,14 @@ int main(int argc,char *argv[])
     dino->think = dino_think;
     dino = gf3d_model_load(dino, "models/dino.model");
 
-    gfc_matrix4_scale(dino->modelMat, dino->modelMat, gfc_vector3d(1, 1, 1));
-    gfc_matrix4_rotate_y(dino->modelMat, dino->modelMat, GFC_HALF_PI * -1);
-    gfc_matrix4_translate(dino->modelMat, dino->modelMat, gfc_vector3d(0, 0, -50));
+    gfc_matrix4_translate(dino->modelMat, dino->modelMat, gfc_vector3d(0, 0, 0));
 
     Entity* world;
     world = entity_new();
     world = gf3d_model_load(world, "models/primitives/cube.model");
 
     gfc_matrix4_scale(world->modelMat, world->modelMat, gfc_vector3d(200, 200, 2));
-    gfc_matrix4_rotate_y(world->modelMat, world->modelMat, GFC_HALF_PI * -1);
-    gfc_matrix4_translate(world->modelMat, world->modelMat, gfc_vector3d(0, -10, -50));
-
-    GFC_Vector3D camera = {0, 0, 50};
-
-    gf3d_camera_set_position(gfc_vector3d(0, 0, 50));
-    gf3d_camera_look_at(gfc_vector3d(0, 0, 0), &camera);
+    gfc_matrix4_translate(world->modelMat, world->modelMat, gfc_vector3d(0, 0, -10));
 
     // main game loop    
     while(!_done)
@@ -111,15 +147,19 @@ int main(int argc,char *argv[])
         gf2d_font_update();
         //camera updaes
 
-        gf3d_camera_update_view();
         entity_think_all();
+
+        camera = gfc_vector3d_added(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), cameraPos);
+        gf3d_camera_look_at(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), &camera);
+
+        gf3d_camera_update_view();
 
         gf3d_vgraphics_render_start();
                 //2D draws
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
                 entity_draw_all();
                 
-                //gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));
+                /*gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));*/
                 gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
                 gf2d_mouse_draw();
 
