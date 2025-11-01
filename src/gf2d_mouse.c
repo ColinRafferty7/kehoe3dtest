@@ -10,7 +10,7 @@
 typedef struct
 {
     Uint32 buttons;         /**<buttons mask*/
-    GFC_Vector2D position;  /**<position of mouse*/
+    GFC_Vector2D delta;  /**<position of mouse*/
 }MouseState;
 
 typedef struct
@@ -53,11 +53,21 @@ void gf2d_mouse_load(const char *actorFile)
 
 void gf2d_mouse_update()
 {
-    int x,y;
-    gfc_action_next_frame(_mouse.action,&_mouse.frame);
-    memcpy(&_mouse.mouse[1],&_mouse.mouse[0],sizeof(MouseState));
-    _mouse.mouse[0].buttons = SDL_GetMouseState(&x,&y);
-    gfc_vector2d_set(_mouse.mouse[0].position,x,y);
+    int dx, dy;
+    gfc_action_next_frame(_mouse.action, &_mouse.frame);
+    memcpy(&_mouse.mouse[1], &_mouse.mouse[0], sizeof(MouseState));
+
+    if (SDL_GetRelativeMouseMode())
+    {
+        _mouse.mouse[0].buttons = SDL_GetRelativeMouseState(&dx, &dy);
+        gfc_vector2d_set(_mouse.mouse[0].delta, dx, dy);
+    }
+    else
+    {
+        int x, y;
+        _mouse.mouse[0].buttons = SDL_GetMouseState(&x, &y);
+        gfc_vector2d_set(_mouse.mouse[0].delta, x - _mouse.mouse[1].delta.x, y - _mouse.mouse[1].delta.y);
+    }
 }
 
 void gf2d_mouse_draw()
@@ -66,7 +76,7 @@ void gf2d_mouse_draw()
     gf2d_actor_draw(
         _mouse.actor,
         _mouse.frame,
-        _mouse.mouse[0].position,
+        _mouse.mouse[0].delta,
         NULL,
         NULL,
         NULL,
@@ -76,8 +86,8 @@ void gf2d_mouse_draw()
 
 int gf2d_mouse_moved()
 {
-    if ((_mouse.mouse[0].position.x != _mouse.mouse[1].position.x) ||
-        (_mouse.mouse[0].position.y != _mouse.mouse[1].position.y) ||
+    if ((_mouse.mouse[0].delta.x != _mouse.mouse[1].delta.x) ||
+        (_mouse.mouse[0].delta.y != _mouse.mouse[1].delta.y) ||
         (_mouse.mouse[0].buttons != _mouse.mouse[1].buttons))
     {
         return 1;
@@ -134,25 +144,23 @@ int gf2d_mouse_button_state(int button)
 float gf2d_mouse_get_angle_to(GFC_Vector2D point)
 {
     GFC_Vector2D delta;
-    gfc_vector2d_sub(delta,_mouse.mouse[0].position,point);
+    gfc_vector2d_sub(delta,_mouse.mouse[0].delta,point);
     return gfc_vector2d_angle(delta);
 }
 
 GFC_Vector2D gf2d_mouse_get_position()
 {
-    return _mouse.mouse[0].position;
+    return _mouse.mouse[0].delta;
 }
 
 GFC_Vector2D gf2d_mouse_get_movement()
 {
-    GFC_Vector2D dif;
-    gfc_vector2d_sub(dif,_mouse.mouse[0].position,_mouse.mouse[1].position);
-    return dif;
+    return _mouse.mouse[0].delta;
 }
 
 int gf2d_mouse_in_rect(GFC_Rect r)
 {
-    return gfc_point_in_rect(_mouse.mouse[0].position,r);
+    return gfc_point_in_rect(_mouse.mouse[0].delta,r);
 }
 
 /*eol@eof*/
