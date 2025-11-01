@@ -43,6 +43,10 @@ Entity* entity_new()
 
         memset(&ent_system.ent_list[i], 0, sizeof(Entity));
         ent_system.ent_list[i]._inuse = 1;
+        ent_system.ent_list[i].position = gfc_vector3d(0, 0, 0);
+        ent_system.ent_list[i].scale = gfc_vector3d(1, 1, 1);
+        ent_system.ent_list[i].rotation = gfc_vector3d(0, 0, 0);
+
         return &ent_system.ent_list[i];
     }
 
@@ -84,6 +88,24 @@ void entity_draw_all()
         if (ent_system.ent_list[i]._inuse)
         {
             entity_draw(&ent_system.ent_list[i]);
+        }
+    }
+}
+
+void entity_update(Entity* ent)
+{
+    gfc_matrix4_from_vectors(ent->modelMat, ent->position, ent->rotation, ent->scale);
+}
+
+void entity_update_all()
+{
+    if (!ent_system.ent_list) return;
+
+    for (int i = 0; i < ent_system.ent_max; i++)
+    {
+        if (ent_system.ent_list[i]._inuse)
+        {
+            entity_update(&ent_system.ent_list[i]);
         }
     }
 }

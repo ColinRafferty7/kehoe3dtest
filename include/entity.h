@@ -29,4 +29,6 @@ void entity_think_all();
 
 void entity_draw_all();
 
+void entity_update_all();
+
 #endif

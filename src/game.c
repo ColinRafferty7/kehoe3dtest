@@ -52,32 +52,28 @@ void dino_think(Entity* dino)
 
     if (gfc_input_key_down("w"))
     {
-        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+        gfc_vector3d_add(dino->position, dino->position, direction);
     }
     if (gfc_input_key_down("s"))
     {
         gfc_vector3d_rotate_about_z(&direction, GFC_PI);
-        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+        gfc_vector3d_add(dino->position, dino->position, direction);
     }    
     if (gfc_input_key_down("a"))
     {
         gfc_vector3d_rotate_about_z(&direction, GFC_HALF_PI);
-        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+        gfc_vector3d_add(dino->position, dino->position, direction);
     }
     if (gfc_input_key_down("d"))
     {
         gfc_vector3d_rotate_about_z(&direction, -1 * GFC_HALF_PI);
-        gfc_matrix4_translate(dino->modelMat, dino->modelMat, direction);
+        gfc_vector3d_add(dino->position, dino->position, direction);
     }
     if (gf2d_mouse_moved())
     {
-        GFC_Vector3D pos, inverse;
+        // TODO: Add vertical camera rotation by changing camera to be an entity
         gfc_vector3d_rotate_about_z(&cameraPos, -0.01 * gf2d_mouse_get_movement().x);
-        gfc_matrix4_to_vectors(dino->modelMat, &pos, NULL, NULL);
-        gfc_vector3d_negate(inverse, pos);
-        gfc_matrix4_translate(dino->modelMat, dino->modelMat, inverse);
-        gfc_matrix4_rotate_z(dino->modelMat, dino->modelMat, -0.01 * gf2d_mouse_get_movement().x);
-        gfc_matrix4_translate(dino->modelMat, dino->modelMat, pos);
+        dino->rotation.z += -0.01 * gf2d_mouse_get_movement().x;
     }
 
     if (gfc_input_key_pressed("p"))
@@ -130,14 +126,12 @@ int main(int argc,char *argv[])
     dino->think = dino_think;
     dino = gf3d_model_load(dino, "models/dino.model");
 
-    gfc_matrix4_translate(dino->modelMat, dino->modelMat, gfc_vector3d(0, 0, 0));
-
     Entity* world;
     world = entity_new();
-    world = gf3d_model_load(world, "models/primitives/cube.model");
+    world = gf3d_model_load(world, "models/testlevel/testlevel.model");
 
-    gfc_matrix4_scale(world->modelMat, world->modelMat, gfc_vector3d(200, 200, 2));
-    gfc_matrix4_translate(world->modelMat, world->modelMat, gfc_vector3d(0, 0, -10));
+    gfc_vector3d_scale(world->scale, world->scale, 100);
+    gfc_vector3d_add(world->position, world->position, gfc_vector3d(0, 0, -10));
 
     // main game loop    
     while(!_done)
@@ -148,6 +142,7 @@ int main(int argc,char *argv[])
         //camera updaes
 
         entity_think_all();
+        entity_update_all();
 
         camera = gfc_vector3d_added(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), cameraPos);
         gf3d_camera_look_at(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), &camera);
