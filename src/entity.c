@@ -97,12 +97,14 @@ void entity_draw_all()
 void entity_update(Entity* ent)
 {
     gfc_matrix4_from_vectors(ent->modelMat, ent->position, ent->rotation, ent->scale);
-    ent->boundingBox = gfc_box(ent->position.x + ent->modelMesh->bounds.x,
-        ent->position.y + ent->modelMesh->bounds.y,
-        ent->position.z + ent->modelMesh->bounds.z,
-        ent->modelMesh->bounds.w,
-        ent->modelMesh->bounds.h,
-        ent->modelMesh->bounds.d);
+    ent->boundingBox = gfc_box(
+        ent->position.x + (ent->modelMesh->bounds.x * ent->scale.x),
+        ent->position.y + (ent->modelMesh->bounds.y * ent->scale.y),
+        ent->position.z + (ent->modelMesh->bounds.z * ent->scale.z),
+        ent->modelMesh->bounds.w * ent->scale.x,
+        ent->modelMesh->bounds.h * ent->scale.y,
+        ent->modelMesh->bounds.d * ent->scale.z
+    );
 }
 
 void entity_update_all()

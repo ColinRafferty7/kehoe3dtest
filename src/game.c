@@ -137,6 +137,23 @@ int main(int argc,char *argv[])
     gfc_vector3d_scale_by(block->scale, block->scale, gfc_vector3d(3, 3, 10));
     gfc_vector3d_add(block->position, block->position, gfc_vector3d(20, 0, 0));
 
+    Entity* block2;
+    block2 = entity_new();
+    block2->isStatic = 1;
+    block2->name = "Block2";
+    block2 = gf3d_model_load(block2, "models/primitives/cube.model");
+
+    gfc_vector3d_scale_by(block2->scale, block2->scale, gfc_vector3d(10, 10, 3));
+    gfc_vector3d_add(block2->position, block2->position, gfc_vector3d(30, 30, 0));
+
+    Entity* block3;
+    block3 = entity_new();
+    block3->name = "Block3";
+    block3 = gf3d_model_load(block3, "models/primitives/cube.model");
+
+    gfc_vector3d_scale_by(block3->scale, block3->scale, gfc_vector3d(3, 3, 10));
+    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, 0));
+
     Entity* world;
     world = entity_new();
     world->isStatic = 1;
