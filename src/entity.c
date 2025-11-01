@@ -1,6 +1,7 @@
 #include "simple_logger.h"
 
 #include "entity.h"
+#include "collision.h"
 
 typedef struct
 {
@@ -8,7 +9,7 @@ typedef struct
     Uint32 ent_max;
 }EntitySystem;
 
-EntitySystem ent_system = { 0 };
+static EntitySystem ent_system = { 0 };
 
 void entity_close()
 {
@@ -46,6 +47,7 @@ Entity* entity_new()
         ent_system.ent_list[i].position = gfc_vector3d(0, 0, 0);
         ent_system.ent_list[i].scale = gfc_vector3d(1, 1, 1);
         ent_system.ent_list[i].rotation = gfc_vector3d(0, 0, 0);
+        ent_system.ent_list[i].boundingBox = gfc_box(0, 0, 0, 0, 0, 0);
 
         return &ent_system.ent_list[i];
     }
@@ -95,6 +97,12 @@ void entity_draw_all()
 void entity_update(Entity* ent)
 {
     gfc_matrix4_from_vectors(ent->modelMat, ent->position, ent->rotation, ent->scale);
+    ent->boundingBox = gfc_box(ent->position.x + ent->modelMesh->bounds.x,
+        ent->position.y + ent->modelMesh->bounds.y,
+        ent->position.z + ent->modelMesh->bounds.z,
+        ent->modelMesh->bounds.w,
+        ent->modelMesh->bounds.h,
+        ent->modelMesh->bounds.d);
 }
 
 void entity_update_all()
@@ -106,6 +114,21 @@ void entity_update_all()
         if (ent_system.ent_list[i]._inuse)
         {
             entity_update(&ent_system.ent_list[i]);
+        }
+    }
+}
+
+void entity_collision_check_all()
+{
+    if (!ent_system.ent_list) return;
+
+    for (int i = 0; i < ent_system.ent_max; i++)
+    {
+        if (!ent_system.ent_list[i]._inuse || ent_system.ent_list[i].isStatic) continue;
+        for (int j = i + 1; j < ent_system.ent_max; j++)
+        {
+            if (!ent_system.ent_list[j]._inuse) continue;
+            collision_check(&ent_system.ent_list[i], &ent_system.ent_list[j]);
         }
     }
 }

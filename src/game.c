@@ -83,7 +83,7 @@ void dino_think(Entity* dino)
     if (gfc_input_key_pressed("o"))
     {
         SDL_SetRelativeMouseMode(SDL_FALSE);
-    }
+    }    
 }
 
 int main(int argc,char *argv[])
@@ -123,11 +123,24 @@ int main(int argc,char *argv[])
 
     Entity* dino;
     dino = entity_new();
+    dino->name = "Dino";
+    dino->isStatic;
     dino->think = dino_think;
     dino = gf3d_model_load(dino, "models/dino.model");
 
+    Entity* block;
+    block = entity_new();
+    block->isStatic = 1;
+    block->name = "Block";
+    block = gf3d_model_load(block, "models/primitives/cube.model");
+
+    gfc_vector3d_scale_by(block->scale, block->scale, gfc_vector3d(3, 3, 10));
+    gfc_vector3d_add(block->position, block->position, gfc_vector3d(20, 0, 0));
+
     Entity* world;
     world = entity_new();
+    world->isStatic = 1;
+    world->name = "World";
     world = gf3d_model_load(world, "models/testlevel/testlevel.model");
 
     gfc_vector3d_scale(world->scale, world->scale, 100);
@@ -143,6 +156,7 @@ int main(int argc,char *argv[])
 
         entity_think_all();
         entity_update_all();
+        entity_collision_check_all();
 
         camera = gfc_vector3d_added(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), cameraPos);
         gf3d_camera_look_at(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), &camera);
@@ -159,6 +173,14 @@ int main(int argc,char *argv[])
                 gf2d_mouse_draw();
 
         gf3d_vgraphics_render_end();
+
+        if (gfc_input_key_pressed("b"))
+        {
+            slog("(%f, %f, %f) - (%f, %f, %f)", block->boundingBox.x, block->boundingBox.y, block->boundingBox.z,
+                block->boundingBox.w, block->boundingBox.h, block->boundingBox.d);
+            slog("(%f, %f, %f) - (%f, %f, %f)", world->boundingBox.x, world->boundingBox.y, world->boundingBox.z,
+                world->boundingBox.w, world->boundingBox.h, world->boundingBox.d);
+        }
 
         if (gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();

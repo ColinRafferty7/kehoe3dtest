@@ -7,9 +7,15 @@ typedef struct Entity_S
 {
     Uint8 _inuse;
 
+    const char* name;
+
     GFC_Vector3D position;
     GFC_Vector3D rotation;
     GFC_Vector3D scale;
+
+    GFC_Box boundingBox;
+
+    Uint8 isStatic;
 
     void (*think)   (struct Entity_S* ent);
 
@@ -30,5 +36,7 @@ void entity_think_all();
 void entity_draw_all();
 
 void entity_update_all();
+
+void entity_collision_check_all();
 
 #endif
