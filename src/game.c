@@ -154,14 +154,14 @@ int main(int argc,char *argv[])
     gfc_vector3d_scale_by(block3->scale, block3->scale, gfc_vector3d(3, 3, 10));
     gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, 0));
 
-    Entity* world;
+    /*Entity* world;
     world = entity_new();
     world->isStatic = 1;
     world->name = "World";
     world = gf3d_model_load(world, "models/testlevel/testlevel.model");
 
     gfc_vector3d_scale(world->scale, world->scale, 100);
-    gfc_vector3d_add(world->position, world->position, gfc_vector3d(0, 0, -10));
+    gfc_vector3d_add(world->position, world->position, gfc_vector3d(0, 0, -10));*/
 
     // main game loop    
     while(!_done)
@@ -190,14 +190,6 @@ int main(int argc,char *argv[])
                 gf2d_mouse_draw();
 
         gf3d_vgraphics_render_end();
-
-        if (gfc_input_key_pressed("b"))
-        {
-            slog("(%f, %f, %f) - (%f, %f, %f)", block->boundingBox.x, block->boundingBox.y, block->boundingBox.z,
-                block->boundingBox.w, block->boundingBox.h, block->boundingBox.d);
-            slog("(%f, %f, %f) - (%f, %f, %f)", world->boundingBox.x, world->boundingBox.y, world->boundingBox.z,
-                world->boundingBox.w, world->boundingBox.h, world->boundingBox.d);
-        }
 
         if (gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();

@@ -5,4 +5,6 @@
 
 void collision_check(Entity* entA, Entity* entB);
 
+void collision_resolve(Entity* entA, Entity* entB);
+
 #endif
