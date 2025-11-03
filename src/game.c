@@ -136,45 +136,8 @@ int main(int argc,char *argv[])
     Entity* dino;
     dino = entity_new();
     dino->name = "Dino";
-    dino->isStatic;
     dino->think = dino_think;
     dino = gf3d_model_load(dino, "models/dino.model");
-
-    Entity* block;
-    block = entity_new();
-    block->isStatic = 1;
-    block->name = "Block";
-    block = gf3d_model_load(block, "models/primitives/cube.model");
-
-    gfc_vector3d_scale_by(block->scale, block->scale, gfc_vector3d(1, 1, 1));
-    gfc_vector3d_add(block->position, block->position, gfc_vector3d(2, 2, -95));
-
-    Entity* block2;
-    block2 = entity_new();
-    block2->isStatic = 1;
-    block2->name = "Block2";
-    block2 = gf3d_model_load(block2, "models/primitives/cube.model");
-
-    gfc_vector3d_scale_by(block2->scale, block2->scale, gfc_vector3d(1, 1, 1));
-    gfc_vector3d_add(block2->position, block2->position, gfc_vector3d(0, 0, -95));
-
-    Entity* block3;
-    block3 = entity_new();
-    block3->isStatic = 1;
-    block3->name = "Block3";
-    block3 = gf3d_model_load(block3, "models/primitives/cube.model");
-
-    gfc_vector3d_scale_by(block3->scale, block3->scale, gfc_vector3d(10, 10, 10));
-    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, -95));
-
-    Entity* block4;
-    block4 = entity_new();
-    block4->isStatic = 1;
-    block4->name = "Block4";
-    block4 = gf3d_model_load(block4, "models/primitives/cube.model");
-
-    gfc_vector3d_scale_by(block4->scale, block4->scale, gfc_vector3d(200, 200, 2));
-    gfc_vector3d_add(block4->position, block4->position, gfc_vector3d(0, 0, -100));
 
     /*Entity* world;
     world = entity_new();
