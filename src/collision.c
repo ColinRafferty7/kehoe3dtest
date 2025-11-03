@@ -39,20 +39,20 @@ void collision_resolve(Entity* entA, Entity* entB)
     if (absX < absY && absX < absZ)
     {
         entA->position.x += overlapX;
-        slog("Overlap X");
     }
     else if (absY < absZ)
     {
-        slog("Overlap Y");
         entA->position.y += overlapY;
     }
     else
-        if (strcmp(entB->name, "Block4") != 0)
+    {
+        if (entA->velocity.z < 0)
         { 
-            slog("Overlap Z");
+            entA->velocity.z = 0;
         }
-        entA->velocity.z = 0;
+        
         entA->position.z += overlapZ;
+    }
 }
 
 void collision_check(Entity* entA, Entity* entB)

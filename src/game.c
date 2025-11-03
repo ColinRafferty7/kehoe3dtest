@@ -69,6 +69,10 @@ void dino_think(Entity* dino)
         gfc_vector3d_rotate_about_z(&direction, -1 * GFC_HALF_PI);
         gfc_vector3d_add(dino->position, dino->position, direction);
     }
+    if (gfc_input_key_pressed("c"))
+    {
+        dino->velocity.z = 25;
+    }
     if (gf2d_mouse_moved())
     {
         // TODO: Add vertical camera rotation by changing camera to be an entity
@@ -84,10 +88,6 @@ void dino_think(Entity* dino)
     {
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }    
-    if (gfc_input_key_pressed("c"))
-    {
-        slog("(%f, %f, %f)", gfc_vector3d_to_slog(dino->velocity));
-    }
 }
 
 int main(int argc,char *argv[])
@@ -157,7 +157,7 @@ int main(int argc,char *argv[])
     block3 = gf3d_model_load(block3, "models/primitives/cube.model");
 
     gfc_vector3d_scale_by(block3->scale, block3->scale, gfc_vector3d(10, 10, 10));
-    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, -100));
+    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, -95));
 
     Entity* block4;
     block4 = entity_new();
