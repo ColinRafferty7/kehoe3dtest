@@ -4,6 +4,11 @@
 
 void collision_resolve(Entity* entA, Entity* entB)
 {
+    if (entB->isSlope)
+    {
+        slog("Colliding with slope?");
+    }
+
     GFC_Box boxA = entA->boundingBox;
     GFC_Box boxB = entB->boundingBox;
 
@@ -57,10 +62,28 @@ void collision_resolve(Entity* entA, Entity* entB)
     entity_update(entA);
 }
 
+void collision_slope_resolve(Entity* entA, Entity* entB)
+{
+    float entA_relative_x = ((entA->boundingBox.x + entA->boundingBox.w / 2) - entB->boundingBox.x) / entB->boundingBox.w;
+    
+    
+    if (entA_relative_x > 0)
+    {
+        entA->position.z = entA_relative_x * entB->boundingBox.d + entB->boundingBox.z;
+    }
+}
+
 void collision_check(Entity* entA, Entity* entB)
 {
     if (gfc_box_overlap(entA->boundingBox, entB->boundingBox) == 1)
     {
-        collision_resolve(entA, entB);
+        if (!entB->isSlope)
+        {
+            collision_resolve(entA, entB);
+        }
+        else
+        {
+            collision_slope_resolve(entA, entB);
+        }
     }
 }

@@ -89,11 +89,6 @@ void dino_think(Entity* dino)
     {
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }   
-
-    if (gfc_input_key_pressed("n"))
-    {
-        entity_print_name_all();
-    }
 }
 
 int main(int argc,char *argv[])
@@ -138,6 +133,16 @@ int main(int argc,char *argv[])
     dino->name = "Dino";
     dino->think = dino_think;
     dino = gf3d_model_load(dino, "models/dino.model");
+
+    Entity* slope;
+    slope = entity_new();
+    slope->name = "Slope";
+    slope->isSlope = 1;
+    slope->isStatic = 1;
+    slope = gf3d_model_load(slope, "models/slope.model");
+
+    gfc_vector3d_scale(slope->scale, slope->scale, 32);
+    gfc_vector3d_add(slope->position, slope->position, gfc_vector3d(32, 32, -86));
 
     /*Entity* world;
     world = entity_new();

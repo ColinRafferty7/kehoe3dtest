@@ -6,7 +6,7 @@ void map_generate_level()
 
 	int scale = 32;
 	int size = 8;
-	int height = 3;
+	int height = 1;
 
 	for (int i = (size * -1); i < size; i++)
 	{
@@ -19,7 +19,7 @@ void map_generate_level()
 			block = gf3d_model_load(block, "models/primitives/cube.model");
 			
 			gfc_vector3d_scale(block->scale, block->scale, scale);
-			gfc_vector3d_add(block->position, block->position, gfc_vector3d((2 * scale * i), (2 * scale * j), (gfc_random_int(height) * 2 * scale) - 100));
+			gfc_vector3d_add(block->position, block->position, gfc_vector3d((2 * scale * i), (2 * scale * j), (gfc_random_int(height) * 2 * scale) - 150));
 
 			entity_update(block);
 		}

@@ -1,0 +1,7 @@
+{
+    "model":
+    {
+        "obj":"models/slope.obj",
+        "texture":"models/primitives/flatwhite.png"
+    }
+}

@@ -21,6 +21,9 @@ typedef struct Entity_S
 
     Uint8 isStatic;
 
+    // TODO: Change entity states to a better system
+    Uint8 isSlope;
+
     void (*think)   (struct Entity_S* ent);
 
     Mesh* modelMesh;
