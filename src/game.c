@@ -84,6 +84,10 @@ void dino_think(Entity* dino)
     {
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }    
+    if (gfc_input_key_pressed("c"))
+    {
+        slog("(%f, %f, %f)", gfc_vector3d_to_slog(dino->velocity));
+    }
 }
 
 int main(int argc,char *argv[])
@@ -148,11 +152,21 @@ int main(int argc,char *argv[])
 
     Entity* block3;
     block3 = entity_new();
+    block3->isStatic = 1;
     block3->name = "Block3";
     block3 = gf3d_model_load(block3, "models/primitives/cube.model");
 
-    gfc_vector3d_scale_by(block3->scale, block3->scale, gfc_vector3d(3, 3, 10));
-    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, 0));
+    gfc_vector3d_scale_by(block3->scale, block3->scale, gfc_vector3d(10, 10, 10));
+    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, -95));
+
+    Entity* block4;
+    block4 = entity_new();
+    block4->isStatic = 1;
+    block4->name = "Block4";
+    block4 = gf3d_model_load(block4, "models/primitives/cube.model");
+
+    gfc_vector3d_scale_by(block4->scale, block4->scale, gfc_vector3d(200, 200, 2));
+    gfc_vector3d_add(block4->position, block4->position, gfc_vector3d(0, 0, -100));
 
     /*Entity* world;
     world = entity_new();
@@ -172,8 +186,9 @@ int main(int argc,char *argv[])
         //camera updaes
 
         entity_think_all();
-        entity_update_all();
         entity_collision_check_all();
+        entity_update_all();
+        
 
         camera = gfc_vector3d_added(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), cameraPos);
         gf3d_camera_look_at(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), &camera);
@@ -191,7 +206,7 @@ int main(int argc,char *argv[])
 
         gf3d_vgraphics_render_end();
 
-        if (gfc_input_command_down("exit"))_done = 1; // exit condition
+        if (gfc_input_key_down("l"))_done = 1; // exit condition
         game_frame_delay();
     }    
     vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());    
@@ -231,7 +246,6 @@ void game_frame_delay()
     fps = 1000.0/MAX(SDL_GetTicks() - then,0.001);
 //     slog("fps: %f",fps);
 }
-
 
 
 /*eol@eof*/

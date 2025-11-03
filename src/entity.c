@@ -96,6 +96,10 @@ void entity_draw_all()
 
 void entity_update(Entity* ent)
 {
+    if (!ent->isStatic)
+    {
+        physics_update(ent);
+    }
     gfc_matrix4_from_vectors(ent->modelMat, ent->position, ent->rotation, ent->scale);
     ent->boundingBox = gfc_box(
         ent->position.x + (ent->modelMesh->bounds.x * ent->scale.x),
@@ -122,6 +126,7 @@ void entity_update_all()
 
 void entity_collision_check_all()
 {
+    // TODO: Make sublists that only contain entities that should be iterated through
     if (!ent_system.ent_list) return;
 
     for (int i = 0; i < ent_system.ent_max; i++)

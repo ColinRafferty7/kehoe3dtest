@@ -3,6 +3,8 @@
 
 #include "gf3d_mesh.h"
 
+#define JUMP_FORCE 12.0f
+
 typedef struct Entity_S
 {
     Uint8 _inuse;
@@ -12,6 +14,8 @@ typedef struct Entity_S
     GFC_Vector3D position;
     GFC_Vector3D rotation;
     GFC_Vector3D scale;
+
+    GFC_Vector3D velocity;
 
     GFC_Box boundingBox;
 
