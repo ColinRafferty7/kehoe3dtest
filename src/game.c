@@ -157,7 +157,7 @@ int main(int argc,char *argv[])
     block3 = gf3d_model_load(block3, "models/primitives/cube.model");
 
     gfc_vector3d_scale_by(block3->scale, block3->scale, gfc_vector3d(10, 10, 10));
-    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, -95));
+    gfc_vector3d_add(block3->position, block3->position, gfc_vector3d(30, 30, -100));
 
     Entity* block4;
     block4 = entity_new();
@@ -206,7 +206,7 @@ int main(int argc,char *argv[])
 
         gf3d_vgraphics_render_end();
 
-        if (gfc_input_key_down("l"))_done = 1; // exit condition
+        if (gfc_input_key_down("l") || gfc_input_command_down("exit"))_done = 1; // exit condition
         game_frame_delay();
     }    
     vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());    
