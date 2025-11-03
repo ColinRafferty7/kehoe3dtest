@@ -1,5 +1,6 @@
 #include "simple_logger.h"
 #include "collision.h"
+#include "entity.h"
 
 void collision_resolve(Entity* entA, Entity* entB)
 {
@@ -53,6 +54,7 @@ void collision_resolve(Entity* entA, Entity* entB)
         
         entA->position.z += overlapZ;
     }
+    entity_update(entA);
 }
 
 void collision_check(Entity* entA, Entity* entB)

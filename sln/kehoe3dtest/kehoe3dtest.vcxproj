@@ -194,6 +194,7 @@
     <ClCompile Include="..\..\src\gf3d_validation.c" />
     <ClCompile Include="..\..\src\gf3d_vgraphics.c" />
     <ClCompile Include="..\..\src\gf3d_vqueues.c" />
+    <ClCompile Include="..\..\src\map_generate.c" />
     <ClCompile Include="..\..\src\physics.c" />
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +254,7 @@
     <ClInclude Include="..\..\include\gf3d_validation.h" />
     <ClInclude Include="..\..\include\gf3d_vgraphics.h" />
     <ClInclude Include="..\..\include\gf3d_vqueues.h" />
+    <ClInclude Include="..\..\include\map_generate.h" />
     <ClInclude Include="..\..\include\physics.h" />
   </ItemGroup>
   <ItemGroup>

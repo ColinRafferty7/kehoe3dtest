@@ -48,7 +48,7 @@ Entity* entity_new()
         ent_system.ent_list[i].scale = gfc_vector3d(1, 1, 1);
         ent_system.ent_list[i].rotation = gfc_vector3d(0, 0, 0);
         ent_system.ent_list[i].boundingBox = gfc_box(0, 0, 0, 0, 0, 0);
-
+     
         return &ent_system.ent_list[i];
     }
 
@@ -132,10 +132,28 @@ void entity_collision_check_all()
     for (int i = 0; i < ent_system.ent_max; i++)
     {
         if (!ent_system.ent_list[i]._inuse || ent_system.ent_list[i].isStatic) continue;
-        for (int j = i + 1; j < ent_system.ent_max; j++)
+        for (int j = 0; j < ent_system.ent_max; j++)
         {
-            if (!ent_system.ent_list[j]._inuse) continue;
+            if (!ent_system.ent_list[j]._inuse || i == j) continue;
             collision_check(&ent_system.ent_list[i], &ent_system.ent_list[j]);
+        }
+    }
+}
+
+void entity_print_name(Entity* ent)
+{
+    slog("Name: %s - In Use: %u", ent->name, ent->_inuse);
+}
+
+void entity_print_name_all()
+{
+    if (!ent_system.ent_list) return;
+
+    for (int i = 0; i < ent_system.ent_max; i++)
+    {
+        if (ent_system.ent_list[i]._inuse)
+        {
+            //entity_print_name(&ent_system.ent_list[i]);
         }
     }
 }

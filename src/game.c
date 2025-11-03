@@ -23,6 +23,7 @@
 #include "entity.h"
 #include "gf3d_model.h"
 #include "gf3d_camera.h"
+#include "map_generate.h"
 
 extern int __DEBUG;
 
@@ -87,7 +88,12 @@ void dino_think(Entity* dino)
     if (gfc_input_key_pressed("o"))
     {
         SDL_SetRelativeMouseMode(SDL_FALSE);
-    }    
+    }   
+
+    if (gfc_input_key_pressed("n"))
+    {
+        entity_print_name_all();
+    }
 }
 
 int main(int argc,char *argv[])
@@ -115,6 +121,8 @@ int main(int argc,char *argv[])
     bg = gf2d_sprite_load_image("images/bg_flat.png");
     gf2d_mouse_load("actors/mouse.actor");
 
+    map_generate_level();
+
     Mesh* skyMesh;
     Texture* skyTexture;
     MeshUBO skyUBO;
@@ -138,8 +146,8 @@ int main(int argc,char *argv[])
     block->name = "Block";
     block = gf3d_model_load(block, "models/primitives/cube.model");
 
-    gfc_vector3d_scale_by(block->scale, block->scale, gfc_vector3d(3, 3, 10));
-    gfc_vector3d_add(block->position, block->position, gfc_vector3d(20, 0, 0));
+    gfc_vector3d_scale_by(block->scale, block->scale, gfc_vector3d(1, 1, 1));
+    gfc_vector3d_add(block->position, block->position, gfc_vector3d(2, 2, -95));
 
     Entity* block2;
     block2 = entity_new();
@@ -147,8 +155,8 @@ int main(int argc,char *argv[])
     block2->name = "Block2";
     block2 = gf3d_model_load(block2, "models/primitives/cube.model");
 
-    gfc_vector3d_scale_by(block2->scale, block2->scale, gfc_vector3d(10, 10, 3));
-    gfc_vector3d_add(block2->position, block2->position, gfc_vector3d(30, 30, 0));
+    gfc_vector3d_scale_by(block2->scale, block2->scale, gfc_vector3d(1, 1, 1));
+    gfc_vector3d_add(block2->position, block2->position, gfc_vector3d(0, 0, -95));
 
     Entity* block3;
     block3 = entity_new();

@@ -39,8 +39,14 @@ void entity_think_all();
 
 void entity_draw_all();
 
+void entity_update(Entity* ent);
+
 void entity_update_all();
 
 void entity_collision_check_all();
+
+void entity_print_name();
+
+void entity_print_name_all();
 
 #endif
