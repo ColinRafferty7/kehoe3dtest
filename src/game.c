@@ -155,7 +155,7 @@ int main(int argc,char *argv[])
     slope2 = gf3d_model_load(slope2, "models/slope.model");
 
     slope2->rotation.z = GFC_HALF_PI;
-
+    
     gfc_vector3d_scale(slope2->scale, slope2->scale, 32);
     gfc_vector3d_add(slope2->position, slope2->position, gfc_vector3d(0, 64, -86));
 

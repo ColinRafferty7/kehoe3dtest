@@ -57,32 +57,132 @@ void collision_resolve(Entity* entA, Entity* entB)
     entity_update(entA);
 }
 
+float collision_corner_rotate_x(Entity* ent)
+{
+    float newPoint;
+
+    newPoint = ((sin(ent->rotation.z - (GFC_HALF_PI / 2))) * (GFC_ROOT2 / 2)) + 0.5f;
+
+    return ent->boundingBox.x + (newPoint * ent->boundingBox.w);
+}
+
+float collision_corner_rotate_y(Entity* ent)
+{
+    float newPoint;
+
+    newPoint = ((sin(ent->rotation.z - (GFC_PI_HALFPI / 2))) * (GFC_ROOT2 / 2)) + 0.5f;
+
+    return ent->boundingBox.y + (newPoint * ent->boundingBox.h);
+}
+
 void collision_slope_resolve(Entity* entA, Entity* entB)
 {
-    float final_z_pos = entB->boundingBox.z + (entA->position.x - entB->boundingBox.x);
+    GFC_Vector3D entB_Corner = gfc_vector3d(
+        collision_corner_rotate_x(entB),
+        collision_corner_rotate_y(entB),
+        entB->boundingBox.z);
 
-    if (final_z_pos < entB->boundingBox.z || final_z_pos >(entB->boundingBox.z + entB->boundingBox.d)) return;
+    float final_z_pos;
+
+    if (fabsf(entB->rotation.z) < GFC_EPSILON)
+    {
+        final_z_pos = entB->boundingBox.z + (entA->position.x - entB_Corner.x);
+        Uint8 box;
+        if (entB_Corner.y > entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (entB_Corner.y + entB->boundingBox.h < entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (entB_Corner.x + entB->boundingBox.w < entA->position.x) box = 1;
+
+        if (box)
+        {
+            collision_resolve(entA, entB);
+            return;
+        }
+    }
+    else if (fabsf(entB->rotation.z - GFC_HALF_PI) < GFC_EPSILON)
+    {
+        final_z_pos = entB->boundingBox.z + (entA->position.y - entB_Corner.y);
+        Uint8 box;
+        if (entB_Corner.y + entB->boundingBox.h < entA->position.y) box = 1;
+
+        if (entB_Corner.x < entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (entB_Corner.x - entB->boundingBox.w > entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (box)
+        {
+            collision_resolve(entA, entB);
+            return;
+        }
+    }
+    else if (fabsf(entB->rotation.z - GFC_PI) < GFC_EPSILON)
+    {
+        final_z_pos = entB->boundingBox.z - (entA->position.x - entB_Corner.x);
+        Uint8 box;
+        if (entB_Corner.y < entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (entB_Corner.y - entB->boundingBox.h > entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (entB_Corner.x - entB->boundingBox.w > entA->position.x) box = 1;
+
+        if (box)
+        {
+            collision_resolve(entA, entB);
+            return;
+        }
+    }
+    else if (fabsf(entB->rotation.z - GFC_PI_HALFPI) < GFC_EPSILON)
+    {
+        final_z_pos = entB->boundingBox.z - (entA->position.y - entB_Corner.y);
+        Uint8 box;
+        if (entB_Corner.y - entB->boundingBox.h > entA->position.y) box = 1;
+
+        if (entB_Corner.x > entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (entB_Corner.x + entB->boundingBox.w < entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
+
+        if (box)
+        {
+            collision_resolve(entA, entB);
+            return;
+        }
+    }
+    else
+    {
+        slog("Slopes cannot be rotated in this direction");
+        return;
+    }
+
+    
+
+    if (final_z_pos < entB->boundingBox.z || final_z_pos > (entB->boundingBox.z + entB->boundingBox.d)) return;
 
     if (final_z_pos < entA->boundingBox.z) return;
 
-    if (entB->boundingBox.y > entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) 
+    if (entB_Corner.y > entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f)
     {
         collision_resolve(entA, entB);
         return;
     }
 
-    if (entB->boundingBox.y + entB->boundingBox.h < entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f)
+    if (entB_Corner.y + entB->boundingBox.h < entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f)
     {
         collision_resolve(entA, entB);
         return;
     }
 
-    // TODO: Maybe fix later because square side of ramp still has no collision
-    /*if (entB->boundingBox.x + entB->boundingBox.w < entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f)
+    if (entB_Corner.x > entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f)
     {
         collision_resolve(entA, entB);
         return;
-    }*/
+    }
+
+    if (entB_Corner.x + entB->boundingBox.w < entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f)
+    {
+        collision_resolve(entA, entB);
+        return;
+    }
 
     entA->position.z = final_z_pos + (entA->boundingBox.d / 2.0f);
 
