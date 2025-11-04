@@ -2,7 +2,7 @@
 
 #define SCALE 32
 #define SIZE 8
-#define HEIGHT 2
+#define HEIGHT 3
 #define SLOPES 4
 
 void map_generate_level()
