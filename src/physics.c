@@ -4,7 +4,10 @@ void physics_update(Entity* ent)
 {
     ent->velocity.z += GRAVITY * 0.033f;
 
-    SDL_clamp(ent->velocity.z, TERMINAL_VELO, ent->velocity.z);
+    if (ent->velocity.z < -100.0f)
+    {
+        ent->velocity.z = -100.f;
+    }
 
     ent->position.x += ent->velocity.x * 0.033f;
     ent->position.y += ent->velocity.y * 0.033f;

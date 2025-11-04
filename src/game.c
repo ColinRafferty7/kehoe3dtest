@@ -72,6 +72,7 @@ void dino_think(Entity* dino)
     }
     if (gfc_input_key_pressed("c"))
     {
+        dino->position.z += 0.01f;
         dino->velocity.z = 25;
     }
     if (gf2d_mouse_moved())
@@ -109,6 +110,8 @@ int main(int argc,char *argv[])
     gf2d_actor_init(1000);
 
     entity_init(1024);
+
+    SDL_SetRelativeMouseMode(SDL_TRUE);
     
     //game init
     srand(SDL_GetTicks());
@@ -144,14 +147,14 @@ int main(int argc,char *argv[])
     gfc_vector3d_scale(slope->scale, slope->scale, 32);
     gfc_vector3d_add(slope->position, slope->position, gfc_vector3d(32, 32, -86));
 
-    /*Entity* world;
-    world = entity_new();
-    world->isStatic = 1;
-    world->name = "World";
-    world = gf3d_model_load(world, "models/testlevel/testlevel.model");
+    /*Entity* block;
+    block = entity_new();
+    block->name = "Block";
+    block->isStatic = 1;
+    block = gf3d_model_load(block, "models/primitives/cube.model");
 
-    gfc_vector3d_scale(world->scale, world->scale, 100);
-    gfc_vector3d_add(world->position, world->position, gfc_vector3d(0, 0, -10));*/
+    gfc_vector3d_scale(block->scale, block->scale, 0.1);
+    gfc_vector3d_add(block->position, block->position, gfc_vector3d(0, 0, -118));*/
 
     // main game loop    
     while(!_done)
@@ -162,9 +165,9 @@ int main(int argc,char *argv[])
         //camera updaes
 
         entity_think_all();
-        entity_collision_check_all();
-        entity_update_all();
         
+        entity_update_all();
+        entity_collision_check_all();
 
         camera = gfc_vector3d_added(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), cameraPos);
         gf3d_camera_look_at(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), &camera);

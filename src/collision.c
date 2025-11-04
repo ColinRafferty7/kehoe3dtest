@@ -4,11 +4,6 @@
 
 void collision_resolve(Entity* entA, Entity* entB)
 {
-    if (entB->isSlope)
-    {
-        slog("Colliding with slope?");
-    }
-
     GFC_Box boxA = entA->boundingBox;
     GFC_Box boxB = entB->boundingBox;
 
@@ -64,14 +59,39 @@ void collision_resolve(Entity* entA, Entity* entB)
 
 void collision_slope_resolve(Entity* entA, Entity* entB)
 {
-    float entA_relative_x = ((entA->boundingBox.x + entA->boundingBox.w / 2) - entB->boundingBox.x) / entB->boundingBox.w;
-    
-    
-    if (entA_relative_x > 0)
+    float final_z_pos = entB->boundingBox.z + (entA->position.x - entB->boundingBox.x);
+
+    if (final_z_pos < entB->boundingBox.z || final_z_pos >(entB->boundingBox.z + entB->boundingBox.d)) return;
+
+    if (final_z_pos < entA->boundingBox.z) return;
+
+    if (entB->boundingBox.y > entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) 
     {
-        entA->position.z = entA_relative_x * entB->boundingBox.d + entB->boundingBox.z;
+        collision_resolve(entA, entB);
+        return;
     }
+
+    if (entB->boundingBox.y + entB->boundingBox.h < entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f)
+    {
+        collision_resolve(entA, entB);
+        return;
+    }
+
+    // TODO: Maybe fix later because square side of ramp still has no collision
+    /*if (entB->boundingBox.x + entB->boundingBox.w < entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f)
+    {
+        collision_resolve(entA, entB);
+        return;
+    }*/
+
+    entA->position.z = final_z_pos + (entA->boundingBox.d / 2.0f);
+
+    entA->velocity.z = 0;
+    entity_update(entA);
 }
+
+
+
 
 void collision_check(Entity* entA, Entity* entB)
 {
