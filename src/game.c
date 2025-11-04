@@ -145,7 +145,44 @@ int main(int argc,char *argv[])
     slope = gf3d_model_load(slope, "models/slope.model");
 
     gfc_vector3d_scale(slope->scale, slope->scale, 32);
-    gfc_vector3d_add(slope->position, slope->position, gfc_vector3d(32, 32, -86));
+    gfc_vector3d_add(slope->position, slope->position, gfc_vector3d(64, 0, -86));
+
+    Entity* slope2;
+    slope2 = entity_new();
+    slope2->name = "Slope";
+    slope2->isSlope = 1;
+    slope2->isStatic = 1;
+    slope2 = gf3d_model_load(slope2, "models/slope.model");
+
+    slope2->rotation.z = GFC_HALF_PI;
+
+    gfc_vector3d_scale(slope2->scale, slope2->scale, 32);
+    gfc_vector3d_add(slope2->position, slope2->position, gfc_vector3d(0, 64, -86));
+
+    Entity* slope3;
+    slope3 = entity_new();
+    slope3->name = "Slope";
+    slope3->isSlope = 1;
+    slope3->isStatic = 1;
+    slope3 = gf3d_model_load(slope3, "models/slope.model");
+
+    slope3->rotation.z = GFC_PI;
+  
+    gfc_vector3d_scale(slope3->scale, slope3->scale, 32);
+    gfc_vector3d_add(slope3->position, slope3->position, gfc_vector3d(-64, 0, -86));
+    
+
+    Entity* slope4;
+    slope4 = entity_new();
+    slope4->name = "Slope";
+    slope4->isSlope = 1;
+    slope4->isStatic = 1;
+    slope4 = gf3d_model_load(slope4, "models/slope.model");
+
+    slope4->rotation.z = GFC_PI_HALFPI;
+
+    gfc_vector3d_scale(slope4->scale, slope4->scale, 32);
+    gfc_vector3d_add(slope4->position, slope4->position, gfc_vector3d(0, -64, -86));
 
     /*Entity* block;
     block = entity_new();
