@@ -47,10 +47,7 @@ void collision_resolve(Entity* entA, Entity* entB)
     }
     else
     {
-        if (entA->velocity.z < 0)
-        { 
-            entA->velocity.z = 0;
-        }
+        entA->velocity.z = 0;
         
         entA->position.z += overlapZ;
     }
