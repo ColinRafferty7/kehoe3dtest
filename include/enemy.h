@@ -16,6 +16,7 @@ typedef struct
 	Entity* ent;
 
 	Think think_list[16];
+	int think_count;
 }Enemy;
 
 void entity_close();
@@ -23,5 +24,11 @@ void entity_close();
 void entity_init(Uint32 entity_max);
 
 Enemy* enemy_create();
+
+void enemy_walk(Enemy* enemy);
+
+void enemy_add_think(Enemy* enemy, Think think);
+
+void enemy_think_all();
 
 #endif

@@ -24,6 +24,10 @@ typedef struct Entity_S
     // TODO: Change entity states to a better system
     Uint8 isSlope;
 
+    Uint8 isEnemy;
+
+    Uint8 isPlayer;
+
     void (*think)   (struct Entity_S* ent);
 
     Mesh* modelMesh;
@@ -51,5 +55,7 @@ void entity_collision_check_all();
 void entity_print_name();
 
 void entity_print_name_all();
+
+Entity* entity_get_player();
 
 #endif

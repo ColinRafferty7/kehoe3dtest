@@ -135,6 +135,7 @@ void entity_collision_check_all()
         for (int j = 0; j < ent_system.ent_max; j++)
         {
             if (!ent_system.ent_list[j]._inuse || i == j) continue;
+            if (ent_system.ent_list[i].isEnemy && !ent_system.ent_list[j].isStatic) continue;
             collision_check(&ent_system.ent_list[i], &ent_system.ent_list[j]);
         }
     }
@@ -154,6 +155,19 @@ void entity_print_name_all()
         if (ent_system.ent_list[i]._inuse)
         {
             //entity_print_name(&ent_system.ent_list[i]);
+        }
+    }
+}
+
+Entity* entity_get_player()
+{
+    if (!ent_system.ent_list) return;
+
+    for (int i = 0; i < ent_system.ent_max; i++)
+    {
+        if (ent_system.ent_list[i]._inuse && ent_system.ent_list[i].isPlayer)
+        {
+            return &ent_system.ent_list[i];
         }
     }
 }

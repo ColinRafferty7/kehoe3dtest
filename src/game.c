@@ -91,6 +91,11 @@ void dino_think(Entity* dino)
     {
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }   
+    if (gfc_input_key_pressed("e"))
+    {
+        Enemy* enemy;
+        enemy = enemy_create();
+    }   
 }
 
 int main(int argc,char *argv[])
@@ -136,11 +141,9 @@ int main(int argc,char *argv[])
     Entity* dino;
     dino = entity_new();
     dino->name = "Dino";
+    dino->isPlayer = 1;
     dino->think = dino_think;
     dino = gf3d_model_load(dino, "models/dino.model");
-
-    Enemy* enemy;
-    enemy = enemy_create();
 
     // main game loop    
     while(!_done)
@@ -151,6 +154,7 @@ int main(int argc,char *argv[])
         //camera updaes
 
         entity_think_all();
+        enemy_think_all();
         
         entity_update_all();
         entity_collision_check_all();
