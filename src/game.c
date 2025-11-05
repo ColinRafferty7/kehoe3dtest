@@ -24,6 +24,7 @@
 #include "gf3d_model.h"
 #include "gf3d_camera.h"
 #include "map_generate.h"
+#include "enemy.h";
 
 extern int __DEBUG;
 
@@ -110,6 +111,7 @@ int main(int argc,char *argv[])
     gf2d_actor_init(1000);
 
     entity_init(1024);
+    enemy_init(100);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
@@ -136,6 +138,9 @@ int main(int argc,char *argv[])
     dino->name = "Dino";
     dino->think = dino_think;
     dino = gf3d_model_load(dino, "models/dino.model");
+
+    Enemy* enemy;
+    enemy = enemy_create();
 
     // main game loop    
     while(!_done)

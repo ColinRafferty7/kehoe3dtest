@@ -27,6 +27,7 @@ C:\dev\kehoe3dtest\gfc\src\gfc_types.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Re
 C:\dev\kehoe3dtest\gfc\src\gfc_vector.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gfc_vector.obj
 C:\dev\kehoe3dtest\gfc\src\miniz.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\miniz.obj
 C:\dev\kehoe3dtest\src\collision.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\collision.obj
+C:\dev\kehoe3dtest\src\enemy.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\enemy.obj
 C:\dev\kehoe3dtest\src\entity.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\entity.obj
 C:\dev\kehoe3dtest\src\game.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\game.obj
 C:\dev\kehoe3dtest\src\gf2d_actor.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf2d_actor.obj
