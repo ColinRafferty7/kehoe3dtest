@@ -100,7 +100,7 @@ void dino_think(Entity* dino)
     if (gfc_input_key_pressed("e"))
     {
         Enemy* enemy;
-        enemy = enemy_create();
+        enemy = enemy_create_shooter();
     }   
 
     if (dino->health <= 0)

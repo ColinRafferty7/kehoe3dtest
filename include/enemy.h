@@ -23,7 +23,9 @@ void entity_close();
 
 void entity_init(Uint32 entity_max);
 
-Enemy* enemy_create();
+Enemy* enemy_create_walker();
+
+Enemy* enemy_create_shooter();
 
 void enemy_walk(Enemy* enemy);
 

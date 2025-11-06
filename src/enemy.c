@@ -52,7 +52,7 @@ Entity* enemy_new()
     return NULL;
 }
 
-Enemy* enemy_create()
+Enemy* enemy_create_walker()
 {
 	Enemy* enemy;
     enemy = enemy_new();
@@ -62,6 +62,18 @@ Enemy* enemy_create()
     enemy_add_think(enemy, enemy_walk);
 
 	return enemy;
+}
+
+Enemy* enemy_create_shooter()
+{
+    Enemy* enemy;
+    enemy = enemy_new();
+    enemy->ent->scale = gfc_vector3d(4, 4, 10);
+    enemy->ent->position = gfc_vector3d(10, 10, 0);
+    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy_add_think(enemy, enemy_walk);
+
+    return enemy;
 }
 
 void enemy_add_think(Enemy* enemy, Think think)

@@ -136,8 +136,6 @@ void entity_collision_check_all()
         for (int j = 0; j < ent_system.ent_max; j++)
         {
             if (!ent_system.ent_list[j]._inuse || i == j) continue;
-            if (ent_system.ent_list[i].isEnemy && !ent_system.ent_list[j].isStatic) continue;
-
             collision_check(&ent_system.ent_list[i], &ent_system.ent_list[j]);
         }
     }
