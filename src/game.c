@@ -96,6 +96,11 @@ void dino_think(Entity* dino)
         Enemy* enemy;
         enemy = enemy_create();
     }   
+    if (gfc_input_key_pressed("y"))
+    {
+        dino->health -= 10;
+        slog("%f/%f", dino->health, dino->max_health);
+    }   
 }
 
 int main(int argc,char *argv[])
@@ -143,6 +148,8 @@ int main(int argc,char *argv[])
     dino->name = "Dino";
     dino->isPlayer = 1;
     dino->think = dino_think;
+    dino->max_health = 100;
+    dino->health = 100;
     dino = gf3d_model_load(dino, "models/dino.model");
 
     // main game loop    
@@ -170,7 +177,7 @@ int main(int argc,char *argv[])
                 entity_draw_all();
 
                 gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(1, 1));
+                gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(dino->health / dino->max_health, 1));
                 
         gf3d_vgraphics_render_end();
 

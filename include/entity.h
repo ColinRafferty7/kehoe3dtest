@@ -11,6 +11,8 @@ typedef struct Entity_S
 
     const char* name;
 
+    float health, max_health;
+
     GFC_Vector3D position;
     GFC_Vector3D rotation;
     GFC_Vector3D scale;
