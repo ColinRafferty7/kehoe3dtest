@@ -105,8 +105,7 @@ void gf3d_vgraphics_setup(
 
 void gf3d_vgraphics_init(const char *config)
 {
-    Pipeline *renderPipe_2d = NULL;
-    Pipeline* renderPipe_3d = NULL;
+    Pipeline *renderPipe = NULL;
     SJson *json,*setup;
     const char *windowName = NULL;
     GFC_Vector2D resolution = {1024,768};
@@ -202,14 +201,14 @@ void gf3d_vgraphics_init(const char *config)
 
     gf3d_vgraphics.enable_2d = 1;
     gf2d_sprite_manager_init(1024);
-    renderPipe_2d = gf2d_sprite_get_pipeline();
+    renderPipe = gf2d_sprite_get_pipeline();
 
     gf3d_vgraphics.enable_3d = 1;
     gf3d_mesh_init(1024);
-    renderPipe_3d = gf3d_mesh_get_pipeline();
+    if (!renderPipe) renderPipe = gf3d_mesh_get_pipeline();
 
     gf3d_swapchain_create_depth_image();
-    gf3d_swapchain_setup_frame_buffers(renderPipe_2d);
+    gf3d_swapchain_setup_frame_buffers(renderPipe);
     gf3d_vgraphics_semaphores_create();
 }
 
