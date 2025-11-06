@@ -118,7 +118,7 @@ int main(int argc,char *argv[])
     entity_init(1024);
     enemy_init(100);
 
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+    //SDL_SetRelativeMouseMode(SDL_TRUE);
     
     //game init
     srand(SDL_GetTicks());

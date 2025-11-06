@@ -140,6 +140,7 @@ void gf3d_pipeline_render_all_drawcalls(Pipeline *pipe)
 {
     int i;
     if (!pipe)return;
+
     for (i = 0; i < pipe->drawCallCount; i++)
     {
         if (!pipe->drawCallList[i].inuse)continue;
@@ -150,6 +151,7 @@ void gf3d_pipeline_render_all_drawcalls(Pipeline *pipe)
 
 void gf3d_pipeline_update_descriptor_sets(Pipeline *pipe)
 {
+
     int i;
     for (i = 0;i < pipe->drawCallCount;i++)
     {
