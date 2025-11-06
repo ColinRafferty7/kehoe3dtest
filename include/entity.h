@@ -30,6 +30,8 @@ typedef struct Entity_S
 
     Uint8 isPlayer;
 
+    Uint8 isProj;
+
     void (*think)   (struct Entity_S* ent);
 
     Mesh* modelMesh;
@@ -59,5 +61,7 @@ void entity_print_name();
 void entity_print_name_all();
 
 Entity* entity_get_player();
+
+void entity_free(Entity* ent);
 
 #endif

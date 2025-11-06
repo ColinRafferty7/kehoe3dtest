@@ -206,6 +206,10 @@ void collision_check(Entity* entA, Entity* entB)
         {
             collision_enemy_resolve(entA, entB);
         }
+        else if (entA->isProj || entB->isProj)
+        {
+            collision_projectile_resolve(entA, entB);
+        }
         else
         {
             collision_resolve(entA, entB);
@@ -220,4 +224,22 @@ void collision_enemy_resolve(Entity* entA, Entity* entB)
     entA->velocity.y += (entA->position.y - entB->position.y) * 5;
     entA->position.z += 0.1f;
     entA->velocity.z += 5;
+}
+
+void collision_projectile_resolve(Entity* entA, Entity* entB)
+{
+    if (entB->isStatic)
+    {
+        entity_free(entA);
+    }
+    if (entB->isPlayer)
+    {
+        entB->health -= 5;
+        entB->velocity.x += (entB->position.x - entA->position.x) * 5;
+        entB->velocity.y += (entB->position.y - entA->position.y) * 5;
+        entB->position.z += 0.1f;
+        entB->velocity.z += 5;
+
+        entity_free(entA);
+    }      
 }

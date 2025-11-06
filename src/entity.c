@@ -171,3 +171,10 @@ Entity* entity_get_player()
         }
     }
 }
+
+void entity_free(Entity* ent)
+{
+    if (!ent)return;
+
+    memset(ent, 0, sizeof(Entity));
+}

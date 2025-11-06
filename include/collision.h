@@ -11,4 +11,6 @@ void collision_resolve(Entity* entA, Entity* entB);
 
 void collision_enemy_resolve(Entity* entA, Entity* entB);
 
+void collision_projectile_resolve(Entity* entA, Entity* entB);
+
 #endif

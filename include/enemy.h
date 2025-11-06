@@ -17,6 +17,11 @@ typedef struct
 
 	Think think_list[16];
 	int think_count;
+
+	Uint8 approached;
+	int approach_distance;
+	Uint32 last_attack;
+	float attackTime;
 }Enemy;
 
 void entity_close();
@@ -28,6 +33,10 @@ Enemy* enemy_create_walker();
 Enemy* enemy_create_shooter();
 
 void enemy_walk(Enemy* enemy);
+
+void enemy_approach(Enemy* enemy);
+
+void enemy_shoot(Enemy* enemy);
 
 void enemy_add_think(Enemy* enemy, Think think);
 

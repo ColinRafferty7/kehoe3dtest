@@ -71,7 +71,11 @@ Enemy* enemy_create_shooter()
     enemy->ent->scale = gfc_vector3d(4, 4, 10);
     enemy->ent->position = gfc_vector3d(10, 10, 0);
     enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
-    enemy_add_think(enemy, enemy_walk);
+    enemy->approach_distance = 100;
+    enemy->last_attack = SDL_GetTicks();
+    enemy->attackTime = 1;
+    enemy_add_think(enemy, enemy_approach);
+    enemy_add_think(enemy, enemy_shoot);
 
     return enemy;
 }
@@ -101,6 +105,65 @@ void enemy_walk(Enemy* enemy)
 
     enemy->ent->position.x += direction.x * 0.5f;
     enemy->ent->position.y += direction.y * 0.5f;
+}
+
+void enemy_approach(Enemy* enemy)
+{
+    Entity* player;
+    player = entity_get_player();
+
+    GFC_Vector3D direction;
+    direction = gfc_vector3d(player->position.x - enemy->ent->position.x, player->position.y - enemy->ent->position.y, 0);
+
+    if (gfc_vector3d_magnitude(direction) <= 100)
+    {
+        enemy->approached = 1;
+        return;
+    }
+    else
+    {
+        enemy->approached = 0;
+    }
+
+    gfc_vector3d_normalize(&direction);
+
+    enemy->ent->position.x += direction.x * 0.5f;
+    enemy->ent->position.y += direction.y * 0.5f;
+}
+
+void enemy_spawn_arrow(Enemy* enemy, GFC_Vector3D direction)
+{
+    Entity* arrow;
+    arrow = entity_new();
+    arrow->isProj = 1;
+    arrow->position = enemy->ent->position;
+    arrow->name = "Arrow";
+    arrow = gf3d_model_load(arrow, "models/primitives/arrow.model");
+    arrow->scale.z = 3;
+    arrow->rotation.x = GFC_HALF_PI;
+    arrow->velocity.x = direction.x * 70;
+    arrow->velocity.y = direction.y * 70;
+    arrow->velocity.z = 15;
+}
+
+void enemy_shoot(Enemy* enemy)
+{
+
+    if (!enemy->approached) return;
+
+
+
+    if (SDL_GetTicks() + enemy->attackTime < enemy->last_attack) return;
+
+    Entity* player;
+    player = entity_get_player();
+
+    GFC_Vector3D direction;
+    direction = gfc_vector3d(player->position.x - enemy->ent->position.x, player->position.y - enemy->ent->position.y, 0);
+
+    gfc_vector3d_normalize(&direction);
+
+    enemy_spawn_arrow(enemy, direction);
 }
 
 void enemy_think(Enemy* enemy)
