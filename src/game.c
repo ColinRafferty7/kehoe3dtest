@@ -45,7 +45,8 @@ void exitGame()
 
 void dino_die(Entity* dino)
 {
-
+    dino->position = gfc_vector3d(0, 0, 0);
+    dino->health = 100;
 }
 
 void dino_think(Entity* dino)
