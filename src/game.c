@@ -43,6 +43,11 @@ void exitGame()
     _done = 1;
 }
 
+void dino_die(Entity* dino)
+{
+
+}
+
 void dino_think(Entity* dino)
 {
     GFC_Vector3D direction;
@@ -96,11 +101,11 @@ void dino_think(Entity* dino)
         Enemy* enemy;
         enemy = enemy_create();
     }   
-    if (gfc_input_key_pressed("y"))
+
+    if (dino->health <= 0)
     {
-        dino->health -= 10;
-        slog("%f/%f", dino->health, dino->max_health);
-    }   
+        dino_die(dino);
+    }
 }
 
 int main(int argc,char *argv[])

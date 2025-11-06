@@ -47,6 +47,8 @@ void collision_resolve(Entity* entA, Entity* entB)
     }
     else
     {
+        entA->velocity.x *= 0.5f;
+        entA->velocity.y *= 0.5f;
         entA->velocity.z = 0;
         
         entA->position.z += overlapZ;
@@ -213,5 +215,9 @@ void collision_check(Entity* entA, Entity* entB)
 
 void collision_enemy_resolve(Entity* entA, Entity* entB)
 {
-    slog("Enemy attacking");
+    entA->health -= 5;
+    entA->velocity.x += (entA->position.x - entB->position.x) * 5;
+    entA->velocity.y += (entA->position.y - entB->position.y) * 5;
+    entA->position.z += 0.1f;
+    entA->velocity.z += 5;
 }
