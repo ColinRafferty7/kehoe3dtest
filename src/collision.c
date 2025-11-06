@@ -40,10 +40,18 @@ void collision_resolve(Entity* entA, Entity* entB)
     if (absX < absY && absX < absZ)
     {
         entA->position.x += overlapX;
+        if (strcmp(entA->name, "Climber") == 0)
+        {
+            entA->velocity.z = 15;
+        }
     }
     else if (absY < absZ)
     {
         entA->position.y += overlapY;
+        if (strcmp(entA->name, "Climber") == 0)
+        {
+            entA->velocity.z = 15;
+        }
     }
     else
     {

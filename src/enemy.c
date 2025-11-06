@@ -64,6 +64,19 @@ Enemy* enemy_create_walker()
 	return enemy;
 }
 
+Enemy* enemy_create_climber()
+{
+    Enemy* enemy;
+    enemy = enemy_new();
+    enemy->ent->name = "Climber";
+    enemy->ent->scale = gfc_vector3d(4, 4, 10);
+    enemy->ent->position = gfc_vector3d(10, 10, 0);
+    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy_add_think(enemy, enemy_walk);
+
+    return enemy;
+}
+
 Enemy* enemy_create_shooter()
 {
     Enemy* enemy;
@@ -75,6 +88,21 @@ Enemy* enemy_create_shooter()
     enemy->attackTime = 1000;
     enemy_add_think(enemy, enemy_approach);
     enemy_add_think(enemy, enemy_shoot);
+
+    return enemy;
+}
+
+Enemy* enemy_create_jumper()
+{
+    Enemy* enemy;
+    enemy = enemy_new();
+    enemy->ent->scale = gfc_vector3d(4, 4, 10);
+    enemy->ent->position = gfc_vector3d(10, 10, 0);
+    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy->approach_distance = 100;
+    enemy->attackTime = 3000;
+    enemy_add_think(enemy, enemy_approach);
+    enemy_add_think(enemy, enemy_jump);
 
     return enemy;
 }
@@ -161,6 +189,28 @@ void enemy_shoot(Enemy* enemy)
     gfc_vector3d_normalize(&direction);
 
     enemy_spawn_arrow(enemy, direction);
+
+    enemy->last_attack = SDL_GetTicks();
+}
+
+void enemy_jump(Enemy* enemy)
+{
+
+    if (!enemy->approached) return;
+
+    if (SDL_GetTicks() < enemy->last_attack + enemy->attackTime) return;
+
+    Entity* player;
+    player = entity_get_player();
+
+    GFC_Vector3D direction;
+    direction = gfc_vector3d(player->position.x - enemy->ent->position.x, player->position.y - enemy->ent->position.y, 0);
+
+    gfc_vector3d_normalize(&direction);
+
+    enemy->ent->velocity.x = direction.x * 200;
+    enemy->ent->velocity.y = direction.y * 200;
+    enemy->ent->velocity.z = 15;
 
     enemy->last_attack = SDL_GetTicks();
 }

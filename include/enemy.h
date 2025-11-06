@@ -30,6 +30,10 @@ void entity_init(Uint32 entity_max);
 
 Enemy* enemy_create_walker();
 
+Enemy* enemy_create_climber();
+
+Enemy* enemy_create_shooter();
+
 Enemy* enemy_create_shooter();
 
 void enemy_walk(Enemy* enemy);
@@ -37,6 +41,8 @@ void enemy_walk(Enemy* enemy);
 void enemy_approach(Enemy* enemy);
 
 void enemy_shoot(Enemy* enemy);
+
+void enemy_jump(Enemy* enemy);
 
 void enemy_add_think(Enemy* enemy, Think think);
 
