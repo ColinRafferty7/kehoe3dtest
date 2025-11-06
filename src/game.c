@@ -101,7 +101,7 @@ void dino_think(Entity* dino)
 int main(int argc,char *argv[])
 {
     //local variables
-    Sprite *bg;
+    Sprite *healthBar, *health;
     //initializtion    
     parse_arguments(argc,argv);
     init_logger("gf3d.log",0);
@@ -118,13 +118,13 @@ int main(int argc,char *argv[])
     entity_init(1024);
     enemy_init(100);
 
-    //SDL_SetRelativeMouseMode(SDL_TRUE);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
     
     //game init
     srand(SDL_GetTicks());
     slog_sync();
-    bg = gf2d_sprite_load_image("images/bg_flat.png");
-    gf2d_mouse_load("actors/mouse.actor");
+    healthBar = gf2d_sprite_load_image("images/player_ui/HealthBar.png");
+    health = gf2d_sprite_load_image("images/player_ui/Health.png");
 
     map_generate_level();
 
@@ -168,14 +168,17 @@ int main(int argc,char *argv[])
                 //2D draws
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
                 entity_draw_all();
-                
-                /*gf2d_sprite_draw_image(bg,gfc_vector2d(0,0));*/
-                gf2d_font_draw_line_tag("ALT+F4 to exit",FT_H1,GFC_COLOR_WHITE, gfc_vector2d(10,10));
-                gf2d_mouse_draw();
 
+                gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
+                gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(1, 1));
+                
         gf3d_vgraphics_render_end();
 
-        if (gfc_input_key_down("l") || gfc_input_command_down("exit"))_done = 1; // exit condition
+        if (gfc_input_key_down("l") || gfc_input_command_down("exit"))
+        {
+            SDL_SetRelativeMouseMode(SDL_FALSE);
+            _done = 1; // exit condition
+        }
         game_frame_delay();
     }    
     vkDeviceWaitIdle(gf3d_vgraphics_get_default_logical_device());    

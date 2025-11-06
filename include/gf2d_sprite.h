@@ -192,7 +192,8 @@ void gf2d_sprite_draw_simple(
 
 void gf2d_sprite_draw_image(
     Sprite   * sprite,
-    GFC_Vector2D   position);
+    GFC_Vector2D   position,
+    GFC_Vector2D   scale);
 
 /**
  * @brief get the default pipeline for overlay rendering

@@ -339,12 +339,13 @@ void gf2d_sprite_draw_full(
 
 void gf2d_sprite_draw_image(
     Sprite   * sprite,
-    GFC_Vector2D   position)
+    GFC_Vector2D   position,
+    GFC_Vector2D   scale)
 {
     gf2d_sprite_draw(
         sprite,
         position,
-        NULL,
+        &scale,
         NULL,
         NULL,
         NULL,

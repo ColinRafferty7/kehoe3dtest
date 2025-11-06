@@ -35,6 +35,7 @@ C:\dev\kehoe3dtest\src\gf2d_camera.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Rele
 C:\dev\kehoe3dtest\src\gf2d_font.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf2d_font.obj
 C:\dev\kehoe3dtest\src\gf2d_mouse.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf2d_mouse.obj
 C:\dev\kehoe3dtest\src\gf2d_sprite.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf2d_sprite.obj
+C:\dev\kehoe3dtest\src\gf2d_ui.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf2d_ui.obj
 C:\dev\kehoe3dtest\src\gf3d_buffers.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_buffers.obj
 C:\dev\kehoe3dtest\src\gf3d_camera.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_camera.obj
 C:\dev\kehoe3dtest\src\gf3d_commands.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_commands.obj
