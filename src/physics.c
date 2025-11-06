@@ -2,6 +2,11 @@
 
 void physics_update(Entity* ent)
 {
+    if (!ent->isProj)
+    {
+        ent->velocity.x *= 0.95f;
+        ent->velocity.y *= 0.95f;
+    }
     ent->velocity.z += GRAVITY * 0.033f;
 
     if (ent->velocity.z < -100.0f)

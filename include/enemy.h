@@ -21,7 +21,7 @@ typedef struct
 	Uint8 approached;
 	int approach_distance;
 	Uint32 last_attack;
-	float attackTime;
+	Uint32 attackTime;
 }Enemy;
 
 void entity_close();

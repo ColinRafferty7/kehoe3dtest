@@ -72,8 +72,7 @@ Enemy* enemy_create_shooter()
     enemy->ent->position = gfc_vector3d(10, 10, 0);
     enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
     enemy->approach_distance = 100;
-    enemy->last_attack = SDL_GetTicks();
-    enemy->attackTime = 1;
+    enemy->attackTime = 1000;
     enemy_add_think(enemy, enemy_approach);
     enemy_add_think(enemy, enemy_shoot);
 
@@ -115,7 +114,7 @@ void enemy_approach(Enemy* enemy)
     GFC_Vector3D direction;
     direction = gfc_vector3d(player->position.x - enemy->ent->position.x, player->position.y - enemy->ent->position.y, 0);
 
-    if (gfc_vector3d_magnitude(direction) <= 100)
+    if (gfc_vector3d_magnitude(direction) <= enemy->approach_distance)
     {
         enemy->approached = 1;
         return;
@@ -151,9 +150,7 @@ void enemy_shoot(Enemy* enemy)
 
     if (!enemy->approached) return;
 
-
-
-    if (SDL_GetTicks() + enemy->attackTime < enemy->last_attack) return;
+    if (SDL_GetTicks() < enemy->last_attack + enemy->attackTime) return;
 
     Entity* player;
     player = entity_get_player();
@@ -164,6 +161,8 @@ void enemy_shoot(Enemy* enemy)
     gfc_vector3d_normalize(&direction);
 
     enemy_spawn_arrow(enemy, direction);
+
+    enemy->last_attack = SDL_GetTicks();
 }
 
 void enemy_think(Enemy* enemy)
