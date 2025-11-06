@@ -127,6 +127,7 @@ void entity_update_all()
 void entity_collision_check_all()
 {
     // TODO: Make sublists that only contain entities that should be iterated through
+    // TODO: Clean this function up
     if (!ent_system.ent_list) return;
 
     for (int i = 0; i < ent_system.ent_max; i++)
@@ -136,6 +137,7 @@ void entity_collision_check_all()
         {
             if (!ent_system.ent_list[j]._inuse || i == j) continue;
             if (ent_system.ent_list[i].isEnemy && !ent_system.ent_list[j].isStatic) continue;
+
             collision_check(&ent_system.ent_list[i], &ent_system.ent_list[j]);
         }
     }

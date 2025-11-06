@@ -181,6 +181,8 @@ void collision_slope_resolve(Entity* entA, Entity* entB)
         return;
     }
 
+    // TODO: Solve walking onto a platform at the top of a slope
+
     entA->position.z = final_z_pos + (entA->boundingBox.d / 2.0f);
 
     entA->velocity.z = 0;
@@ -194,13 +196,22 @@ void collision_check(Entity* entA, Entity* entB)
 {
     if (gfc_box_overlap(entA->boundingBox, entB->boundingBox) == 1)
     {
-        if (!entB->isSlope)
-        {
-            collision_resolve(entA, entB);
-        }
-        else
+        if (entB->isSlope)
         {
             collision_slope_resolve(entA, entB);
         }
+        else if (entA->isPlayer && entB->isEnemy)
+        {
+            collision_enemy_resolve(entA, entB);
+        }
+        else
+        {
+            collision_resolve(entA, entB);
+        }
     }
+}
+
+void collision_enemy_resolve(Entity* entA, Entity* entB)
+{
+    slog("Enemy attacking");
 }

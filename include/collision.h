@@ -9,4 +9,6 @@ void collision_slope_resolve(Entity* entA, Entity* entB);
 
 void collision_resolve(Entity* entA, Entity* entB);
 
+void collision_enemy_resolve(Entity* entA, Entity* entB);
+
 #endif

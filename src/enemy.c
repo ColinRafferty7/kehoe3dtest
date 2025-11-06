@@ -89,8 +89,6 @@ void enemy_walk(Enemy* enemy)
 
     enemy->ent->position.x += direction.x * 0.5f;
     enemy->ent->position.y += direction.y * 0.5f;
-
-    slog("Enemy walking");
 }
 
 void enemy_think(Enemy* enemy)
@@ -105,10 +103,8 @@ void enemy_think_all()
 {
     for (int i = 0; i < enemy_system.enemy_max; i++)
     {
-        slog("Enemy think all iteration");
         if (&enemy_system.enemy_list[i])
         {
-            slog("Enemy think call");
             enemy_think(&enemy_system.enemy_list[i]);
         }
     }
