@@ -100,7 +100,7 @@ void dino_think(Entity* dino)
     if (gfc_input_key_pressed("e"))
     {
         Enemy* enemy;
-        enemy = enemy_create_jumper();
+        enemy = enemy_create_boss();
     }   
 
     if (dino->health <= 0)
@@ -153,6 +153,7 @@ int main(int argc,char *argv[])
     dino = entity_new();
     dino->name = "Dino";
     dino->isPlayer = 1;
+    dino->canClimb = 1;
     dino->think = dino_think;
     dino->max_health = 100;
     dino->health = 100;

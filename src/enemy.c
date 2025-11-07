@@ -56,7 +56,7 @@ Enemy* enemy_create_walker()
 {
 	Enemy* enemy;
     enemy = enemy_new();
-	enemy->ent->scale = gfc_vector3d(4, 4, 10);
+	enemy->ent->scale = gfc_vector3d(4, 4, 8);
 	enemy->ent->position = gfc_vector3d(10, 10, 0);
 	enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
     enemy_add_think(enemy, enemy_walk);
@@ -68,8 +68,8 @@ Enemy* enemy_create_climber()
 {
     Enemy* enemy;
     enemy = enemy_new();
-    enemy->ent->name = "Climber";
-    enemy->ent->scale = gfc_vector3d(4, 4, 10);
+    enemy->ent->canClimb = 1;
+    enemy->ent->scale = gfc_vector3d(4, 4, 8);
     enemy->ent->position = gfc_vector3d(10, 10, 0);
     enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
     enemy_add_think(enemy, enemy_walk);
@@ -81,7 +81,7 @@ Enemy* enemy_create_shooter()
 {
     Enemy* enemy;
     enemy = enemy_new();
-    enemy->ent->scale = gfc_vector3d(4, 4, 10);
+    enemy->ent->scale = gfc_vector3d(4, 4, 8);
     enemy->ent->position = gfc_vector3d(10, 10, 0);
     enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
     enemy->approach_distance = 100;
@@ -96,9 +96,25 @@ Enemy* enemy_create_jumper()
 {
     Enemy* enemy;
     enemy = enemy_new();
-    enemy->ent->scale = gfc_vector3d(4, 4, 10);
+    enemy->ent->scale = gfc_vector3d(4, 4, 8);
     enemy->ent->position = gfc_vector3d(10, 10, 0);
     enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy->approach_distance = 100;
+    enemy->attackTime = 3000;
+    enemy_add_think(enemy, enemy_approach);
+    enemy_add_think(enemy, enemy_jump);
+
+    return enemy;
+}
+
+Enemy* enemy_create_boss()
+{
+    Enemy* enemy;
+    enemy = enemy_new();
+    enemy->ent->scale = gfc_vector3d(8, 8, 16);
+    enemy->ent->position = gfc_vector3d(10, 10, 0);
+    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy->ent->canClimb = 1;
     enemy->approach_distance = 100;
     enemy->attackTime = 3000;
     enemy_add_think(enemy, enemy_approach);

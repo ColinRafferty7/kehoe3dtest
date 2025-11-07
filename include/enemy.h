@@ -24,9 +24,9 @@ typedef struct
 	Uint32 attackTime;
 }Enemy;
 
-void entity_close();
+void enemy_close();
 
-void entity_init(Uint32 entity_max);
+void enemy_init(Uint32 enemy_max);
 
 Enemy* enemy_create_walker();
 
@@ -34,7 +34,9 @@ Enemy* enemy_create_climber();
 
 Enemy* enemy_create_shooter();
 
-Enemy* enemy_create_shooter();
+Enemy* enemy_create_jumper();
+
+Enemy* enemy_create_boss();
 
 void enemy_walk(Enemy* enemy);
 

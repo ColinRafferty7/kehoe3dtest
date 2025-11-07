@@ -32,6 +32,8 @@ typedef struct Entity_S
 
     Uint8 isProj;
 
+    Uint8 canClimb;
+
     void (*think)   (struct Entity_S* ent);
 
     Mesh* modelMesh;
