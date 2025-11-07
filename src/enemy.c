@@ -33,7 +33,7 @@ void enemy_init(Uint32 enemy_max)
     atexit(enemy_close);
 }
 
-Entity* enemy_new()
+Enemy* enemy_new()
 {
     for (int i = 0; i < enemy_system.enemy_max; i++)
     {
@@ -52,38 +52,29 @@ Entity* enemy_new()
     return NULL;
 }
 
-Enemy* enemy_create_walker()
+Enemy* enemy_create_walker(Enemy* enemy)
 {
-	Enemy* enemy;
-    enemy = enemy_new();
 	enemy->ent->scale = gfc_vector3d(4, 4, 8);
-	enemy->ent->position = gfc_vector3d(10, 10, 0);
-	enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+	enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/walker.model");
     enemy_add_think(enemy, enemy_walk);
 
 	return enemy;
 }
 
-Enemy* enemy_create_climber()
+Enemy* enemy_create_climber(Enemy* enemy)
 {
-    Enemy* enemy;
-    enemy = enemy_new();
     enemy->ent->canClimb = 1;
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
-    enemy->ent->position = gfc_vector3d(10, 10, 0);
-    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/climber.model");
     enemy_add_think(enemy, enemy_walk);
 
     return enemy;
 }
 
-Enemy* enemy_create_shooter()
+Enemy* enemy_create_shooter(Enemy* enemy)
 {
-    Enemy* enemy;
-    enemy = enemy_new();
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
-    enemy->ent->position = gfc_vector3d(10, 10, 0);
-    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/shooter.model");
     enemy->approach_distance = 100;
     enemy->attackTime = 1000;
     enemy_add_think(enemy, enemy_approach);
@@ -92,13 +83,10 @@ Enemy* enemy_create_shooter()
     return enemy;
 }
 
-Enemy* enemy_create_jumper()
+Enemy* enemy_create_jumper(Enemy* enemy)
 {
-    Enemy* enemy;
-    enemy = enemy_new();
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
-    enemy->ent->position = gfc_vector3d(10, 10, 0);
-    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/jumper.model");
     enemy->approach_distance = 100;
     enemy->attackTime = 3000;
     enemy_add_think(enemy, enemy_approach);
@@ -107,13 +95,10 @@ Enemy* enemy_create_jumper()
     return enemy;
 }
 
-Enemy* enemy_create_boss()
+Enemy* enemy_create_boss(Enemy* enemy)
 {
-    Enemy* enemy;
-    enemy = enemy_new();
     enemy->ent->scale = gfc_vector3d(8, 8, 16);
-    enemy->ent->position = gfc_vector3d(10, 10, 0);
-    enemy->ent = gf3d_model_load(enemy->ent, "models/primitives/enemy.model");
+    enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/boss.model");
     enemy->ent->canClimb = 1;
     enemy->approach_distance = 100;
     enemy->attackTime = 3000;
@@ -143,6 +128,8 @@ void enemy_walk(Enemy* enemy)
 
     GFC_Vector3D direction;
     direction = gfc_vector3d(player->position.x - enemy->ent->position.x, player->position.y - enemy->ent->position.y, 0);
+
+    if (gfc_vector3d_magnitude(direction) >= 150) return;
 
     gfc_vector3d_normalize(&direction);
 

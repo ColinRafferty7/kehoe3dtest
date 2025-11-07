@@ -48,7 +48,7 @@ void collision_resolve(Entity* entA, Entity* entB)
     else if (absY < absZ)
     {
         entA->position.y += overlapY;
-        if (entA->canClimb)
+        if (entA->canClimb && !entB->isEnemy && !entB->isPlayer)
         {
             entA->velocity.z = 15;
         }

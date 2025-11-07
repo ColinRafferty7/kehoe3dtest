@@ -28,6 +28,8 @@ void enemy_close();
 
 void enemy_init(Uint32 enemy_max);
 
+Enemy* enemy_new();
+
 Enemy* enemy_create_walker();
 
 Enemy* enemy_create_climber();

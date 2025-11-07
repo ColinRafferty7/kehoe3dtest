@@ -97,11 +97,13 @@ void dino_think(Entity* dino)
     {
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }   
+
     if (gfc_input_key_pressed("e"))
     {
         Enemy* enemy;
-        enemy = enemy_create_boss();
-    }   
+        enemy = enemy_new();
+        enemy_create_boss(enemy);
+    }
 
     if (dino->health <= 0)
     {
@@ -126,8 +128,8 @@ int main(int argc,char *argv[])
     gf2d_font_init("config/font.cfg");
     gf2d_actor_init(1000);
 
-    entity_init(1024);
-    enemy_init(100);
+    entity_init(2000);
+    enemy_init(1000);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
     

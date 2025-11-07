@@ -16,7 +16,15 @@ void map_generate_level()
 	{
 		for (int j = (SIZE * -1); j < SIZE; j++)
 		{
-			int blockHeight = gfc_random_int(HEIGHT);
+			int blockHeight;
+			if (i == SIZE * -1 || i == SIZE - 1 || j == SIZE * -1 || j == SIZE - 1)
+			{
+				blockHeight = HEIGHT + 1;
+			}
+			else
+			{
+				blockHeight = gfc_random_int(HEIGHT);
+			}
 
 			map_height[i][j] = blockHeight;
 			
@@ -110,4 +118,41 @@ void map_generate_level()
 			}
 		}
 	}
+
+	for (int i = (SIZE * -1); i < SIZE; i++)
+	{
+		for (int j = (SIZE * -1); j < SIZE; j++)
+		{
+			if (gfc_random_int(4) == 0)
+			{
+				//spawn_random(i, j, map_height[i][j]);
+			}
+		}
+	}
+}
+
+void spawn_random(int row, int column, int height)
+{
+	int type = gfc_random_int(5);
+	Enemy* enemy;
+	enemy = enemy_new();
+
+	if (type == 1)
+	{
+		//enemy_create_walker(enemy);
+	}
+	else if (type == 2)
+	{
+		//enemy_create_shooter(enemy);
+	}
+	else if (type == 3)
+	{
+		//enemy_create_jumper(enemy);
+	}
+	else if (type == 4)
+	{
+		//enemy_create_climber(enemy);
+	}
+	//if (!enemy->ent) return;
+	//enemy->ent->position = gfc_vector3d((row * SCALE * 2) + gfc_random_int(64), (column * SCALE * 2) + gfc_random_int(64), (height * SCALE * 2) - 150);
 }
