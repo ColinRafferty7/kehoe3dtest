@@ -49,9 +49,38 @@ void dino_die(Entity* dino)
     dino->health = 100;
 }
 
+void sword_think(Entity* sword)
+{
+    sword->rotation.y += 0.2;
+
+    if (sword->rotation.y > 3)
+    {
+        entity_free(sword);
+    }
+}
+
 void dino_sword(Entity* dino)
 {
-    slog("Dino Sword");
+    GFC_Vector3D direction;
+
+    direction = cameraPos;
+    gfc_vector3d_normalize(&direction);
+    direction.z = 0;
+    gfc_vector3d_rotate_about_z(&direction, GFC_HALF_PI);
+
+    Entity* sword;
+    sword = entity_new();
+    sword = gf3d_model_load(sword, "models/primitives/cube.model");
+    sword->isAttack = 1;
+    sword->isProj = 1;
+    sword->scale.x = 0.2f;
+    sword->scale.z = 5;
+    sword->position = dino->position;
+    sword->position.x += (direction.x) * 3;
+    sword->position.y += (direction.y) * 3;
+    sword->position.z += 1;
+    sword->rotation.z = dino->rotation.z;
+    sword->think = sword_think;
 }
 
 void dino_bow(Entity* dino)
@@ -67,6 +96,7 @@ void dino_bow(Entity* dino)
     arrow = entity_new();
     arrow->isProj = 1;
     arrow->isAttack = 1;
+    arrow->damage = 10;
     arrow = gf3d_model_load(arrow, "models/primitives/arrow.model");
     arrow->scale.x = 3;
     arrow->position = dino->position;
@@ -94,6 +124,7 @@ void dino_flamethrower(Entity* dino)
         fire = entity_new();
         fire->isProj = 1;
         fire->isAttack = 1;
+        fire->damage = 5;
         fire = gf3d_model_load(fire, "models/primitives/sphere.model");
         fire->position = dino->position;
         fire->velocity.x = direction.x * 70;

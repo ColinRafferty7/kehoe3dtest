@@ -13,6 +13,8 @@ typedef struct Entity_S
 
     float health, max_health;
 
+    float damage;
+
     GFC_Vector3D position;
     GFC_Vector3D rotation;
     GFC_Vector3D scale;

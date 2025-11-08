@@ -252,7 +252,7 @@ void collision_projectile_resolve(Entity* entA, Entity* entB)
     }      
     if (entA->isAttack && entB->isEnemy)
     {
-        entB->health -= 10;
+        entB->health -= entA->damage;
 
         entB->health -= 5;
         entB->velocity.x += (entB->position.x - entA->position.x) * 5;
