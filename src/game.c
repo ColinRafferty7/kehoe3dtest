@@ -78,7 +78,28 @@ void dino_bow(Entity* dino)
 
 void dino_flamethrower(Entity* dino)
 {
-    slog("Dino FLamethrower");
+    for (int i = 0; i < 6; i++)
+    {
+        GFC_Vector3D direction;
+
+        direction = cameraPos;
+        gfc_vector3d_normalize(&direction);
+        direction.z = 0;
+        gfc_vector3d_rotate_about_z(&direction, GFC_PI);
+
+        direction.x += (gfc_random() - 0.5f) * GFC_HALF_PI * 0.5f;
+        direction.y += (gfc_random() - 0.5f) * GFC_HALF_PI * 0.5f;
+
+        Entity* fire;
+        fire = entity_new();
+        fire->isProj = 1;
+        fire->isAttack = 1;
+        fire = gf3d_model_load(fire, "models/primitives/sphere.model");
+        fire->position = dino->position;
+        fire->velocity.x = direction.x * 70;
+        fire->velocity.y = direction.y * 70;
+        fire->velocity.z = 35 * (gfc_random() - 0.1f);
+    }
 }
 
 void dino_bomb(Entity* dino)
@@ -146,7 +167,7 @@ void dino_think(Entity* dino)
     {
         Enemy* enemy;
         enemy = enemy_new();
-        enemy_create_walker(enemy);
+        enemy_create_climber(enemy);
     }
 
     if (dino->health <= 0)

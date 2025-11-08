@@ -94,7 +94,7 @@ void collision_slope_resolve(Entity* entA, Entity* entB)
     if (fabsf(entB->rotation.z) < GFC_EPSILON)
     {
         final_z_pos = entB->boundingBox.z + (entA->position.x - entB_Corner.x);
-        Uint8 box;
+        Uint8 box = 0;
         if (entB_Corner.y > entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
 
         if (entB_Corner.y + entB->boundingBox.h < entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
@@ -110,7 +110,7 @@ void collision_slope_resolve(Entity* entA, Entity* entB)
     else if (fabsf(entB->rotation.z - GFC_HALF_PI) < GFC_EPSILON)
     {
         final_z_pos = entB->boundingBox.z + (entA->position.y - entB_Corner.y);
-        Uint8 box;
+        Uint8 box = 0;
         if (entB_Corner.y + entB->boundingBox.h < entA->position.y) box = 1;
 
         if (entB_Corner.x < entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
@@ -126,7 +126,7 @@ void collision_slope_resolve(Entity* entA, Entity* entB)
     else if (fabsf(entB->rotation.z - GFC_PI) < GFC_EPSILON)
     {
         final_z_pos = entB->boundingBox.z - (entA->position.x - entB_Corner.x);
-        Uint8 box;
+        Uint8 box = 0;
         if (entB_Corner.y < entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
 
         if (entB_Corner.y - entB->boundingBox.h > entA->position.y && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
@@ -142,7 +142,7 @@ void collision_slope_resolve(Entity* entA, Entity* entB)
     else if (fabsf(entB->rotation.z - GFC_PI_HALFPI) < GFC_EPSILON)
     {
         final_z_pos = entB->boundingBox.z - (entA->position.y - entB_Corner.y);
-        Uint8 box;
+        Uint8 box = 0;
         if (entB_Corner.y - entB->boundingBox.h > entA->position.y) box = 1;
 
         if (entB_Corner.x > entA->position.x && final_z_pos - entA->boundingBox.z > 2.0f) box = 1;
