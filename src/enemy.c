@@ -52,11 +52,26 @@ Enemy* enemy_new()
     return NULL;
 }
 
+void enemy_free(Enemy* enemy)
+{
+    if (!enemy)return;
+
+    enemy->_inuse = 0;
+    memset(enemy, 0, sizeof(Enemy));
+}
+
+void enemy_die(Entity* ent)
+{
+    entity_free(ent);
+}
+
 Enemy* enemy_create_walker(Enemy* enemy)
 {
 	enemy->ent->scale = gfc_vector3d(4, 4, 8);
+    enemy->ent->health = 50;
 	enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/walker.model");
     enemy_add_think(enemy, enemy_walk);
+    enemy->ent->death = enemy_die;
 
 	return enemy;
 }
@@ -65,8 +80,10 @@ Enemy* enemy_create_climber(Enemy* enemy)
 {
     enemy->ent->canClimb = 1;
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
+    enemy->ent->health = 60;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/climber.model");
     enemy_add_think(enemy, enemy_walk);
+    enemy->ent->death = enemy_die;
 
     return enemy;
 }
@@ -74,6 +91,7 @@ Enemy* enemy_create_climber(Enemy* enemy)
 Enemy* enemy_create_shooter(Enemy* enemy)
 {
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
+    enemy->ent->health = 40;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/shooter.model");
     enemy->approach_distance = 100;
     enemy->attackTime = 1000;
@@ -86,6 +104,7 @@ Enemy* enemy_create_shooter(Enemy* enemy)
 Enemy* enemy_create_jumper(Enemy* enemy)
 {
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
+    enemy->ent->health = 50;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/jumper.model");
     enemy->approach_distance = 100;
     enemy->attackTime = 3000;
@@ -98,6 +117,7 @@ Enemy* enemy_create_jumper(Enemy* enemy)
 Enemy* enemy_create_boss(Enemy* enemy)
 {
     enemy->ent->scale = gfc_vector3d(8, 8, 16);
+    enemy->ent->health = 100;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/boss.model");
     enemy->ent->canClimb = 1;
     enemy->approach_distance = 100;
@@ -128,6 +148,13 @@ void enemy_walk(Enemy* enemy)
 
     GFC_Vector3D direction;
     direction = gfc_vector3d(player->position.x - enemy->ent->position.x, player->position.y - enemy->ent->position.y, 0);
+
+    if (enemy->ent->health <= 0)
+    {
+        enemy->ent->death(enemy->ent);
+        enemy_free(enemy);
+        return;
+    }
 
     if (gfc_vector3d_magnitude(direction) >= 150) return;
 
@@ -161,12 +188,12 @@ void enemy_approach(Enemy* enemy)
     enemy->ent->position.y += direction.y * 0.5f;
 }
 
-void enemy_spawn_arrow(Enemy* enemy, GFC_Vector3D direction)
+void enemy_spawn_arrow(Entity* ent, GFC_Vector3D direction)
 {
     Entity* arrow;
     arrow = entity_new();
     arrow->isProj = 1;
-    arrow->position = enemy->ent->position;
+    arrow->position = ent->position;
     arrow->name = "Arrow";
     arrow = gf3d_model_load(arrow, "models/primitives/arrow.model");
     arrow->scale.z = 3;
@@ -191,7 +218,7 @@ void enemy_shoot(Enemy* enemy)
 
     gfc_vector3d_normalize(&direction);
 
-    enemy_spawn_arrow(enemy, direction);
+    enemy_spawn_arrow(enemy->ent, direction);
 
     enemy->last_attack = SDL_GetTicks();
 }

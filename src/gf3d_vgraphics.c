@@ -108,7 +108,7 @@ void gf3d_vgraphics_init(const char *config)
     Pipeline *renderPipe = NULL;
     SJson *json,*setup;
     const char *windowName = NULL;
-    GFC_Vector2D resolution = {1024,768};
+    GFC_Vector2D resolution = {1920,1080};
     short int fullscreen = 0;
     short int enableValidation = 0;
     short int enableDebug = 0;

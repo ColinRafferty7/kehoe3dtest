@@ -175,6 +175,6 @@ Entity* entity_get_player()
 void entity_free(Entity* ent)
 {
     if (!ent)return;
-
+    ent->_inuse = 0;
     memset(ent, 0, sizeof(Entity));
 }

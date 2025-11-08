@@ -52,4 +52,6 @@ void enemy_add_think(Enemy* enemy, Think think);
 
 void enemy_think_all();
 
+void enemy_free(Enemy* enemy);
+
 #endif

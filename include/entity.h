@@ -34,7 +34,13 @@ typedef struct Entity_S
 
     Uint8 canClimb;
 
+    Uint8 isAttack;
+
     void (*think)   (struct Entity_S* ent);
+
+    void (*attack)   (struct Entity_S* ent);
+    
+    void (*death)   (struct Entity_S* ent);
 
     Mesh* modelMesh;
     Texture* modelTexture;

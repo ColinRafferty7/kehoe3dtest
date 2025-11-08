@@ -240,7 +240,7 @@ void collision_projectile_resolve(Entity* entA, Entity* entB)
     {
         entity_free(entA);
     }
-    if (entB->isPlayer)
+    if (!entA->isAttack && entB->isPlayer)
     {
         entB->health -= 5;
         entB->velocity.x += (entB->position.x - entA->position.x) * 5;
@@ -250,4 +250,18 @@ void collision_projectile_resolve(Entity* entA, Entity* entB)
 
         entity_free(entA);
     }      
+    if (entA->isAttack && entB->isEnemy)
+    {
+        entB->health -= 10;
+
+        entB->health -= 5;
+        entB->velocity.x += (entB->position.x - entA->position.x) * 5;
+        entB->velocity.y += (entB->position.y - entA->position.y) * 5;
+        entB->position.z += 0.1f;
+        entB->velocity.z += 5;
+
+        entity_free(entA);
+
+        slog("Hit");
+    }
 }

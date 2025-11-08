@@ -49,6 +49,50 @@ void dino_die(Entity* dino)
     dino->health = 100;
 }
 
+void dino_sword(Entity* dino)
+{
+    slog("Dino Sword");
+}
+
+void dino_bow(Entity* dino)
+{
+    GFC_Vector3D direction;
+
+    direction = cameraPos;
+    gfc_vector3d_normalize(&direction);
+    direction.z = 0;
+    gfc_vector3d_rotate_about_z(&direction, GFC_PI);
+
+    Entity* arrow;
+    arrow = entity_new();
+    arrow->isProj = 1;
+    arrow->isAttack = 1;
+    arrow = gf3d_model_load(arrow, "models/primitives/arrow.model");
+    arrow->scale.x = 3;
+    arrow->position = dino->position;
+    arrow->rotation.z = dino->rotation.z + GFC_HALF_PI;
+    arrow->velocity.x = direction.x * 70;
+    arrow->velocity.y = direction.y * 70;
+    arrow->velocity.z = 15;
+}
+
+void dino_flamethrower(Entity* dino)
+{
+    slog("Dino FLamethrower");
+}
+
+void dino_bomb(Entity* dino)
+{
+    slog("Dino Bomb");
+}
+
+void dino_rocks(Entity* dino)
+{
+    slog("Dino Rocks");
+}
+
+GFC_Vector2D borderPos = { 331, 603 };
+
 void dino_think(Entity* dino)
 {
     GFC_Vector3D direction;
@@ -102,19 +146,50 @@ void dino_think(Entity* dino)
     {
         Enemy* enemy;
         enemy = enemy_new();
-        enemy_create_boss(enemy);
+        enemy_create_walker(enemy);
     }
 
     if (dino->health <= 0)
     {
         dino_die(dino);
     }
+
+    if (gf2d_mouse_button_pressed(0))
+    {
+        dino->attack(dino);
+    }
+
+    if (gfc_input_key_pressed("1"))
+    {
+        dino->attack = dino_sword;
+        borderPos = gfc_vector2d(331, 603);
+    }
+    if (gfc_input_key_pressed("2"))
+    {
+        dino->attack = dino_bow;
+        borderPos = gfc_vector2d(459, 603);
+    }
+    if (gfc_input_key_pressed("3"))
+    {
+        dino->attack = dino_flamethrower;
+        borderPos = gfc_vector2d(587, 603);
+    }
+    if (gfc_input_key_pressed("4"))
+    {
+        dino->attack = dino_bomb;
+        borderPos = gfc_vector2d(715, 603);
+    }
+    if (gfc_input_key_pressed("5"))
+    {
+        dino->attack = dino_rocks;
+        borderPos = gfc_vector2d(843, 603);
+    }
 }
 
 int main(int argc,char *argv[])
 {
     //local variables
-    Sprite *healthBar, *health;
+    Sprite *healthBar, *health, *sword, *bow, *flamethrower, *bomb, *rocks, *border;
     //initializtion    
     parse_arguments(argc,argv);
     init_logger("gf3d.log",0);
@@ -138,6 +213,12 @@ int main(int argc,char *argv[])
     slog_sync();
     healthBar = gf2d_sprite_load_image("images/player_ui/HealthBar.png");
     health = gf2d_sprite_load_image("images/player_ui/Health.png");
+    sword = gf2d_sprite_load_image("images/player_ui/Sword.png");
+    bow = gf2d_sprite_load_image("images/player_ui/Bow.png");
+    flamethrower = gf2d_sprite_load_image("images/player_ui/Flamethrower.png");
+    bomb = gf2d_sprite_load_image("images/player_ui/Bomb.png");
+    rocks = gf2d_sprite_load_image("images/player_ui/Rocks.png");
+    border = gf2d_sprite_load_image("images/player_ui/Border.png");
 
     map_generate_level();
 
@@ -157,6 +238,7 @@ int main(int argc,char *argv[])
     dino->isPlayer = 1;
     dino->canClimb = 1;
     dino->think = dino_think;
+    dino->attack = dino_sword;
     dino->max_health = 100;
     dino->health = 100;
     dino = gf3d_model_load(dino, "models/dino.model");
@@ -185,8 +267,16 @@ int main(int argc,char *argv[])
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
                 entity_draw_all();
 
+                gf2d_sprite_draw_image(border, borderPos, gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(dino->health / dino->max_health, 1));
+                gf2d_sprite_draw_image(sword, gfc_vector2d(334, 606), gfc_vector2d(1, 1));
+                gf2d_sprite_draw_image(bow, gfc_vector2d(462, 606), gfc_vector2d(1, 1));
+                gf2d_sprite_draw_image(flamethrower, gfc_vector2d(590, 606), gfc_vector2d(1, 1));
+                gf2d_sprite_draw_image(bomb, gfc_vector2d(718, 606), gfc_vector2d(1, 1));
+                gf2d_sprite_draw_image(rocks, gfc_vector2d(846, 606), gfc_vector2d(1, 1));
+                
+
                 
         gf3d_vgraphics_render_end();
 
