@@ -12,6 +12,9 @@ typedef struct Entity_S
     const char* name;
 
     float health, max_health;
+    float exp, exp_goal;
+
+    int level;
 
     float damage;
 

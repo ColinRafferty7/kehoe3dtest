@@ -22,6 +22,8 @@ typedef struct
 	int approach_distance;
 	Uint32 last_attack;
 	Uint32 attackTime;
+
+	float exp_value;
 }Enemy;
 
 void enemy_close();

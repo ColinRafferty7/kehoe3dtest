@@ -69,6 +69,7 @@ Enemy* enemy_create_walker(Enemy* enemy)
 {
 	enemy->ent->scale = gfc_vector3d(4, 4, 8);
     enemy->ent->health = 50;
+    enemy->exp_value = 10;
 	enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/walker.model");
     enemy_add_think(enemy, enemy_walk);
     enemy->ent->death = enemy_die;
@@ -81,6 +82,7 @@ Enemy* enemy_create_climber(Enemy* enemy)
     enemy->ent->canClimb = 1;
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
     enemy->ent->health = 60;
+    enemy->exp_value = 50;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/climber.model");
     enemy_add_think(enemy, enemy_walk);
     enemy->ent->death = enemy_die;
@@ -92,6 +94,7 @@ Enemy* enemy_create_shooter(Enemy* enemy)
 {
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
     enemy->ent->health = 40;
+    enemy->exp_value = 10;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/shooter.model");
     enemy->approach_distance = 100;
     enemy->attackTime = 1000;
@@ -105,6 +108,7 @@ Enemy* enemy_create_jumper(Enemy* enemy)
 {
     enemy->ent->scale = gfc_vector3d(4, 4, 8);
     enemy->ent->health = 50;
+    enemy->exp_value = 10;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/jumper.model");
     enemy->approach_distance = 100;
     enemy->attackTime = 3000;
@@ -118,6 +122,7 @@ Enemy* enemy_create_boss(Enemy* enemy)
 {
     enemy->ent->scale = gfc_vector3d(8, 8, 16);
     enemy->ent->health = 100;
+    enemy->exp_value = 100;
     enemy->ent = gf3d_model_load(enemy->ent, "models/enemies/boss.model");
     enemy->ent->canClimb = 1;
     enemy->approach_distance = 100;
@@ -151,6 +156,7 @@ void enemy_walk(Enemy* enemy)
 
     if (enemy->ent->health <= 0)
     {
+        player->exp += enemy->exp_value;
         enemy->ent->death(enemy->ent);
         enemy_free(enemy);
         return;

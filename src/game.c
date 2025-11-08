@@ -245,6 +245,14 @@ void dino_think(Entity* dino)
         dino_die(dino);
     }
 
+    if (dino->exp >= dino->exp_goal)
+    {
+        dino->level += 1;
+        dino->exp -= dino->exp_goal;
+        dino->exp_goal *= 1.2f;
+        slog("Level UP");
+    }
+
     if (gf2d_mouse_button_pressed(0))
     {
         dino->attack(dino);
@@ -280,7 +288,7 @@ void dino_think(Entity* dino)
 int main(int argc,char *argv[])
 {
     //local variables
-    Sprite *healthBar, *health, *sword, *bow, *flamethrower, *bomb, *rocks, *border;
+    Sprite *healthBar, *health, *exp, *sword, *bow, *flamethrower, *bomb, *rocks, *border;
     //initializtion    
     parse_arguments(argc,argv);
     init_logger("gf3d.log",0);
@@ -304,6 +312,7 @@ int main(int argc,char *argv[])
     slog_sync();
     healthBar = gf2d_sprite_load_image("images/player_ui/HealthBar.png");
     health = gf2d_sprite_load_image("images/player_ui/Health.png");
+    exp = gf2d_sprite_load_image("images/player_ui/exp.png");
     sword = gf2d_sprite_load_image("images/player_ui/Sword.png");
     bow = gf2d_sprite_load_image("images/player_ui/Bow.png");
     flamethrower = gf2d_sprite_load_image("images/player_ui/Flamethrower.png");
@@ -332,6 +341,7 @@ int main(int argc,char *argv[])
     dino->attack = dino_sword;
     dino->max_health = 100;
     dino->health = 100;
+    dino->exp_goal = 100;
     dino = gf3d_model_load(dino, "models/dino.model");
 
     // main game loop    
@@ -361,6 +371,8 @@ int main(int argc,char *argv[])
                 gf2d_sprite_draw_image(border, borderPos, gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(dino->health / dino->max_health, 1));
+                gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 70), gfc_vector2d(1, 1));
+                gf2d_sprite_draw_image(exp, gfc_vector2d(13, 73), gfc_vector2d(dino->exp / dino->exp_goal, 1));
                 gf2d_sprite_draw_image(sword, gfc_vector2d(334, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(bow, gfc_vector2d(462, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(flamethrower, gfc_vector2d(590, 606), gfc_vector2d(1, 1));
