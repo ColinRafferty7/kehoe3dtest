@@ -81,6 +81,22 @@ void dino_sword(Entity* dino)
     sword->position.z += 1;
     sword->rotation.z = dino->rotation.z;
     sword->think = sword_think;
+
+    gfc_vector3d_rotate_about_z(&direction, GFC_HALF_PI);
+
+    Entity* arrow;
+    arrow = entity_new();
+    arrow->isProj = 1;
+    arrow->isAttack = 1;
+    arrow->damage = 20;
+    arrow = gf3d_model_load(arrow, "models/primitives/sword.model");
+    arrow->scale.x = 8;
+    arrow->scale.y = 8;
+    arrow->scale.z = 3;
+    arrow->position = dino->position;
+    arrow->position.x += direction.x * 8;
+    arrow->position.y += direction.y * 8;
+    arrow->rotation.z = dino->rotation.z + GFC_HALF_PI;
 }
 
 void dino_bow(Entity* dino)
