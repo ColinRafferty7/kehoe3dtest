@@ -38,6 +38,8 @@ typedef struct Entity_S
 
     Uint8 isAttack;
 
+    Uint8 isRock;
+
     void (*think)   (struct Entity_S* ent);
 
     void (*attack)   (struct Entity_S* ent);

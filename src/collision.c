@@ -236,10 +236,16 @@ void collision_enemy_resolve(Entity* entA, Entity* entB)
 
 void collision_projectile_resolve(Entity* entA, Entity* entB)
 {
-    if (entB->isStatic)
+    if (entB->isStatic && !entA->isRock)
     {
         entity_free(entA);
     }
+        
+    if (entB->isStatic && entA->isRock)
+    {
+        collision_resolve(entA, entB);
+    }
+
     if (!entA->isAttack && entB->isPlayer)
     {
         entB->health -= 5;

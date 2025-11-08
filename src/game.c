@@ -156,7 +156,30 @@ void dino_bomb(Entity* dino)
 
 void dino_rocks(Entity* dino)
 {
-    slog("Dino Rocks");
+    for (int i = 0; i < 6; i++)
+    {
+        GFC_Vector3D direction;
+
+        direction = cameraPos;
+        gfc_vector3d_normalize(&direction);
+        direction.z = 0;
+        gfc_vector3d_rotate_about_z(&direction, GFC_PI);
+
+        direction.x += (gfc_random() - 0.5f) * GFC_HALF_PI * 0.5f;
+        direction.y += (gfc_random() - 0.5f) * GFC_HALF_PI * 0.5f;
+
+        Entity* rock;
+        rock = entity_new();
+        rock->isProj = 1;
+        rock->isAttack = 1;
+        rock->isRock = 1;
+        rock->damage = 5;
+        rock = gf3d_model_load(rock, "models/primitives/sphere.model");
+        rock->position = dino->position;
+        rock->velocity.x = (gfc_random() - 0.5f) * 10;
+        rock->velocity.y = (gfc_random() - 0.5f) * 10;
+        rock->velocity.z = 35 * (gfc_random() - 0.1f);
+    }
 }
 
 GFC_Vector2D borderPos = { 331, 603 };
