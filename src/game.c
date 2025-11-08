@@ -174,7 +174,7 @@ void dino_rocks(Entity* dino)
         rock->isAttack = 1;
         rock->isRock = 1;
         rock->damage = 5;
-        rock = gf3d_model_load(rock, "models/primitives/sphere.model");
+        rock = gf3d_model_load(rock, "models/primitives/rock.model");
         rock->position = dino->position;
         rock->velocity.x = (gfc_random() - 0.5f) * 10;
         rock->velocity.y = (gfc_random() - 0.5f) * 10;
