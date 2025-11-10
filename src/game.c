@@ -396,6 +396,9 @@ int main(int argc,char *argv[])
                 gf2d_sprite_draw_image(flamethrower, gfc_vector2d(590, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(bomb, gfc_vector2d(718, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(rocks, gfc_vector2d(846, 606), gfc_vector2d(1, 1));
+
+                gf2d_font_draw_line_tag(gfc_stringf("%.0f/%.0f", dino->exp, dino->exp_goal)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(80, 75));
+                gf2d_font_draw_line_tag(gfc_stringf("lv: %d", dino->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));
                 
 
                 
