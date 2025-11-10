@@ -237,11 +237,39 @@ void dino_think(Entity* dino)
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }   
 
-    if (gfc_input_key_pressed("e"))
+    if (gfc_input_key_pressed("6"))
+    {
+        Enemy* enemy;
+        enemy = enemy_new();
+        enemy_create_walker(enemy);
+    }
+    
+    if (gfc_input_key_pressed("7"))
+    {
+        Enemy* enemy;
+        enemy = enemy_new();
+        enemy_create_shooter(enemy);
+    }
+        
+    if (gfc_input_key_pressed("8"))
+    {
+        Enemy* enemy;
+        enemy = enemy_new();
+        enemy_create_jumper(enemy);
+    }
+            
+    if (gfc_input_key_pressed("9"))
     {
         Enemy* enemy;
         enemy = enemy_new();
         enemy_create_climber(enemy);
+    }
+                
+    if (gfc_input_key_pressed("0"))
+    {
+        Enemy* enemy;
+        enemy = enemy_new();
+        enemy_create_boss(enemy);
     }
 
     if (dino->health <= 0)
