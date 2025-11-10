@@ -73,12 +73,13 @@ void dino_sword(Entity* dino)
     sword = gf3d_model_load(sword, "models/primitives/cube.model");
     sword->isAttack = 1;
     sword->isProj = 1;
-    sword->scale.x = 0.2f;
-    sword->scale.z = 5;
+    sword->scale.x = 0.2f + (dino->level * 0.04f);
+    sword->scale.x = 1 + (dino->level * 0.2f);
+    sword->scale.z = 5 + (dino->level);
     sword->position = dino->position;
     sword->position.x += (direction.x) * 3;
     sword->position.y += (direction.y) * 3;
-    sword->position.z += 1;
+    sword->position.z += 1 + (dino->level * 0.2f);
     sword->rotation.z = dino->rotation.z;
     sword->think = sword_think;
 
@@ -88,10 +89,10 @@ void dino_sword(Entity* dino)
     arrow = entity_new();
     arrow->isProj = 1;
     arrow->isAttack = 1;
-    arrow->damage = 20;
+    arrow->damage = 10 + (dino->level * 2);
     arrow = gf3d_model_load(arrow, "models/primitives/sword.model");
-    arrow->scale.x = 8;
-    arrow->scale.y = 8;
+    arrow->scale.x = 5 + (dino->level);
+    arrow->scale.y = 5 + (dino->level);
     arrow->scale.z = 3;
     arrow->position = dino->position;
     arrow->position.x += direction.x * 8;
@@ -112,19 +113,19 @@ void dino_bow(Entity* dino)
     arrow = entity_new();
     arrow->isProj = 1;
     arrow->isAttack = 1;
-    arrow->damage = 10;
+    arrow->damage =  + (dino->level * 5);
     arrow = gf3d_model_load(arrow, "models/primitives/arrow.model");
     arrow->scale.x = 3;
     arrow->position = dino->position;
     arrow->rotation.z = dino->rotation.z + GFC_HALF_PI;
-    arrow->velocity.x = direction.x * 70;
-    arrow->velocity.y = direction.y * 70;
+    arrow->velocity.x = direction.x * (70 + (dino->level * 10));
+    arrow->velocity.y = direction.y * (70 + (dino->level * 10));
     arrow->velocity.z = 15;
 }
 
 void dino_flamethrower(Entity* dino)
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < (4 + dino->level); i++)
     {
         GFC_Vector3D direction;
 
@@ -140,7 +141,7 @@ void dino_flamethrower(Entity* dino)
         fire = entity_new();
         fire->isProj = 1;
         fire->isAttack = 1;
-        fire->damage = 5;
+        fire->damage = 5 + dino->level;
         fire = gf3d_model_load(fire, "models/primitives/sphere.model");
         fire->position = dino->position;
         fire->velocity.x = direction.x * 70;
@@ -156,7 +157,7 @@ void dino_bomb(Entity* dino)
 
 void dino_rocks(Entity* dino)
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < (4 + dino->level); i++)
     {
         GFC_Vector3D direction;
 
@@ -173,9 +174,12 @@ void dino_rocks(Entity* dino)
         rock->isProj = 1;
         rock->isAttack = 1;
         rock->isRock = 1;
-        rock->damage = 5;
+        rock->damage = 5 + dino->level;
         rock = gf3d_model_load(rock, "models/primitives/rock.model");
         rock->position = dino->position;
+        rock->scale.x = 1 + (dino->level * 0.2f);
+        rock->scale.y = 1 + (dino->level * 0.2f);
+        rock->scale.z = 1 + (dino->level * 0.2f);
         rock->velocity.x = (gfc_random() - 0.5f) * 10;
         rock->velocity.y = (gfc_random() - 0.5f) * 10;
         rock->velocity.z = 35 * (gfc_random() - 0.1f);
@@ -283,6 +287,20 @@ void dino_think(Entity* dino)
         dino->attack = dino_rocks;
         borderPos = gfc_vector2d(843, 603);
     }
+
+    if (gfc_input_key_pressed("i"))
+    {
+        dino->exp = dino->exp_goal;
+    }
+    
+    if (gfc_input_key_pressed("u"))
+    {
+        dino->exp = 0;
+        dino->exp_goal = 100;
+        dino->level = 0;
+    }
+
+
 }
 
 int main(int argc,char *argv[])
