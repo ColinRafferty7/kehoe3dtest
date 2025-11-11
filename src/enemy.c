@@ -100,6 +100,7 @@ Enemy* enemy_create_shooter(Enemy* enemy)
     enemy->attackTime = 1000;
     enemy_add_think(enemy, enemy_approach);
     enemy_add_think(enemy, enemy_shoot);
+    enemy->ent->death = enemy_die;
 
     return enemy;
 }
@@ -114,6 +115,7 @@ Enemy* enemy_create_jumper(Enemy* enemy)
     enemy->attackTime = 3000;
     enemy_add_think(enemy, enemy_approach);
     enemy_add_think(enemy, enemy_jump);
+    enemy->ent->death = enemy_die;
 
     return enemy;
 }
@@ -129,6 +131,7 @@ Enemy* enemy_create_boss(Enemy* enemy)
     enemy->attackTime = 3000;
     enemy_add_think(enemy, enemy_approach);
     enemy_add_think(enemy, enemy_jump);
+    enemy->ent->death = enemy_die;
 
     return enemy;
 }
@@ -156,6 +159,7 @@ void enemy_walk(Enemy* enemy)
 
     if (enemy->ent->health <= 0)
     {
+        slog("Enemy Name: %s", enemy->ent->name);
         player->exp += enemy->exp_value;
         enemy->ent->death(enemy->ent);
         enemy_free(enemy);
@@ -177,6 +181,15 @@ void enemy_approach(Enemy* enemy)
 
     GFC_Vector3D direction;
     direction = gfc_vector3d(player->position.x - enemy->ent->position.x, player->position.y - enemy->ent->position.y, 0);
+
+    if (enemy->ent->health <= 0)
+    {
+        slog("Enemy Name: %s", enemy->ent->name);
+        player->exp += enemy->exp_value;
+        enemy->ent->death(enemy->ent);
+        enemy_free(enemy);
+        return;
+    }
 
     if (gfc_vector3d_magnitude(direction) <= enemy->approach_distance)
     {
