@@ -24,7 +24,8 @@
 #include "gf3d_model.h"
 #include "gf3d_camera.h"
 #include "map_generate.h"
-#include "enemy.h";
+#include "enemy.h"
+#include "player.h"
 
 extern int __DEBUG;
 
@@ -43,10 +44,10 @@ void exitGame()
     _done = 1;
 }
 
-void dino_die(Entity* dino)
+void player_die(Entity* player)
 {
-    dino->position = gfc_vector3d(0, 0, 0);
-    dino->health = 100;
+    player->position = gfc_vector3d(0, 0, 0);
+    player->health = 100;
 }
 
 void sword_think(Entity* sword)
@@ -59,7 +60,7 @@ void sword_think(Entity* sword)
     }
 }
 
-void dino_sword(Entity* dino)
+void player_sword(Entity* player)
 {
     GFC_Vector3D direction;
 
@@ -73,14 +74,14 @@ void dino_sword(Entity* dino)
     sword = gf3d_model_load(sword, "models/primitives/cube.model");
     sword->isAttack = 1;
     sword->isProj = 1;
-    sword->scale.x = 0.2f + (dino->level * 0.04f);
-    sword->scale.x = 1 + (dino->level * 0.2f);
-    sword->scale.z = 5 + (dino->level);
-    sword->position = dino->position;
+    sword->scale.x = 0.2f + (player->level * 0.04f);
+    sword->scale.x = 1 + (player->level * 0.2f);
+    sword->scale.z = 5 + (player->level);
+    sword->position = player->position;
     sword->position.x += (direction.x) * 3;
     sword->position.y += (direction.y) * 3;
-    sword->position.z += 1 + (dino->level * 0.2f);
-    sword->rotation.z = dino->rotation.z;
+    sword->position.z += 1 + (player->level * 0.2f);
+    sword->rotation.z = player->rotation.z;
     sword->think = sword_think;
 
     gfc_vector3d_rotate_about_z(&direction, GFC_HALF_PI);
@@ -89,18 +90,18 @@ void dino_sword(Entity* dino)
     arrow = entity_new();
     arrow->isProj = 1;
     arrow->isAttack = 1;
-    arrow->damage = 10 + (dino->level * 2);
+    arrow->damage = 10 + (player->level * 2);
     arrow = gf3d_model_load(arrow, "models/primitives/sword.model");
-    arrow->scale.x = 5 + (dino->level);
-    arrow->scale.y = 5 + (dino->level);
+    arrow->scale.x = 5 + (player->level);
+    arrow->scale.y = 5 + (player->level);
     arrow->scale.z = 3;
-    arrow->position = dino->position;
+    arrow->position = player->position;
     arrow->position.x += direction.x * 8;
     arrow->position.y += direction.y * 8;
-    arrow->rotation.z = dino->rotation.z + GFC_HALF_PI;
+    arrow->rotation.z = player->rotation.z + GFC_HALF_PI;
 }
 
-void dino_bow(Entity* dino)
+void player_bow(Entity* player)
 {
     GFC_Vector3D direction;
 
@@ -113,19 +114,19 @@ void dino_bow(Entity* dino)
     arrow = entity_new();
     arrow->isProj = 1;
     arrow->isAttack = 1;
-    arrow->damage =  + (dino->level * 5);
+    arrow->damage =  + (player->level * 5);
     arrow = gf3d_model_load(arrow, "models/primitives/arrow.model");
     arrow->scale.x = 3;
-    arrow->position = dino->position;
-    arrow->rotation.z = dino->rotation.z + GFC_HALF_PI;
-    arrow->velocity.x = direction.x * (70 + (dino->level * 10));
-    arrow->velocity.y = direction.y * (70 + (dino->level * 10));
+    arrow->position = player->position;
+    arrow->rotation.z = player->rotation.z + GFC_HALF_PI;
+    arrow->velocity.x = direction.x * (70 + (player->level * 10));
+    arrow->velocity.y = direction.y * (70 + (player->level * 10));
     arrow->velocity.z = 15;
 }
 
-void dino_flamethrower(Entity* dino)
+void player_flamethrower(Entity* player)
 {
-    for (int i = 0; i < (4 + dino->level); i++)
+    for (int i = 0; i < (4 + player->level); i++)
     {
         GFC_Vector3D direction;
 
@@ -141,23 +142,23 @@ void dino_flamethrower(Entity* dino)
         fire = entity_new();
         fire->isProj = 1;
         fire->isAttack = 1;
-        fire->damage = 5 + dino->level;
+        fire->damage = 5 + player->level;
         fire = gf3d_model_load(fire, "models/primitives/sphere.model");
-        fire->position = dino->position;
+        fire->position = player->position;
         fire->velocity.x = direction.x * 70;
         fire->velocity.y = direction.y * 70;
         fire->velocity.z = 35 * (gfc_random() - 0.1f);
     }
 }
 
-void dino_bomb(Entity* dino)
+void player_bomb(Entity* player)
 {
-    slog("Dino Bomb");
+    slog("player Bomb");
 }
 
-void dino_rocks(Entity* dino)
+void player_rocks(Entity* player)
 {
-    for (int i = 0; i < (4 + dino->level); i++)
+    for (int i = 0; i < (4 + player->level); i++)
     {
         GFC_Vector3D direction;
 
@@ -174,12 +175,12 @@ void dino_rocks(Entity* dino)
         rock->isProj = 1;
         rock->isAttack = 1;
         rock->isRock = 1;
-        rock->damage = 5 + dino->level;
+        rock->damage = 5 + player->level;
         rock = gf3d_model_load(rock, "models/primitives/rock.model");
-        rock->position = dino->position;
-        rock->scale.x = 1 + (dino->level * 0.2f);
-        rock->scale.y = 1 + (dino->level * 0.2f);
-        rock->scale.z = 1 + (dino->level * 0.2f);
+        rock->position = player->position;
+        rock->scale.x = 1 + (player->level * 0.2f);
+        rock->scale.y = 1 + (player->level * 0.2f);
+        rock->scale.z = 1 + (player->level * 0.2f);
         rock->velocity.x = (gfc_random() - 0.5f) * 10;
         rock->velocity.y = (gfc_random() - 0.5f) * 10;
         rock->velocity.z = 35 * (gfc_random() - 0.1f);
@@ -188,7 +189,7 @@ void dino_rocks(Entity* dino)
 
 GFC_Vector2D borderPos = { 331, 603 };
 
-void dino_think(Entity* dino)
+void player_think(Entity* player)
 {
     GFC_Vector3D direction;
 
@@ -199,33 +200,33 @@ void dino_think(Entity* dino)
 
     if (gfc_input_key_down("w"))
     {
-        gfc_vector3d_add(dino->position, dino->position, direction);
+        gfc_vector3d_add(player->position, player->position, direction);
     }
     if (gfc_input_key_down("s"))
     {
         gfc_vector3d_rotate_about_z(&direction, GFC_PI);
-        gfc_vector3d_add(dino->position, dino->position, direction);
+        gfc_vector3d_add(player->position, player->position, direction);
     }    
     if (gfc_input_key_down("a"))
     {
         gfc_vector3d_rotate_about_z(&direction, GFC_HALF_PI);
-        gfc_vector3d_add(dino->position, dino->position, direction);
+        gfc_vector3d_add(player->position, player->position, direction);
     }
     if (gfc_input_key_down("d"))
     {
         gfc_vector3d_rotate_about_z(&direction, -1 * GFC_HALF_PI);
-        gfc_vector3d_add(dino->position, dino->position, direction);
+        gfc_vector3d_add(player->position, player->position, direction);
     }
     if (gfc_input_key_pressed("c"))
     {
-        dino->position.z += 0.01f;
-        dino->velocity.z = 25;
+        player->position.z += 0.01f;
+        player->velocity.z = 25;
     }
     if (gf2d_mouse_moved())
     {
         // TODO: Add vertical camera rotation by changing camera to be an entity
         gfc_vector3d_rotate_about_z(&cameraPos, -0.01 * gf2d_mouse_get_movement().x);
-        dino->rotation.z += -0.01 * gf2d_mouse_get_movement().x;
+        player->rotation.z += -0.01 * gf2d_mouse_get_movement().x;
     }
 
     if (gfc_input_key_pressed("p"))
@@ -272,60 +273,60 @@ void dino_think(Entity* dino)
         enemy_create_boss(enemy);
     }
 
-    if (dino->health <= 0)
+    if (player->health <= 0)
     {
-        dino_die(dino);
+        player_die(player);
     }
 
-    if (dino->exp >= dino->exp_goal)
+    if (player->exp >= player->exp_goal)
     {
-        dino->level += 1;
-        dino->exp -= dino->exp_goal;
-        dino->exp_goal *= 1.2f;
+        player->level += 1;
+        player->exp -= player->exp_goal;
+        player->exp_goal *= 1.2f;
         slog("Level UP");
     }
 
     if (gf2d_mouse_button_pressed(0))
     {
-        dino->attack(dino);
+        player->attack(player);
     }
 
     if (gfc_input_key_pressed("1"))
     {
-        dino->attack = dino_sword;
+        player->attack = player_sword;
         borderPos = gfc_vector2d(331, 603);
     }
     if (gfc_input_key_pressed("2"))
     {
-        dino->attack = dino_bow;
+        player->attack = player_bow;
         borderPos = gfc_vector2d(459, 603);
     }
     if (gfc_input_key_pressed("3"))
     {
-        dino->attack = dino_flamethrower;
+        player->attack = player_flamethrower;
         borderPos = gfc_vector2d(587, 603);
     }
     if (gfc_input_key_pressed("4"))
     {
-        dino->attack = dino_bomb;
+        player->attack = player_bomb;
         borderPos = gfc_vector2d(715, 603);
     }
     if (gfc_input_key_pressed("5"))
     {
-        dino->attack = dino_rocks;
+        player->attack = player_rocks;
         borderPos = gfc_vector2d(843, 603);
     }
 
     if (gfc_input_key_pressed("i"))
     {
-        dino->exp = dino->exp_goal;
+        player->exp = player->exp_goal;
     }
     
     if (gfc_input_key_pressed("u"))
     {
-        dino->exp = 0;
-        dino->exp_goal = 100;
-        dino->level = 0;
+        player->exp = 0;
+        player->exp_goal = 100;
+        player->level = 0;
     }
 
 
@@ -378,17 +379,12 @@ int main(int argc,char *argv[])
     gfc_matrix4_identity(skyMat);
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
 
-    Entity* dino;
-    dino = entity_new();
-    dino->name = "Dino";
-    dino->isPlayer = 1;
-    dino->canClimb = 1;
-    dino->think = dino_think;
-    dino->attack = dino_sword;
-    dino->max_health = 100;
-    dino->health = 100;
-    dino->exp_goal = 100;
-    dino = gf3d_model_load(dino, "models/dino.model");
+    Entity* player;
+    player = entity_new();
+    player_init(player);
+    player->think = player_think;
+    player->attack = player_sword;
+
 
     // main game loop    
     while(!_done)
@@ -404,8 +400,8 @@ int main(int argc,char *argv[])
         entity_update_all();
         entity_collision_check_all();
 
-        camera = gfc_vector3d_added(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), cameraPos);
-        gf3d_camera_look_at(gfc_vector3d(dino->modelMat[3][0], dino->modelMat[3][1], dino->modelMat[3][2]), &camera);
+        camera = gfc_vector3d_added(gfc_vector3d(player->modelMat[3][0], player->modelMat[3][1], player->modelMat[3][2]), cameraPos);
+        gf3d_camera_look_at(gfc_vector3d(player->modelMat[3][0], player->modelMat[3][1], player->modelMat[3][2]), &camera);
 
         gf3d_camera_update_view();
 
@@ -416,17 +412,17 @@ int main(int argc,char *argv[])
 
                 gf2d_sprite_draw_image(border, borderPos, gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(dino->health / dino->max_health, 1));
+                gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(player->health / player->max_health, 1));
                 gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 70), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(exp, gfc_vector2d(13, 73), gfc_vector2d(dino->exp / dino->exp_goal, 1));
+                gf2d_sprite_draw_image(exp, gfc_vector2d(13, 73), gfc_vector2d(player->exp / player->exp_goal, 1));
                 gf2d_sprite_draw_image(sword, gfc_vector2d(334, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(bow, gfc_vector2d(462, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(flamethrower, gfc_vector2d(590, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(bomb, gfc_vector2d(718, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(rocks, gfc_vector2d(846, 606), gfc_vector2d(1, 1));
 
-                gf2d_font_draw_line_tag(gfc_stringf("%.0f/%.0f", dino->exp, dino->exp_goal)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(80, 75));
-                gf2d_font_draw_line_tag(gfc_stringf("lv: %d", dino->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));
+                gf2d_font_draw_line_tag(gfc_stringf("%.0f/%.0f", player->exp, player->exp_goal)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(80, 75));
+                gf2d_font_draw_line_tag(gfc_stringf("lv: %d", player->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));
                 
 
                 

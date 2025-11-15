@@ -198,6 +198,7 @@
     <ClCompile Include="..\..\src\gf3d_vqueues.c" />
     <ClCompile Include="..\..\src\map_generate.c" />
     <ClCompile Include="..\..\src\physics.c" />
+    <ClCompile Include="..\..\src\player.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\gfc\include\gfc_actions.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="..\..\include\gf3d_vqueues.h" />
     <ClInclude Include="..\..\include\map_generate.h" />
     <ClInclude Include="..\..\include\physics.h" />
+    <ClInclude Include="..\..\include\player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\config\audio.cfg" />

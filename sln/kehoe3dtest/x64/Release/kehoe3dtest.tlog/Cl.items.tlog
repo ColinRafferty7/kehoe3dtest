@@ -57,3 +57,4 @@ C:\dev\kehoe3dtest\src\gf3d_vgraphics.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\R
 C:\dev\kehoe3dtest\src\gf3d_vqueues.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\gf3d_vqueues.obj
 C:\dev\kehoe3dtest\src\map_generate.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\map_generate.obj
 C:\dev\kehoe3dtest\src\physics.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\physics.obj
+C:\dev\kehoe3dtest\src\player.c;C:\dev\kehoe3dtest\sln\kehoe3dtest\x64\Release\player.obj
