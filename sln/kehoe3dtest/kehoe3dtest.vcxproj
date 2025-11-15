@@ -264,6 +264,7 @@
     <ClInclude Include="..\..\include\player.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\config\alpha_pipeline.cfg" />
     <None Include="..\..\config\audio.cfg" />
     <None Include="..\..\config\font.cfg" />
     <None Include="..\..\config\input.cfg" />

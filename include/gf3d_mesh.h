@@ -227,4 +227,6 @@ void gf3d_mesh_queue_render(Mesh* mesh, Pipeline* pipe, void* uboData, Texture* 
 //TODO
 Pipeline *gf3d_mesh_get_sky_pipeline();
 
+Pipeline* gf3d_mesh_get_alpha_pipeline();
+
 #endif

@@ -78,7 +78,14 @@ void entity_think_all()
 void entity_draw(Entity* ent)
 {
     ent->modelUBO = gf3d_mesh_get_ubo(ent->modelMat, GFC_COLOR_WHITE);
-    gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_pipeline(), &ent->modelUBO, ent->modelTexture);
+    if (ent->entity_pipe)
+    {
+        gf3d_mesh_queue_render(ent->modelMesh, ent->entity_pipe, &ent->modelUBO, ent->modelTexture);
+    }
+    else
+    {
+        gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_pipeline(), &ent->modelUBO, ent->modelTexture);
+    }
 }
 
 void entity_draw_all()

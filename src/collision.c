@@ -206,6 +206,7 @@ void collision_check(Entity* entA, Entity* entB)
 {
     if (gfc_box_overlap(entA->boundingBox, entB->boundingBox) == 1)
     {
+        if (entA->ignoreCollisions || entB->ignoreCollisions) return;
         if (entB->isSlope)
         {
             collision_slope_resolve(entA, entB);

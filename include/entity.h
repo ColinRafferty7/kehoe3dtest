@@ -2,6 +2,7 @@
 #define __ENTITY_H__
 
 #include "gf3d_mesh.h"
+#include "gf3d_pipeline.h"
 
 #define JUMP_FORCE 12.0f
 
@@ -53,6 +54,10 @@ typedef struct Entity_S
     Texture* modelTexture;
     MeshUBO modelUBO;
     GFC_Matrix4 modelMat;
+
+    Pipeline* entity_pipe;
+
+    Uint8 ignoreCollisions;
 }Entity;
 
 void entity_close();

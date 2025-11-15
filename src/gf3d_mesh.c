@@ -18,6 +18,7 @@ typedef struct
     Mesh *mesh_list;
     Pipeline *pipe;
     Pipeline *sky_pipe;
+    Pipeline* alpha_pipe;
     Uint32 mesh_max;
     VkVertexInputAttributeDescription attributeDescription[ATTRIBUTE_COUNT];
     VkVertexInputBindingDescription bindingDescription;
@@ -96,6 +97,18 @@ void gf3d_mesh_init(Uint32 mesh_max)
     gf3d_mesh.pipe = gf3d_pipeline_create_from_config(
         gf3d_vgraphics_get_default_logical_device(),
         "config/mesh_pipeline.cfg",
+        gf3d_vgraphics_get_view_extent(),
+        mesh_max,
+        gf3d_mesh_get_bind_description(),
+        gf3d_mesh_get_attribute_descriptions(NULL),
+        att_count,
+        sizeof(MeshUBO),
+        VK_INDEX_TYPE_UINT16
+    );
+
+    gf3d_mesh.alpha_pipe = gf3d_pipeline_create_from_config(
+        gf3d_vgraphics_get_default_logical_device(),
+        "config/alpha_pipeline.cfg",
         gf3d_vgraphics_get_view_extent(),
         mesh_max,
         gf3d_mesh_get_bind_description(),
@@ -242,6 +255,11 @@ Pipeline* gf3d_mesh_get_pipeline()
 Pipeline* gf3d_mesh_get_sky_pipeline()
 {
     return gf3d_mesh.sky_pipe;
+}
+
+Pipeline* gf3d_mesh_get_alpha_pipeline()
+{
+    return gf3d_mesh.alpha_pipe;
 }
 
 MeshUBO gf3d_mesh_get_ubo(

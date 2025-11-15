@@ -2,6 +2,7 @@
 
 void physics_update(Entity* ent)
 {
+    if (ent->ignoreCollisions) return;
     if (!ent->isProj)
     {
         ent->velocity.x *= 0.95f;

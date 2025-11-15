@@ -378,6 +378,24 @@ int main(int argc,char *argv[])
     skyTexture = gf3d_texture_load("models/sky/sky.png");
     gfc_matrix4_identity(skyMat);
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
+    
+    //Mesh* alphaMesh;
+    //Texture* alphaTexture;
+    //MeshUBO alphaUBO;
+    //GFC_Matrix4 alphaMat;
+
+    //alphaMesh = gf3d_mesh_load_obj("models/primitives/cube.obj");
+    //alphaTexture = gf3d_texture_load("models/primitives/flatred.png");
+    //gfc_matrix4_identity(alphaMat);
+    //alphaUBO = gf3d_mesh_get_ubo(alphaMat, GFC_COLOR_WHITE);
+
+    Entity* transparentTest;
+    transparentTest = entity_new();
+    transparentTest = gf3d_model_load(transparentTest, "models/primitives/transparent.model");
+    transparentTest->position = gfc_vector3d(10, 10, 0);
+    transparentTest->scale = gfc_vector3d(20, 20, 20);
+    //transparentTest->entity_pipe = gf3d_mesh_get_alpha_pipeline();
+    transparentTest->ignoreCollisions = 1;
 
     Entity* player;
     player = entity_new();
