@@ -2,6 +2,7 @@
 
 #include "entity.h"
 #include "collision.h"
+#include <gf3d_obj_load.h>
 
 typedef struct
 {
@@ -149,7 +150,17 @@ void entity_collision_check_all()
 
 void entity_print_name(Entity* ent)
 {
-    slog("Name: %s - In Use: %u", ent->name, ent->_inuse);
+    MeshPrimitive *prim = ent->modelMesh->primitives->elements[0].data;
+    ObjData *data = prim->objData;
+
+    slog("Name: %s", ent->name);
+
+
+    for (int i = 0; i < data->normal_count; i++)
+    {
+        slog("Vertex Num: %u - vector((%f, %f, %f), (%f, %f, %f))", i, data->faceVertices[i].vertex.x, data->faceVertices[i].vertex.y, data->faceVertices[i].vertex.z, data->faceVertices[i].vertex.x + data->normals[i].x, data->faceVertices[i].vertex.y + data->normals[i].y, data->faceVertices[i].vertex.z + data->normals[i].z);
+    }
+    
 }
 
 void entity_print_name_all()
@@ -160,7 +171,7 @@ void entity_print_name_all()
     {
         if (ent_system.ent_list[i]._inuse)
         {
-            //entity_print_name(&ent_system.ent_list[i]);
+            entity_print_name(&ent_system.ent_list[i]);
         }
     }
 }

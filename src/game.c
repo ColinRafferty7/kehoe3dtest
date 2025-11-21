@@ -329,7 +329,10 @@ void player_think(Entity* player)
         player->level = 0;
     }
 
-
+    if (gfc_input_key_pressed("h"))
+    {
+        entity_print_name_all();
+    }
 }
 
 int main(int argc,char *argv[])
