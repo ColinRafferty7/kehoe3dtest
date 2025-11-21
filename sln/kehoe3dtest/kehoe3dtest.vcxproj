@@ -266,12 +266,15 @@
   <ItemGroup>
     <None Include="..\..\config\alpha_pipeline.cfg" />
     <None Include="..\..\config\audio.cfg" />
+    <None Include="..\..\config\comic_mesh_pipeline.cfg" />
     <None Include="..\..\config\font.cfg" />
     <None Include="..\..\config\input.cfg" />
     <None Include="..\..\config\mesh_pipeline.cfg" />
     <None Include="..\..\config\overlay_pipeline.cfg" />
     <None Include="..\..\config\setup.cfg" />
     <None Include="..\..\config\sky_pipeline.cfg" />
+    <None Include="..\..\shaders\comic_mesh.frag" />
+    <None Include="..\..\shaders\comic_mesh.vert" />
     <None Include="..\..\shaders\mesh.frag" />
     <None Include="..\..\shaders\mesh.vert" />
     <None Include="..\..\shaders\sky.frag" />
@@ -282,4 +285,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

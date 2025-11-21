@@ -394,10 +394,10 @@ int main(int argc,char *argv[])
 
     Entity* transparentTest;
     transparentTest = entity_new();
-    transparentTest = gf3d_model_load(transparentTest, "models/primitives/transparent.model");
+    transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
     transparentTest->position = gfc_vector3d(10, 10, 0);
     transparentTest->scale = gfc_vector3d(20, 20, 20);
-    transparentTest->entity_pipe = gf3d_mesh_get_alpha_pipeline();
+    transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
     transparentTest->ignoreCollisions = 1;
 
     Entity* player;
