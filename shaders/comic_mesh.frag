@@ -53,10 +53,13 @@ void main()
     vec3 finalColor = surfaceColor.rgb * lighting;
 
     // outColor = vec4(round(finalColor.r * 3) / 3.0, round(finalColor.g * 3) / 3.0, round(finalColor.b * 3) / 3.0, surfaceColor.a);
-    float dotProd = dot(fragNormal, viewDir);
-    if (dotProd < 0.1)
+
+    vec3 camDist = normalize(ubo.mesh.camera.xyz - fragPos);
+    float dotProd = dot(fragNormal, camDist);
+
+    if (dotProd < 0.35)
     {
-        outColor = vec4(0.0,0.0,0.0,1.0);
+        outColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
     else
     {
