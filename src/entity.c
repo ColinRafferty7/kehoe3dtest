@@ -81,12 +81,12 @@ void entity_draw(Entity* ent)
     ent->modelUBO = gf3d_mesh_get_ubo(ent->modelMat, GFC_COLOR_WHITE);
     if (ent->entity_pipe)
     {
-        gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_outline_pipeline(), &ent->modelUBO, ent->modelTexture);
+        //gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_outline_pipeline(), &ent->modelUBO, ent->modelTexture);
         gf3d_mesh_queue_render(ent->modelMesh, ent->entity_pipe, &ent->modelUBO, ent->modelTexture);
     }
     else
     {
-        gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_comic_mesh_pipeline(), &ent->modelUBO, ent->modelTexture);
+        gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_pipeline(), &ent->modelUBO, ent->modelTexture);
     }
 }
 

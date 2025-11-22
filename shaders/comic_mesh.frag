@@ -57,7 +57,7 @@ void main()
     vec3 camDist = normalize(ubo.mesh.camera.xyz - fragPos);
     float dotProd = dot(fragNormal, camDist);
 
-    if (dotProd < 0.35)
+    if (dotProd < 0.3)
     {
         outColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
