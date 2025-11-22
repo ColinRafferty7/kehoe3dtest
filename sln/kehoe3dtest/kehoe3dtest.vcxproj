@@ -270,6 +270,7 @@
     <None Include="..\..\config\font.cfg" />
     <None Include="..\..\config\input.cfg" />
     <None Include="..\..\config\mesh_pipeline.cfg" />
+    <None Include="..\..\config\outline_pipeline.cfg" />
     <None Include="..\..\config\overlay_pipeline.cfg" />
     <None Include="..\..\config\setup.cfg" />
     <None Include="..\..\config\sky_pipeline.cfg" />
@@ -277,6 +278,8 @@
     <None Include="..\..\shaders\comic_mesh.vert" />
     <None Include="..\..\shaders\mesh.frag" />
     <None Include="..\..\shaders\mesh.vert" />
+    <None Include="..\..\shaders\outline.frag" />
+    <None Include="..\..\shaders\outline.vert" />
     <None Include="..\..\shaders\sky.frag" />
     <None Include="..\..\shaders\sky.vert" />
     <None Include="..\..\shaders\sprite.frag" />
