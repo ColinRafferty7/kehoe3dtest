@@ -83,6 +83,12 @@ void entity_draw(Entity* ent)
     {
         //gf3d_mesh_queue_render(ent->modelMesh, gf3d_mesh_get_outline_pipeline(), &ent->modelUBO, ent->modelTexture);
         gf3d_mesh_queue_render(ent->modelMesh, ent->entity_pipe, &ent->modelUBO, ent->modelTexture);
+        slog("Proj");
+        gfc_matrix4_slog(ent->modelUBO.proj);
+        slog("View");
+        gfc_matrix4_slog(ent->modelUBO.view);
+        slog("Model");
+        gfc_matrix4_slog(ent->modelUBO.model);
     }
     else
     {

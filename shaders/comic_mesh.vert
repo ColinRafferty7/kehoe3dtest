@@ -27,6 +27,7 @@ layout(location = 2) in vec2 inTexCoord;
 layout(location = 0) out vec3 fragNormal;
 layout(location = 1) out vec2 fragTexCoord;
 layout(location = 2) out vec3 fragPos;
+layout(location = 3) out vec2 screenPos;
 
 void main()
 {
@@ -39,4 +40,6 @@ void main()
     fragNormal = normalize(normalMatrix * inNormal);
 
     fragTexCoord = inTexCoord;
+
+    screenPos = (vec2(gl_Position.xy) / gl_Position.w * 0.5) + 0.5;
 }

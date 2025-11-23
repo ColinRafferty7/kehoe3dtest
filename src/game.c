@@ -394,9 +394,9 @@ int main(int argc,char *argv[])
 
     Entity* transparentTest;
     transparentTest = entity_new();
-    transparentTest = gf3d_model_load(transparentTest, "models/primitives/sphere.model");
-    transparentTest->position = gfc_vector3d(10, 10, 0);
-    transparentTest->scale = gfc_vector3d(20, 20, 20);
+    transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
+    transparentTest->position = gfc_vector3d(10, 10, -80);
+    transparentTest->scale = gfc_vector3d(5, 5, 5);
     transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
     transparentTest->ignoreCollisions = 1;
 
@@ -432,18 +432,18 @@ int main(int argc,char *argv[])
                 entity_draw_all();
 
                 gf2d_sprite_draw_image(border, borderPos, gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
+                /*gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(player->health / player->max_health, 1));
                 gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 70), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(exp, gfc_vector2d(13, 73), gfc_vector2d(player->exp / player->exp_goal, 1));
+                gf2d_sprite_draw_image(exp, gfc_vector2d(13, 73), gfc_vector2d(player->exp / player->exp_goal, 1));*/
                 gf2d_sprite_draw_image(sword, gfc_vector2d(334, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(bow, gfc_vector2d(462, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(flamethrower, gfc_vector2d(590, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(bomb, gfc_vector2d(718, 606), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(rocks, gfc_vector2d(846, 606), gfc_vector2d(1, 1));
 
-                gf2d_font_draw_line_tag(gfc_stringf("%.0f/%.0f", player->exp, player->exp_goal)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(80, 75));
-                gf2d_font_draw_line_tag(gfc_stringf("lv: %d", player->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));
+                //gf2d_font_draw_line_tag(gfc_stringf("%.0f/%.0f", player->exp, player->exp_goal)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(80, 75));
+                //gf2d_font_draw_line_tag(gfc_stringf("lv: %d", player->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));
                 
 
                 

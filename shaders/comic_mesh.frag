@@ -20,16 +20,16 @@ layout(binding = 1) uniform sampler2D texSampler;
 layout(location = 0) in vec3 fragNormal;
 layout(location = 1) in vec2 fragTexCoord;
 layout(location = 2) in vec3 fragPos;
+layout(location = 3) in vec2 screenPos;
 
 layout(location = 0) out vec4 outColor;
 
 void main()
 {
     // Shading Variables
-    int bandCount = 3;
+    int bandCount = 2;
     float outlineWidth = 0.2;
 
-    // Lighting parameters
     vec3 lightPos = vec3(-100.0, -100.0, 200.0);
     vec3 lightColor = vec3(1.0, 1.0, 1.0);
 
@@ -37,11 +37,10 @@ void main()
     vec3 lightDir = normalize(lightPos - fragPos);
     vec3 viewDir = normalize(ubo.mesh.camera.xyz - fragPos);
 
-    // Ambient light (soft baseline)
-    vec3 ambient = 0.15 * lightColor;
+    vec3 ambient = 0.05 * lightColor;
 
-    // Diffuse light (Lambert)
-    float diff = max(dot(norm, lightDir), 0.0);
+    float diff = max(dot(fragNormal, lightDir) + 0.3, 0.0);
+    diff = min(diff, 1.0);
     vec3 diffuse = diff * lightColor;
 
     // Combine all
@@ -50,10 +49,50 @@ void main()
     // Apply texture and tint
     vec4 surfaceColor = texture(texSampler, fragTexCoord) * ubo.mesh.color;
     // vec3 finalColor = surfaceColor.rgb * lighting;
-    vec3 finalColor = vec3(surfaceColor.r * (round(lighting.r * bandCount) / bandCount + 2 / bandCount), 
-    surfaceColor.g * (round(lighting.g * bandCount) / bandCount + 2 / bandCount), 
-    surfaceColor.b * (round(lighting.b * bandCount) / bandCount + 2 / bandCount));
 
+    vec3 celLighting = vec3(round(lighting.r * bandCount) / bandCount + 1 / bandCount, 
+    round(lighting.g * bandCount) / bandCount + 1 / bandCount, 
+    round(lighting.b * bandCount) / bandCount + 1 / bandCount);
+
+    vec3 finalColor;
+
+    float aspectRatio = abs(ubo.mesh.proj[1][1] / ubo.mesh.proj[0][0]);
+
+    float pixelX = screenPos.x * 100 * aspectRatio;
+    float pixelY = screenPos.y * 100;
+
+    float halftoneDistance = pow(mod(pixelX + 1, 2) - 1, 2) + pow(mod(pixelY + 1, 2) - 1, 2);
+
+    int test = 0;
+
+    if (test != 1)
+    {
+        if (celLighting.x > 0.5)
+        {
+            // Halftone Highlights
+            if (halftoneDistance > (lighting.x - 0.75) * 2)
+            {
+                finalColor = surfaceColor.rgb * (celLighting - 0.5);
+            }
+            else
+            {
+                finalColor = surfaceColor.rgb * celLighting;
+            }
+        }
+        else if (lighting.x < 0.25)
+        {
+            // Cross Hatching Shadows
+            finalColor = vec3(0.0, 0.0, 0.0);
+        }
+        else
+        {
+            finalColor = surfaceColor.rgb * celLighting;
+        }
+    }
+    else 
+    {
+        finalColor = lighting;
+    }
     vec3 camDist = normalize(ubo.mesh.camera.xyz - fragPos);
     float dotProd = dot(fragNormal, camDist);
 
@@ -63,6 +102,6 @@ void main()
     }
     else
     {
-        outColor = vec4(finalColor, surfaceColor.a);
+        outColor = vec4(finalColor.rgb, surfaceColor.a);
     }
 }
