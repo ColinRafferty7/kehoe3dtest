@@ -25,6 +25,10 @@ layout(location = 0) out vec4 outColor;
 
 void main()
 {
+    // Shading Variables
+    int bandCount = 3;
+    float outlineWidth = 0.2;
+
     // Lighting parameters
     vec3 lightPos = vec3(-100.0, -100.0, 200.0);
     vec3 lightColor = vec3(1.0, 1.0, 1.0);
@@ -40,24 +44,20 @@ void main()
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
-    // Specular (Phong reflection)
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-    vec3 specular = 0.3 * spec * lightColor;
-
     // Combine all
-    vec3 lighting = (ambient + diffuse + specular);
+    vec3 lighting = (ambient + diffuse);
 
     // Apply texture and tint
     vec4 surfaceColor = texture(texSampler, fragTexCoord) * ubo.mesh.color;
-    vec3 finalColor = surfaceColor.rgb * lighting;
-
-    // outColor = vec4(round(finalColor.r * 3) / 3.0, round(finalColor.g * 3) / 3.0, round(finalColor.b * 3) / 3.0, surfaceColor.a);
+    // vec3 finalColor = surfaceColor.rgb * lighting;
+    vec3 finalColor = vec3(surfaceColor.r * (round(lighting.r * bandCount) / bandCount + 2 / bandCount), 
+    surfaceColor.g * (round(lighting.g * bandCount) / bandCount + 2 / bandCount), 
+    surfaceColor.b * (round(lighting.b * bandCount) / bandCount + 2 / bandCount));
 
     vec3 camDist = normalize(ubo.mesh.camera.xyz - fragPos);
     float dotProd = dot(fragNormal, camDist);
 
-    if (dotProd < 0.3)
+    if (dotProd < 0.2)
     {
         outColor = vec4(0.0, 0.0, 0.0, 1.0);
     }
