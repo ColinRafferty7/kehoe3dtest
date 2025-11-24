@@ -63,6 +63,9 @@ void main()
 
     float halftoneDistance = pow(mod(pixelX + 1, 2) - 1, 2) + pow(mod(pixelY + 1, 2) - 1, 2);
 
+    float crosshatchDistance_up = abs(mod(pixelX, 2) - mod(pixelY, 2));
+    float crosshatchDistance_down = abs(mod(pixelX, 2) + mod(pixelY, 2) - 2);
+
     int test = 0;
 
     if (test != 1)
@@ -82,7 +85,14 @@ void main()
         else if (lighting.x < 0.25)
         {
             // Cross Hatching Shadows
-            finalColor = vec3(0.0, 0.0, 0.0);
+            if (crosshatchDistance_up > (0.25 - lighting.x) * 3 && crosshatchDistance_down > (0.25- lighting.x) * 3)
+            {
+                finalColor = surfaceColor.rgb * (celLighting + 0.5);
+            }
+            else 
+            {
+                finalColor = surfaceColor.rgb * celLighting;
+            }
         }
         else
         {

@@ -405,6 +405,7 @@ int main(int argc,char *argv[])
     player_init(player);
     player->think = player_think;
     player->attack = player_sword;
+    player->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
 
 
     // main game loop    
