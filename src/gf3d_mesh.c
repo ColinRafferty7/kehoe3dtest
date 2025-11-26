@@ -21,6 +21,7 @@ typedef struct
     Pipeline* alpha_pipe;
     Pipeline* comic_mesh_pipe;
     Pipeline* outline_pipe;
+    Pipeline* billboard_pipe;
     Uint32 mesh_max;
     VkVertexInputAttributeDescription attributeDescription[ATTRIBUTE_COUNT];
     VkVertexInputBindingDescription bindingDescription;
@@ -135,6 +136,18 @@ void gf3d_mesh_init(Uint32 mesh_max)
     gf3d_mesh.comic_mesh_pipe = gf3d_pipeline_create_from_config(
         gf3d_vgraphics_get_default_logical_device(),
         "config/comic_mesh_pipeline.cfg",
+        gf3d_vgraphics_get_view_extent(),
+        mesh_max,
+        gf3d_mesh_get_bind_description(),
+        gf3d_mesh_get_attribute_descriptions(NULL),
+        att_count,
+        sizeof(MeshUBO),
+        VK_INDEX_TYPE_UINT16
+    );
+
+    gf3d_mesh.comic_mesh_pipe = gf3d_pipeline_create_from_config(
+        gf3d_vgraphics_get_default_logical_device(),
+        "config/billboard_pipeline.cfg",
         gf3d_vgraphics_get_view_extent(),
         mesh_max,
         gf3d_mesh_get_bind_description(),

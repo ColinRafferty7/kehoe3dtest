@@ -397,7 +397,7 @@ int main(int argc,char *argv[])
     transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
     transparentTest->position = gfc_vector3d(10, 10, -80);
     transparentTest->scale = gfc_vector3d(5, 5, 5);
-    transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
+    //transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
     transparentTest->ignoreCollisions = 1;
 
     Entity* player;
@@ -405,7 +405,7 @@ int main(int argc,char *argv[])
     player_init(player);
     player->think = player_think;
     player->attack = player_sword;
-    player->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
+    //player->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
 
 
     // main game loop    
