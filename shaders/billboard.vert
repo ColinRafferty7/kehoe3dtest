@@ -30,8 +30,16 @@ layout(location = 2) out vec3 fragPos;
 
 void main()
 {
+    vec3 worldPos = vec4(ubo.mesh.model * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+    vec3 camDir = normalize(ubo.mesh.camera.xyz - worldPos);
+
+    vec3 right = cross(vec3(0.0, 0.0, 1.0), camDir);
+    vec3 up = cross(right, camDir);
+
+    vec3 vertPos = (up * inPosition.z * -1) + (right * inPosition.y * -1);
+
     mat4 mvp = ubo.mesh.proj * ubo.mesh.view * ubo.mesh.model;
-    gl_Position = mvp * vec4(inPosition, 1.0);
+    gl_Position = mvp * vec4(vertPos, 1.0);
 
     // Pass world position and normal to fragment shader
     fragPos = vec3(ubo.mesh.model * vec4(inPosition, 1.0));
