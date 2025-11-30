@@ -233,4 +233,6 @@ Pipeline* gf3d_mesh_get_comic_mesh_pipeline();
 
 Pipeline* gf3d_mesh_get_outline_pipeline();
 
+Pipeline* gf3d_mesh_get_billboard_pipeline();
+
 #endif

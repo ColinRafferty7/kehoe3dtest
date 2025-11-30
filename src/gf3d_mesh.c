@@ -145,7 +145,7 @@ void gf3d_mesh_init(Uint32 mesh_max)
         VK_INDEX_TYPE_UINT16
     );
 
-    gf3d_mesh.comic_mesh_pipe = gf3d_pipeline_create_from_config(
+    gf3d_mesh.billboard_pipe = gf3d_pipeline_create_from_config(
         gf3d_vgraphics_get_default_logical_device(),
         "config/billboard_pipeline.cfg",
         gf3d_vgraphics_get_view_extent(),
@@ -309,6 +309,11 @@ Pipeline* gf3d_mesh_get_comic_mesh_pipeline()
 Pipeline* gf3d_mesh_get_outline_pipeline()
 {
     return gf3d_mesh.outline_pipe;
+}
+
+Pipeline* gf3d_mesh_get_billboard_pipeline()
+{
+    return gf3d_mesh.billboard_pipe;
 }
 
 MeshUBO gf3d_mesh_get_ubo(

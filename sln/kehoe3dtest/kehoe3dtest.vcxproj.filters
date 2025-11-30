@@ -198,6 +198,36 @@
     <ClCompile Include="..\..\src\gf3d_mesh.c">
       <Filter>Source Files\gf3d</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\collision.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\enemy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf2d_ui.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_camera.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_model.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\map_generate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\physics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\player.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_billboard.c">
+      <Filter>Source Files\gf3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\gf2d_actor.h">
@@ -359,6 +389,33 @@
     <ClInclude Include="..\..\gfc\include\gfc_decode.h">
       <Filter>Header Files\gfc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gf2d_ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gf3d_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\map_generate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gf3d_billboard.h">
+      <Filter>Header Files\gf3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\config\sky_pipeline.cfg">
@@ -400,5 +457,15 @@
     <None Include="..\..\config\mesh_pipeline.cfg">
       <Filter>Other\config</Filter>
     </None>
+    <None Include="..\..\config\alpha_pipeline.cfg" />
+    <None Include="..\..\config\billboard_pipeline.cfg" />
+    <None Include="..\..\config\comic_mesh_pipeline.cfg" />
+    <None Include="..\..\config\outline_pipeline.cfg" />
+    <None Include="..\..\shaders\billboard.frag" />
+    <None Include="..\..\shaders\billboard.vert" />
+    <None Include="..\..\shaders\comic_mesh.frag" />
+    <None Include="..\..\shaders\comic_mesh.vert" />
+    <None Include="..\..\shaders\outline.frag" />
+    <None Include="..\..\shaders\outline.vert" />
   </ItemGroup>
 </Project>
