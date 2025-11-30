@@ -31,7 +31,7 @@ layout(location = 2) out vec3 fragPos;
 void main()
 {
     mat4 mvp = ubo.mesh.proj * ubo.mesh.view * ubo.mesh.model;
-    gl_Position = mvp * vec4(inPosition, 1.0) + vec4(inNormal * 10.0, 1.0);
+    gl_Position = mvp * vec4(inPosition, 1.0);
 
     // Pass world position and normal to fragment shader
     fragPos = vec3(ubo.mesh.model * vec4(inPosition, 1.0));
