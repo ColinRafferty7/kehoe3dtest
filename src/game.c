@@ -405,17 +405,17 @@ int main(int argc,char *argv[])
     transparentTest->name = "TransparentTest";
     transparentTest->position = gfc_vector3d(10, 10, -80);
     transparentTest->scale = gfc_vector3d(5, 5, 5);
-    transparentTest->entity_pipe = gf3d_mesh_get_pipeline();
+    transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
     transparentTest->ignoreCollisions = 1;
 
-    Entity* billboard;
+    /*Entity* billboard;
     billboard = entity_new();
     billboard->isStatic = 1;
     billboard->name = "billboard";
     billboard = gf3d_billboard_load(billboard, "images/comic_effects/thwam_test.png");
     billboard->entity_pipe = gf3d_mesh_get_billboard_pipeline();
     billboard->position = gfc_vector3d(10, 10, -80);
-    billboard->scale = gfc_vector3d(20, 20, 10);
+    billboard->scale = gfc_vector3d(20, 20, 10);*/
 
     Entity* player;
     player = entity_new();
