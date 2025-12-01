@@ -28,6 +28,8 @@
 #include "player.h"
 #include "gf3d_billboard.h"
 
+#include "test_scene.h"
+
 extern int __DEBUG;
 
 static int _done = 0;
@@ -344,6 +346,14 @@ void player_think(Entity* player)
 
 int main(int argc,char *argv[])
 {
+    Uint8 test = 1;
+
+    if (test)
+    {
+        test_main();
+        return;
+    }
+
     //local variables
     Sprite *healthBar, *health, *exp, *sword, *bow, *flamethrower, *bomb, *rocks, *border;
     //initializtion    
@@ -399,22 +409,22 @@ int main(int argc,char *argv[])
     //gfc_matrix4_identity(alphaMat);
     //alphaUBO = gf3d_mesh_get_ubo(alphaMat, GFC_COLOR_WHITE);
 
-    Entity* transparentTest;
+    /*Entity* transparentTest;
     transparentTest = entity_new();
     transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
     transparentTest->name = "TransparentTest";
-    transparentTest->position = gfc_vector3d(10, 10, -80);
+    transparentTest->position = gfc_vector3d(10, 10, -90);
     transparentTest->scale = gfc_vector3d(5, 5, 5);
     transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
     transparentTest->ignoreCollisions = 1;
 
-    /*Entity* billboard;
+    Entity* billboard;
     billboard = entity_new();
     billboard->isStatic = 1;
     billboard->name = "billboard";
     billboard = gf3d_billboard_load(billboard, "images/comic_effects/thwam_test.png");
     billboard->entity_pipe = gf3d_mesh_get_billboard_pipeline();
-    billboard->position = gfc_vector3d(10, 10, -80);
+    billboard->position = gfc_vector3d(10, 10, -90);
     billboard->scale = gfc_vector3d(20, 20, 10);*/
 
     Entity* player;
