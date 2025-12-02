@@ -11,7 +11,7 @@
 #include "gf3d_obj_load.h"
 #include "gf3d_camera.h"
 
-#define ATTRIBUTE_COUNT 3
+#define ATTRIBUTE_COUNT 5
 
 typedef struct
 {
@@ -80,6 +80,16 @@ void gf3d_mesh_init(Uint32 mesh_max)
     gf3d_mesh.attributeDescription[2].location = 2;
     gf3d_mesh.attributeDescription[2].format = VK_FORMAT_R32G32_SFLOAT;
     gf3d_mesh.attributeDescription[2].offset = offsetof(Vertex, texel);
+    
+    gf3d_mesh.attributeDescription[3].binding = 0;
+    gf3d_mesh.attributeDescription[3].location = 3;
+    gf3d_mesh.attributeDescription[3].format = VK_FORMAT_R32G32B32A32_SFLOAT;
+    gf3d_mesh.attributeDescription[3].offset = offsetof(Vertex, bones);
+        
+    gf3d_mesh.attributeDescription[4].binding = 0;
+    gf3d_mesh.attributeDescription[4].location = 4;
+    gf3d_mesh.attributeDescription[4].format = VK_FORMAT_R32G32B32A32_SFLOAT;
+    gf3d_mesh.attributeDescription[4].offset = offsetof(Vertex, weights);
 
     gf3d_mesh.mesh_list = gfc_allocate_array(sizeof(Mesh), mesh_max);
 
@@ -180,7 +190,7 @@ Mesh* gf3d_mesh_new()
     return NULL;
 }
 
-Mesh* gf3d_mesh_load_obj(const char* filename)
+Mesh* gf3d_mesh_load_obj(const char* filename) 
 {
     Mesh *mesh;
     MeshPrimitive *primitive;

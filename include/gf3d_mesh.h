@@ -31,6 +31,8 @@ typedef struct
     GFC_Vector3D vertex;
     GFC_Vector3D normal;
     GFC_Vector2D texel;
+    GFC_Vector4D bones;
+    GFC_Vector4D weights;
 }Vertex;
 
 typedef struct

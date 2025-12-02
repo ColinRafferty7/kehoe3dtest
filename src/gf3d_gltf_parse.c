@@ -310,4 +310,10 @@ void gf3d_gltf_reorg_obj(ObjData *obj)
         if (obj->texels)gfc_vector2d_copy(obj->faceVertices[i].texel,obj->texels[i]);
     }
 }
+
+Mesh* gf3d_gltf_parse_mesh(SJson* meshFile, GLTF* gltf)
+{
+
+}
+
 /*EOL@EOF*/

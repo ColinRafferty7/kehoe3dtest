@@ -54,5 +54,7 @@ void gf3d_gltf_get_buffer_view_data(GLTF *gltf,Uint32 viewIndex,char *buffer);
  */
 void gf3d_gltf_free(GLTF *gltf);
 
+Mesh* gf3d_gltf_parse_mesh(SJson* meshFile, GLTF* gltf);
+
 
 #endif

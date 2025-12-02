@@ -16,6 +16,12 @@ Entity* gf3d_model_load(Entity* ent, char* filename)
 		return NULL;
 	}
 
+	//meshFile = sj_get_string_value(sj_object_get_value(config, "gltf"));
+	//if (meshFile)
+	//{
+	//	ent->modelMesh =
+	//}
+
 	config = sj_object_get_value(json, "model");
 
 	meshFile = sj_get_string_value(sj_object_get_value(config, "obj"));
