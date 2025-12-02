@@ -313,7 +313,56 @@ void gf3d_gltf_reorg_obj(ObjData *obj)
 
 Mesh* gf3d_gltf_parse_mesh(SJson* meshFile, GLTF* gltf)
 {
+    int i, c;
+    Mesh* mesh;
+    ObjData* obj;
+    MeshPrimitive* primitive;
+    SJson* primitives, * primitiveData;
 
+    if ((!meshFile) || (!gltf))return NULL;
+
+    mesh = gf3d_mesh_new();
+    if (!mesh)
+    {
+        return NULL;
+    }
+    primitives = sj_object_get_value(meshFile, "primitives");
+    if (!primitives)
+    {
+        slog("No primitives found");
+        return NULL;
+    }
+
+    c = sj_array_get_count(primitives);
+    for (i = 0; i < c; i++)
+    {
+        primitiveData = sj_array_get_nth(primitives, i);
+        if (!primitiveData)continue;
+        obj = gf3d_gltf_parse_primitive(gltf, primitiveData);
+        if (!obj)
+        {
+            continue;
+        }
+        primitive = gf3d_mesh_primitive_new();
+        if (!primitive)
+        {
+            gf3d_obj_free(obj);
+            continue;
+        }
+
+        primitive->objData = obj;
+        gf3d_mesh_create_vertex_buffer_from_vertices(primitive);
+
+        gfc_list_append(mesh->primitives, primitive);
+        mesh->bounds.x = MIN(mesh->bounds.x, obj->bounds.x);
+        mesh->bounds.y = MIN(mesh->bounds.y, obj->bounds.y);
+        mesh->bounds.z = MIN(mesh->bounds.z, obj->bounds.z);
+
+        mesh->bounds.w = MAX(mesh->bounds.w, obj->bounds.w);
+        mesh->bounds.h = MAX(mesh->bounds.h, obj->bounds.h);
+        mesh->bounds.d = MAX(mesh->bounds.d, obj->bounds.d);
+    }
+    return mesh;
 }
 
 /*EOL@EOF*/

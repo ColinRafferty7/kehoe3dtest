@@ -29,6 +29,10 @@
 #include "enemy.h"
 #include "player.h"
 #include "gf3d_billboard.h"
+#include "gf3d_gltf_parse.h"
+#include "gf3d_obj_load.h"
+
+#include "simple_json_string.h"
 
 extern int __DEBUG;
 
@@ -76,10 +80,26 @@ int test_main()
     gfc_matrix4_identity(skyMat);
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
 
-    Entity* transparentTest;
+    GLTF* gltfTest;
+
+    gltfTest = gf3d_gltf_load("animations/simplecube.gltf");
+
+    SJson* meshFile = sj_array_nth(sj_object_get_value(gltfTest->json, "meshes"), 0);
+
+    Mesh* mesh;
+
+    mesh = gf3d_gltf_parse_mesh(meshFile, gltfTest);
+
+    Entity* ent;
+    ent = entity_new();
+    ent->modelMesh = mesh;
+    ent->modelTexture = gf3d_texture_load("models/primitives/flatwhite.png");
+    ent->isStatic = 1;
+
+    /*Entity* transparentTest;
     transparentTest = entity_new();
     transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
-    transparentTest->isStatic = 1;
+    transparentTest->isStatic = 1;*/
 
     // main game loop    
     while (!_done)
