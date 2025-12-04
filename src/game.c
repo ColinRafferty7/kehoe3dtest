@@ -27,6 +27,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "gf3d_billboard.h"
+#include "gf2d_ui.h"
 
 #include "test_scene.h"
 #include "scene.h"
@@ -345,7 +346,7 @@ int main(int argc,char *argv[])
     }
 
     //local variables
-    Sprite *healthBar, *health, *exp, *sword, *bow, *flamethrower, *bomb, *rocks, *border;
+    UIElement *healthBar, *health, *exp, *sword, *bow, *flamethrower, *bomb, *rocks, *border;
     //initializtion    
     parse_arguments(argc,argv);
     init_logger("gf3d.log",0);
@@ -362,6 +363,7 @@ int main(int argc,char *argv[])
     entity_init(2000);
     enemy_init(1000);
     scene_init(32);
+    gf2d_ui_init(100);
 
     Scene* scene_1;
     scene_1 = scene_new();
@@ -375,15 +377,35 @@ int main(int argc,char *argv[])
     //game init
     srand(SDL_GetTicks());
     slog_sync();
-    healthBar = gf2d_sprite_load_image("images/player_ui/HealthBar.png");
-    health = gf2d_sprite_load_image("images/player_ui/Health.png");
-    exp = gf2d_sprite_load_image("images/player_ui/exp.png");
-    sword = gf2d_sprite_load_image("images/player_ui/Sword.png");
-    bow = gf2d_sprite_load_image("images/player_ui/Bow.png");
-    flamethrower = gf2d_sprite_load_image("images/player_ui/Flamethrower.png");
-    bomb = gf2d_sprite_load_image("images/player_ui/Bomb.png");
-    rocks = gf2d_sprite_load_image("images/player_ui/Rocks.png");
-    border = gf2d_sprite_load_image("images/player_ui/Border.png");
+
+    /*healthBar->sprite = gf2d_sprite_load_image("images/player_ui/HealthBar.png");
+    health->sprite = gf2d_sprite_load_image("images/player_ui/Health.png");
+    exp->sprite = gf2d_sprite_load_image("images/player_ui/exp.png");*/
+
+    sword = gf2d_ui_new();
+    slog("ui new");
+    sword->sprite = gf2d_sprite_load_image("images/player_ui/Sword.png");
+    slog("sprite");
+    sword->position = gfc_vector2d(334, 606);
+    slog("post ui load");
+
+    bow = gf2d_ui_new();
+    bow->sprite = gf2d_sprite_load_image("images/player_ui/Bow.png");
+    bow->position = gfc_vector2d(462, 606);
+
+    flamethrower = gf2d_ui_new();
+    flamethrower->sprite = gf2d_sprite_load_image("images/player_ui/Flamethrower.png");
+    flamethrower->position = gfc_vector2d(590, 606);
+
+    bomb = gf2d_ui_new();
+    bomb->sprite = gf2d_sprite_load_image("images/player_ui/Bomb.png");
+    bomb->position = gfc_vector2d(718, 606);
+
+    rocks = gf2d_ui_new();
+    rocks->sprite = gf2d_sprite_load_image("images/player_ui/Rocks.png");
+    rocks->position = gfc_vector2d(846, 606);
+
+    /*border->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");*/
 
     map_generate_level();   
 
@@ -468,16 +490,13 @@ int main(int argc,char *argv[])
 
                 entity_draw_all();
 
-                gf2d_sprite_draw_image(border, borderPos, gfc_vector2d(1, 1));
+                //gf2d_sprite_draw_image(border, borderPos, gfc_vector2d(1, 1));
                 /*gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 10), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(health, gfc_vector2d(13, 13), gfc_vector2d(player->health / player->max_health, 1));
                 gf2d_sprite_draw_image(healthBar, gfc_vector2d(10, 70), gfc_vector2d(1, 1));
                 gf2d_sprite_draw_image(exp, gfc_vector2d(13, 73), gfc_vector2d(player->exp / player->exp_goal, 1));*/
-                gf2d_sprite_draw_image(sword, gfc_vector2d(334, 606), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(bow, gfc_vector2d(462, 606), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(flamethrower, gfc_vector2d(590, 606), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(bomb, gfc_vector2d(718, 606), gfc_vector2d(1, 1));
-                gf2d_sprite_draw_image(rocks, gfc_vector2d(846, 606), gfc_vector2d(1, 1));
+
+                gf2d_ui_draw_all();
 
                 //gf2d_font_draw_line_tag(gfc_stringf("%.0f/%.0f", player->exp, player->exp_goal)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(80, 75));
                 //gf2d_font_draw_line_tag(gfc_stringf("lv: %d", player->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));

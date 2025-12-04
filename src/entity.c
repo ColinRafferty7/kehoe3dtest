@@ -52,8 +52,6 @@ Entity* entity_new()
         ent_system.ent_list[i].boundingBox = gfc_box(0, 0, 0, 0, 0, 0);
 
         scene_add_entity(scene_get_active(), &ent_system.ent_list[i]);
-
-        slog("%u", i);
      
         return &ent_system.ent_list[i];
     }
