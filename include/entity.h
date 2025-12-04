@@ -44,6 +44,8 @@ typedef struct Entity_S
 
     Uint8 isRock;
 
+    Uint8 persist;
+
     void (*think)   (struct Entity_S* ent);
 
     void (*attack)   (struct Entity_S* ent);

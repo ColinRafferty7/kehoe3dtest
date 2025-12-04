@@ -52,6 +52,8 @@ Entity* entity_new()
         ent_system.ent_list[i].boundingBox = gfc_box(0, 0, 0, 0, 0, 0);
 
         scene_add_entity(scene_get_active(), &ent_system.ent_list[i]);
+
+        slog("%u", i);
      
         return &ent_system.ent_list[i];
     }
@@ -71,11 +73,17 @@ void entity_think(Entity* ent)
 
 void entity_think_all()
 {
-    if (!ent_system.ent_list) return;
+    Scene* active_scene = scene_get_active();
+    if (!active_scene) return;
 
-    for (int i = 0; i < ent_system.ent_max; i++)
+    for (int i = 0; i < active_scene->ent_max; i++)
     {
-        entity_think(&ent_system.ent_list[i]);
+        if (!active_scene->entities[i]) continue;
+
+        if (active_scene->entities[i]->_inuse)
+        {
+            entity_think(active_scene->entities[i]);
+        }
     }
 }
 
@@ -130,13 +138,16 @@ void entity_update(Entity* ent)
 
 void entity_update_all()
 {
-    if (!ent_system.ent_list) return;
+    Scene* active_scene = scene_get_active();
+    if (!active_scene) return;
 
-    for (int i = 0; i < ent_system.ent_max; i++)
+    for (int i = 0; i < active_scene->ent_max; i++)
     {
-        if (ent_system.ent_list[i]._inuse)
+        if (!active_scene->entities[i]) continue;
+
+        if (active_scene->entities[i]->_inuse)
         {
-            entity_update(&ent_system.ent_list[i]);
+            entity_update(active_scene->entities[i]);
         }
     }
 }
@@ -144,6 +155,8 @@ void entity_update_all()
 void entity_collision_check_all()
 {
     // TODO: Make sublists that only contain entities that should be iterated through
+
+    Scene* active_scene = scene_get_active();
     if (!ent_system.ent_list) return;
 
     for (int i = 0; i < ent_system.ent_max; i++)
@@ -153,34 +166,6 @@ void entity_collision_check_all()
         {
             if (!ent_system.ent_list[j]._inuse || i == j) continue;
             collision_check(&ent_system.ent_list[i], &ent_system.ent_list[j]);
-        }
-    }
-}
-
-void entity_print_name(Entity* ent)
-{
-    MeshPrimitive *prim = ent->modelMesh->primitives->elements[0].data;
-    ObjData *data = prim->objData;
-
-    slog("Name: %s", ent->name);
-
-
-    for (int i = 0; i < data->normal_count; i++)
-    {
-        slog("Vertex Num: %u - vector((%f, %f, %f), (%f, %f, %f))", i, data->faceVertices[i].vertex.x, data->faceVertices[i].vertex.y, data->faceVertices[i].vertex.z, data->faceVertices[i].vertex.x + data->normals[i].x, data->faceVertices[i].vertex.y + data->normals[i].y, data->faceVertices[i].vertex.z + data->normals[i].z);
-    }
-    
-}
-
-void entity_print_name_all()
-{
-    if (!ent_system.ent_list) return;
-
-    for (int i = 0; i < ent_system.ent_max; i++)
-    {
-        if (ent_system.ent_list[i]._inuse)
-        {
-            entity_print_name(&ent_system.ent_list[i]);
         }
     }
 }

@@ -332,17 +332,6 @@ void player_think(Entity* player)
         player->exp_goal = 100;
         player->level = 0;
     }
-
-    if (gfc_input_key_pressed("h"))
-    {
-        entity_print_name_all();
-    }
-
-    if (gfc_input_key_pressed("f"))
-    {
-        MeshPrimitive *prim = player->modelMesh->primitives->elements->data;
-        slog("Data: %u", prim->objData);
-    }
 }
 
 int main(int argc,char *argv[])
@@ -377,6 +366,9 @@ int main(int argc,char *argv[])
     Scene* scene_1;
     scene_1 = scene_new();
     scene_set_active(scene_1);
+
+    Scene* scene_2;
+    scene_2 = scene_new();
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
@@ -450,6 +442,15 @@ int main(int argc,char *argv[])
         gf2d_font_update();
         //camera updaes
 
+        if (gfc_input_key_pressed("f"))
+        {
+            Scene *new_scene;
+            new_scene = scene_new();
+            scene_add_entity(new_scene, player);
+            scene_set_active(new_scene);
+            player->position = gfc_vector3d(0, 0, 0);
+            map_generate_level();
+        }
         entity_think_all();
         enemy_think_all();
         

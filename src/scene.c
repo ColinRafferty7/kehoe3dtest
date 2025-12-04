@@ -68,10 +68,25 @@ void scene_add_entity(Scene* scene, Entity* ent)
 
 void scene_set_active(Scene* scene)
 {
+    if (g_scene_active)
+    {
+        for (int i = 0; i < g_scene_active->ent_count; i++)
+        {
+            if (!g_scene_active->entities[i]->persist)
+            {
+                entity_free(g_scene_active->entities[i]);
+            }
+        }
+    }
     g_scene_active = scene;
 }
 
 Scene* scene_get_active()
 {
     return g_scene_active;
+}
+
+void scene_main_menu()
+{
+
 }
