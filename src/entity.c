@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "collision.h"
 #include <gf3d_obj_load.h>
+#include "scene.h"
 
 typedef struct
 {
@@ -49,6 +50,8 @@ Entity* entity_new()
         ent_system.ent_list[i].scale = gfc_vector3d(1, 1, 1);
         ent_system.ent_list[i].rotation = gfc_vector3d(0, 0, 0);
         ent_system.ent_list[i].boundingBox = gfc_box(0, 0, 0, 0, 0, 0);
+
+        scene_add_entity(scene_get_active(), &ent_system.ent_list[i]);
      
         return &ent_system.ent_list[i];
     }
@@ -92,13 +95,16 @@ void entity_draw(Entity* ent)
 
 void entity_draw_all()
 {
-    if (!ent_system.ent_list) return;
+    Scene* active_scene = scene_get_active();
+    if (!active_scene) return;
 
-    for (int i = 0; i < ent_system.ent_max; i++)
+    for (int i = 0; i < active_scene->ent_max; i++)
     {
-        if (ent_system.ent_list[i]._inuse)
+        if (!active_scene->entities[i]) continue;
+
+        if (active_scene->entities[i]->_inuse)
         {
-            entity_draw(&ent_system.ent_list[i]);
+            entity_draw(active_scene->entities[i]);
         }
     }
 }

@@ -29,6 +29,7 @@
 #include "gf3d_billboard.h"
 
 #include "test_scene.h"
+#include "scene.h"
 
 extern int __DEBUG;
 
@@ -346,7 +347,7 @@ void player_think(Entity* player)
 
 int main(int argc,char *argv[])
 {
-    Uint8 test = 1;
+    Uint8 test = 0;
 
     if (test)
     {
@@ -371,6 +372,11 @@ int main(int argc,char *argv[])
 
     entity_init(2000);
     enemy_init(1000);
+    scene_init(32);
+
+    Scene* scene_1;
+    scene_1 = scene_new();
+    scene_set_active(scene_1);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
     
@@ -387,7 +393,7 @@ int main(int argc,char *argv[])
     rocks = gf2d_sprite_load_image("images/player_ui/Rocks.png");
     border = gf2d_sprite_load_image("images/player_ui/Border.png");
 
-    map_generate_level();
+    map_generate_level();   
 
     Mesh* skyMesh;
     Texture* skyTexture;
@@ -409,7 +415,7 @@ int main(int argc,char *argv[])
     //gfc_matrix4_identity(alphaMat);
     //alphaUBO = gf3d_mesh_get_ubo(alphaMat, GFC_COLOR_WHITE);
 
-    /*Entity* transparentTest;
+    Entity* transparentTest;
     transparentTest = entity_new();
     transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
     transparentTest->name = "TransparentTest";
@@ -425,13 +431,14 @@ int main(int argc,char *argv[])
     billboard = gf3d_billboard_load(billboard, "images/comic_effects/thwam_test.png");
     billboard->entity_pipe = gf3d_mesh_get_billboard_pipeline();
     billboard->position = gfc_vector3d(10, 10, -90);
-    billboard->scale = gfc_vector3d(20, 20, 10);*/
+    billboard->scale = gfc_vector3d(20, 20, 10);
 
     Entity* player;
     player = entity_new();
     player_init(player);
     player->think = player_think;
     player->attack = player_sword;
+
     //player->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
 
 
@@ -457,6 +464,7 @@ int main(int argc,char *argv[])
         gf3d_vgraphics_render_start();
                 //2D draws
                 gf3d_mesh_queue_render(skyMesh, gf3d_mesh_get_sky_pipeline(), &skyUBO, skyTexture);
+
                 entity_draw_all();
 
                 gf2d_sprite_draw_image(border, borderPos, gfc_vector2d(1, 1));

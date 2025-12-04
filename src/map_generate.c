@@ -1,6 +1,6 @@
 #include "map_generate.h"
 
-#define SCALE 32
+#define SCALE 16
 #define SIZE 8
 #define HEIGHT 1
 #define SLOPES 4
@@ -119,16 +119,16 @@ void map_generate_level()
 		}
 	}
 
-	for (int i = (SIZE * -1); i < SIZE; i++)
-	{
-		for (int j = (SIZE * -1); j < SIZE; j++)
-		{
-			if (gfc_random_int(4) == 0)
-			{
-				//spawn_random(i, j, map_height[i][j]);
-			}
-		}
-	}
+	//for (int i = (SIZE * -1); i < SIZE; i++)
+	//{
+	//	for (int j = (SIZE * -1); j < SIZE; j++)
+	//	{
+	//		if (gfc_random_int(4) == 0)
+	//		{
+	//			//spawn_random(i, j, map_height[i][j]);
+	//		}
+	//	}
+	//}
 }
 
 void spawn_random(int row, int column, int height)
