@@ -354,6 +354,7 @@ Mesh* gf3d_gltf_parse_mesh(SJson* meshFile, GLTF* gltf)
         gf3d_mesh_create_vertex_buffer_from_vertices(primitive);
 
         gfc_list_append(mesh->primitives, primitive);
+
         mesh->bounds.x = MIN(mesh->bounds.x, obj->bounds.x);
         mesh->bounds.y = MIN(mesh->bounds.y, obj->bounds.y);
         mesh->bounds.z = MIN(mesh->bounds.z, obj->bounds.z);

@@ -90,6 +90,10 @@ int test_main()
 
     mesh = gf3d_gltf_parse_mesh(meshFile, gltfTest);
 
+    MeshPrimitive* prim = mesh->primitives->elements->data;
+
+    slog("%u", prim->objData->boneIndices->z);
+
     Entity* ent;
     ent = entity_new();
     ent->modelMesh = mesh;
