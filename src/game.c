@@ -335,6 +335,11 @@ void player_think(Entity* player)
     }
 }
 
+void main_menu_button(UIElement* ui)
+{
+    scene_set_active(ui->data);
+}
+
 int main(int argc,char *argv[])
 {
     Uint8 test = 0;
@@ -404,8 +409,10 @@ int main(int argc,char *argv[])
 
     UIElement* button;
     button = gf2d_ui_button();
-    button->sprite = gf2d_sprite_load_image("images/comic_effects/thwam_test.png");
+    button->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");
     button->position = gfc_vector2d(100, 100);
+    button->click = main_menu_button;
+    button->data = scene_2;
 
     UIElement* cursor;
     cursor = gf2d_ui_cursor();

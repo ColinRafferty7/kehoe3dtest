@@ -109,7 +109,7 @@ void button_think(UIElement* button)
 		if (overlapX > 0 && overlapX < button->sprite->frameWidth * button->scale.x &&
 			overlapY > 0 && overlapY < button->sprite->frameHeight * button->scale.y)
 		{
-			slog("%d, %d", overlapX, overlapY);
+			button->click(button);
 		}
 		
 	}

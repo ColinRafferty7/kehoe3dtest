@@ -9,7 +9,9 @@ typedef struct
 
     Uint8 _inuse;
 
-    void (*think)   (struct UIElement* ent);
+    void (*think)   (struct UIElement* ui);
+    void (*click)   (struct UIElement* ui);
+    void* data;
 
     GFC_Vector2D anchor;
 
