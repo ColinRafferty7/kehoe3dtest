@@ -150,7 +150,9 @@ float gf2d_mouse_get_angle_to(GFC_Vector2D point)
 
 GFC_Vector2D gf2d_mouse_get_position()
 {
-    return _mouse.mouse[0].delta;
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    return gfc_vector2d(x, y);
 }
 
 GFC_Vector2D gf2d_mouse_get_movement()

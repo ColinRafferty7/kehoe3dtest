@@ -372,7 +372,7 @@ int main(int argc,char *argv[])
     Scene* scene_2;
     scene_2 = scene_new();
 
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+    //SDL_SetRelativeMouseMode(SDL_TRUE);
     
     //game init
     srand(SDL_GetTicks());
@@ -383,11 +383,8 @@ int main(int argc,char *argv[])
     exp->sprite = gf2d_sprite_load_image("images/player_ui/exp.png");*/
 
     sword = gf2d_ui_new();
-    slog("ui new");
     sword->sprite = gf2d_sprite_load_image("images/player_ui/Sword.png");
-    slog("sprite");
     sword->position = gfc_vector2d(334, 606);
-    slog("post ui load");
 
     bow = gf2d_ui_new();
     bow->sprite = gf2d_sprite_load_image("images/player_ui/Bow.png");
@@ -404,6 +401,15 @@ int main(int argc,char *argv[])
     rocks = gf2d_ui_new();
     rocks->sprite = gf2d_sprite_load_image("images/player_ui/Rocks.png");
     rocks->position = gfc_vector2d(846, 606);
+
+    UIElement* button;
+    button = gf2d_ui_button();
+    button->sprite = gf2d_sprite_load_image("images/comic_effects/thwam_test.png");
+    button->position = gfc_vector2d(100, 100);
+
+    UIElement* cursor;
+    cursor = gf2d_ui_cursor();
+    cursor->sprite = gf2d_sprite_load_image("images/player_ui/Cursor.png");
 
     /*border->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");*/
 
@@ -450,7 +456,7 @@ int main(int argc,char *argv[])
     Entity* player;
     player = entity_new();
     player_init(player);
-    player->think = player_think;
+    //player->think = player_think;
     player->attack = player_sword;
 
     //player->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
@@ -473,8 +479,10 @@ int main(int argc,char *argv[])
             player->position = gfc_vector3d(0, 0, 0);
             map_generate_level();
         }
+
         entity_think_all();
         enemy_think_all();
+        gf2d_ui_think_all();
         
         entity_update_all();
         entity_collision_check_all();

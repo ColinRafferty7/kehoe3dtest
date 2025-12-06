@@ -26,6 +26,6 @@ void scene_set_active(Scene* scene);
 
 Scene* scene_get_active();
 
-void scene_main_menu();
+Scene* scene_main_menu();
 
 #endif

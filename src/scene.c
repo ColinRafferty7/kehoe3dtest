@@ -1,6 +1,7 @@
 #include "scene.h"
 
 #include "simple_logger.h"
+#include "gf2d_ui.h"
 
 typedef struct
 {
@@ -86,7 +87,9 @@ Scene* scene_get_active()
     return g_scene_active;
 }
 
-void scene_main_menu()
+Scene* scene_main_menu()
 {
+    Scene *scene;
+    scene = scene_new();
 
 }

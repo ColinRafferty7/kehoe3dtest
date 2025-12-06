@@ -9,6 +9,10 @@ typedef struct
 
     Uint8 _inuse;
 
+    void (*think)   (struct UIElement* ent);
+
+    GFC_Vector2D anchor;
+
     GFC_Vector2D   position;
     GFC_Vector2D scale;
     GFC_Vector2D* center;
@@ -31,5 +35,11 @@ UIElement* gf2d_ui_new();
 void gf2d_ui_free(UIElement* ui);
 
 void gf2d_ui_close();
+
+UIElement* gf2d_ui_button();
+
+UIElement* gf2d_ui_cursor();
+
+void gf2d_ui_think_all();
 
 #endif
