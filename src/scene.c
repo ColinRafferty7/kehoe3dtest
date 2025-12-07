@@ -77,6 +77,10 @@ void scene_set_active(Scene* scene)
             {
                 entity_free(g_scene_active->entities[i]);
             }
+            else
+            {
+                scene_add_entity(scene, g_scene_active->entities[i]);
+            }
         }
     }
     g_scene_active = scene;
