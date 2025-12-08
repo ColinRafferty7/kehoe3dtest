@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="definitions">
+      <UniqueIdentifier>{e095143b-22f1-4e33-a9a6-907d1a1acf2b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\editor\editor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_actions.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_audio.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_callbacks.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_color.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_config.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_config_def.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_decode.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_hashmap.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_input.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_list.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_matrix.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_noise.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_pak.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_primitives.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_shape.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_string.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_text.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_types.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\gfc_vector.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\src\miniz.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_json\src\simple_json.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_json\src\simple_json_array.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_json\src\simple_json_error.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_json\src\simple_json_list.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_json\src\simple_json_object.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_json\src\simple_json_parse.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_json\src\simple_json_string.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gfc\simple_logger\src\simple_logger.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\collision.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\enemy.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entity.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf2d_actor.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf2d_camera.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf2d_font.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf2d_mouse.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf2d_sprite.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf2d_ui.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_billboard.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_buffers.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_camera.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_commands.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_config.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_debug.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_device.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_extensions.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_gltf_parse.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_mesh.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_model.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_obj_load.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_pipeline.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_shaders.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_swapchain.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_texture.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_uniform_buffers.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_validation.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_vgraphics.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gf3d_vqueues.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\map_generate.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\physics.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\player.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\def\test.def">
+      <Filter>definitions</Filter>
+    </None>
+  </ItemGroup>
+</Project>
