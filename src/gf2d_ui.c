@@ -2,6 +2,7 @@
 
 #include "simple_logger.h"
 #include "gf2d_mouse.h"
+#include "gfc_input.h"
 
 typedef struct
 {
@@ -133,4 +134,38 @@ UIElement* gf2d_ui_button()
 	UIElement* button;
 	button = gf2d_ui_new();
 	button->think = button_think;
+}
+
+void click_input_box(UIElement* ui)
+{
+	SDL_StartTextInput();
+	gfc_input_set_active_box(ui);
+}
+
+void input_box_submit(UIElement* ui)
+{
+	SJson* def = sj_load("def/test.def");
+
+	int count = atoi(ui->text);
+	sj_object_delete_key(def, ui->key);
+	sj_object_insert(def, ui->key, sj_new_int(count));
+
+	sj_save(def, "def/test.def");
+}
+
+UIElement* gf2d_ui_input_box()
+{
+	/*UIElement* box;
+	box = gf2d_ui_button();
+	slog("button");
+	box->click = click_input_box;
+	slog("click");
+	box->submit = input_box_submit;
+	slog("submit");*/
+
+	UIElement* box;
+	box = gf2d_ui_new();
+	box->think = button_think;
+	box->click = click_input_box;
+	box->submit = input_box_submit;
 }

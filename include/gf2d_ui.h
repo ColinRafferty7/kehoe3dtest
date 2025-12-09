@@ -11,9 +11,12 @@ typedef struct
 
     void (*think)   (struct UIElement* ui);
     void (*click)   (struct UIElement* ui);
+    void (*submit)   (struct UIElement* ui);
     void* data;
 
-    char* text;
+    char text[256];
+
+    char* key;
 
     GFC_Vector2D anchor;
 
@@ -43,6 +46,8 @@ void gf2d_ui_close();
 UIElement* gf2d_ui_button();
 
 UIElement* gf2d_ui_cursor();
+
+UIElement* gf2d_ui_input_box();
 
 void gf2d_ui_think_all();
 

@@ -49,12 +49,6 @@ void exitGame()
     _done = 1;
 }
 
-void main_menu_button(UIElement* ui)
-{
-    SDL_StartTextInput();
-    gfc_input_set_active_box(ui);
-}
-
 int main(int argc, char* argv[])
 {
     //local variables
@@ -85,13 +79,15 @@ int main(int argc, char* argv[])
     srand(SDL_GetTicks());
     slog_sync();
 
+    UIElement* cursor;
+    cursor = gf2d_ui_cursor();
+    cursor->sprite = gf2d_sprite_load_image("images/player_ui/CursorWhite.png");
+
     UIElement* button;
-    button = gf2d_ui_button();
-    button->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");
+    button = gf2d_ui_input_box();
+    button->sprite = gf2d_sprite_load_image("images/editor/InputBox.png");
     button->position = gfc_vector2d(100, 100);
-    button->click = main_menu_button;
-    char buffer[256] = { "\0" };
-    button->text = buffer;
+    button->key = "count";
 
     // main game loop    
     while (!_done)
@@ -116,7 +112,7 @@ int main(int argc, char* argv[])
         gf3d_vgraphics_render_start();
             entity_draw_all();
             gf2d_ui_draw_all();
-            gf2d_font_draw_line_tag(button->text, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(100, 150));
+            gf2d_font_draw_line_tag(button->text, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(105, 105));
             //gf2d_font_draw_line_tag(gfc_stringf("lv: %d", player->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));
         gf3d_vgraphics_render_end();
 
