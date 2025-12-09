@@ -231,7 +231,8 @@ Sprite * gf2d_sprite_from_surface(SDL_Surface *surface,int frame_width,int frame
 
 Sprite * gf2d_sprite_load_image(const char * filename)
 {
-    return gf2d_sprite_load(filename,0,0, 1);
+    Sprite* sprite = gf2d_sprite_load(filename, 0, 0, 1);
+    return sprite;
 }
 
 Sprite *gf2d_sprite_parse(SJson *json)
@@ -267,6 +268,7 @@ Sprite * gf2d_sprite_load(const char * filename,int frame_width,int frame_height
     sprite = gf2d_sprite_new();
     if (!sprite)
     {
+        slog("no new sprite");
         return NULL;
     }
     sprite->texture = gf3d_texture_load(filename);

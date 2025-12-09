@@ -13,6 +13,8 @@ typedef struct
     void (*click)   (struct UIElement* ui);
     void* data;
 
+    char* text;
+
     GFC_Vector2D anchor;
 
     GFC_Vector2D   position;
