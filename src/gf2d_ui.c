@@ -3,6 +3,7 @@
 #include "simple_logger.h"
 #include "gf2d_mouse.h"
 #include "gfc_input.h"
+#include "gf2d_font.h"
 
 typedef struct
 {
@@ -17,10 +18,19 @@ void gf2d_ui_draw(UIElement* ui)
 	if (!ui->sprite) return;
 
 	gf2d_sprite_draw_image(
-		ui->sprite,
+	 	ui->sprite,
 		ui->position,
 		ui->scale
 	);
+
+	if (!ui->name) return;
+
+	if (!strcmp(ui->name, "InputBox"))
+	{
+		gf2d_font_draw_line_tag(ui->key, FT_H1, GFC_COLOR_WHITE, gfc_vector2d(ui->position.x, ui->position.y - ui->sprite->frameHeight));
+		gf2d_font_draw_line_tag(ui->text, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(ui->position.x + 5, ui->position.y + 5));
+	}
+	
 }
 
 void gf2d_ui_draw_all()
@@ -28,6 +38,7 @@ void gf2d_ui_draw_all()
 	for (int i = 0; i < ui_manager.ui_max; i++)
 	{
 		if (!ui_manager.ui_list[i]._inuse) continue;
+		if (!strcmp(ui_manager.ui_list[i].text, "Cursor")) continue;
 
 		gf2d_ui_draw(&ui_manager.ui_list[i]);
 	}
@@ -86,6 +97,10 @@ void gf2d_ui_close()
 void gf2d_ui_think(UIElement* ui)
 {
 	ui->think(ui);
+	if (ui->scroll)
+	{
+		ui->scroll(ui);
+	}
 }
 
 void  gf2d_ui_think_all()
@@ -126,14 +141,20 @@ UIElement* gf2d_ui_cursor()
 {
 	UIElement* cursor;
 	cursor = gf2d_ui_new();
+	strcpy(cursor->text, "Cursor");
 	cursor->think = cursor_think;
+
+	return cursor;
 }
 
 UIElement* gf2d_ui_button()
 {
 	UIElement* button;
 	button = gf2d_ui_new();
+	button->name = "Button";
 	button->think = button_think;
+
+	return button;
 }
 
 void click_input_box(UIElement* ui)
@@ -153,19 +174,27 @@ void input_box_submit(UIElement* ui)
 	sj_save(def, "def/test.def");
 }
 
+void ui_scroll(UIElement* ui)
+{
+	if (gfc_input_mouse_wheel_down())
+	{
+		ui->position.y += 15;
+	}
+	if (gfc_input_mouse_wheel_up())
+	{
+		ui->position.y -= 15;
+	}
+}
+
 UIElement* gf2d_ui_input_box()
 {
-	/*UIElement* box;
-	box = gf2d_ui_button();
-	slog("button");
-	box->click = click_input_box;
-	slog("click");
-	box->submit = input_box_submit;
-	slog("submit");*/
-
 	UIElement* box;
 	box = gf2d_ui_new();
+	box->name = "InputBox";
 	box->think = button_think;
+	box->scroll = ui_scroll;
 	box->click = click_input_box;
 	box->submit = input_box_submit;
+
+	return box;
 }

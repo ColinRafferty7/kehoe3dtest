@@ -10,11 +10,14 @@ typedef struct
     Uint8 _inuse;
 
     void (*think)   (struct UIElement* ui);
+    void (*scroll) (struct UIElement* ui);
     void (*click)   (struct UIElement* ui);
     void (*submit)   (struct UIElement* ui);
     void* data;
 
     char text[256];
+
+    char* name;
 
     char* key;
 

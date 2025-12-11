@@ -2,6 +2,8 @@
 
 #include "simple_json.h"
 #include "simple_logger.h"
+#include "simple_json_object.h"
+#include "simple_json_value.h"
 
 #include "gfc_input.h"
 #include "gfc_config_def.h"
@@ -49,6 +51,52 @@ void exitGame()
     _done = 1;
 }
 
+void editor_think()
+{
+    if (gf2d_mouse_button_held(1))
+    {
+        GFC_Vector3D direction;
+
+        direction = cameraPos;
+        direction.z = 0;
+        gfc_vector3d_normalize(&direction);
+        gfc_vector3d_rotate_about_z(&direction, GFC_PI);
+
+        if (gfc_input_key_down("w"))
+        {
+            gfc_vector3d_add(camera, camera, direction);
+            gfc_vector3d_add(cameraPos, cameraPos, direction);
+        }
+        if (gfc_input_key_down("s"))
+        {
+            gfc_vector3d_rotate_about_z(&direction, GFC_PI);
+            gfc_vector3d_add(camera, camera, direction);
+            gfc_vector3d_add(cameraPos, cameraPos, direction);
+        }
+        if (gfc_input_key_down("a"))
+        {
+            gfc_vector3d_rotate_about_z(&direction, GFC_HALF_PI);
+            gfc_vector3d_add(camera, camera, direction);
+            gfc_vector3d_add(cameraPos, cameraPos, direction);
+        }
+        if (gfc_input_key_down("d"))
+        {
+            gfc_vector3d_rotate_about_z(&direction, -1 * GFC_HALF_PI);
+            gfc_vector3d_add(camera, camera, direction);
+            gfc_vector3d_add(cameraPos, cameraPos, direction);
+        }
+    }
+}
+
+void regenerate()
+{
+    Scene* new_scene;
+    new_scene = scene_new();
+    scene_set_active(new_scene);
+    camera = gfc_vector3d(0, 0, 0);
+    map_generate_level();
+}
+
 int main(int argc, char* argv[])
 {
     //local variables
@@ -79,15 +127,37 @@ int main(int argc, char* argv[])
     srand(SDL_GetTicks());
     slog_sync();
 
+    SJson* def = sj_load("def/test.def");
+
+    int count = sj_list_get_count(def->v.array);
+
+    for (int i = 0; i < count; i++)
+    {
+        SJPair* pair = (SJPair*) sj_list_get_nth(def->v.array, i);
+
+        SJString* string = sj_value_to_json_string(pair->value);
+
+        UIElement* inputBox;
+        inputBox = gf2d_ui_input_box();
+        inputBox->sprite = gf2d_sprite_load_image("images/editor/InputBox.png");
+        inputBox->position = gfc_vector2d(1000, 100 * i);
+        inputBox->key = pair->key->text;
+        strcpy(inputBox->text, string->text);
+    }
+
+    map_generate_level();
+
     UIElement* cursor;
     cursor = gf2d_ui_cursor();
     cursor->sprite = gf2d_sprite_load_image("images/player_ui/CursorWhite.png");
 
     UIElement* button;
-    button = gf2d_ui_input_box();
-    button->sprite = gf2d_sprite_load_image("images/editor/InputBox.png");
-    button->position = gfc_vector2d(100, 100);
-    button->key = "count";
+    button = gf2d_ui_button();
+    button->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");
+    button->position = gfc_vector2d(550, 650);
+    button->scale.x = 2;
+    button->scale.y = 0.6;
+    button->click = regenerate;
 
     // main game loop    
     while (!_done)
@@ -102,17 +172,16 @@ int main(int argc, char* argv[])
         enemy_think_all();
         gf2d_ui_think_all();
 
-        entity_update_all();
-        entity_collision_check_all();
+        editor_think();
 
-        gf3d_camera_look_at(gfc_vector3d(0,0,0), &cameraPos);
+        gf3d_camera_look_at(camera, &cameraPos);
 
         gf3d_camera_update_view();
 
         gf3d_vgraphics_render_start();
             entity_draw_all();
             gf2d_ui_draw_all();
-            gf2d_font_draw_line_tag(button->text, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(105, 105));
+            gf2d_ui_draw(cursor);
             //gf2d_font_draw_line_tag(gfc_stringf("lv: %d", player->level)->buffer, FT_H1, GFC_COLOR_BLACK, gfc_vector2d(10, 115));
         gf3d_vgraphics_render_end();
 

@@ -232,6 +232,7 @@ Sprite * gf2d_sprite_from_surface(SDL_Surface *surface,int frame_width,int frame
 Sprite * gf2d_sprite_load_image(const char * filename)
 {
     Sprite* sprite = gf2d_sprite_load(filename, 0, 0, 1);
+
     return sprite;
 }
 
