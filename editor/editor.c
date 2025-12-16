@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
         UIElement* inputBox;
         inputBox = gf2d_ui_input_box();
         inputBox->sprite = gf2d_sprite_load_image("images/editor/InputBox.png");
-        inputBox->position = gfc_vector2d(1000, 100 * i);
+        inputBox->position = gfc_vector2d(1050, 100 * i);
         inputBox->key = pair->key->text;
         strcpy(inputBox->text, string->text);
     }
@@ -171,6 +171,8 @@ int main(int argc, char* argv[])
         entity_think_all();
         enemy_think_all();
         gf2d_ui_think_all();
+
+        entity_update_all();
 
         editor_think();
 

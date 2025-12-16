@@ -43,12 +43,9 @@ void main()
     diff = min(diff, 1.0);
     vec3 diffuse = diff * lightColor;
 
-    // Combine all
     vec3 lighting = (ambient + diffuse);
 
-    // Apply texture and tint
     vec4 surfaceColor = texture(texSampler, fragTexCoord) * ubo.mesh.color;
-    // vec3 finalColor = surfaceColor.rgb * lighting;
 
     vec3 celLighting = vec3(round(lighting.r * bandCount) / bandCount + 1 / bandCount, 
     round(lighting.g * bandCount) / bandCount + 1 / bandCount, 

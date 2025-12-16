@@ -41,6 +41,10 @@ static float fps = 0;
 GFC_Vector3D camera = { 0, 0, 0 };
 GFC_Vector3D cameraPos = { 0, 50, 10 };
 
+Entity* player;
+
+UIElement* main_menu;
+
 void parse_arguments(int argc,char *argv[]);
 void game_frame_delay();
 
@@ -335,9 +339,79 @@ void player_think(Entity* player)
     }
 }
 
+void create_level()
+{
+    Scene* scene_1;
+    scene_1 = scene_new();
+    scene_set_active(scene_1);
+
+    UIElement* healthBar, * health, * exp, * sword, * bow, * flamethrower, * bomb, * rocks, * border;
+
+    //healthBar = gf2d_ui_new();
+    //healthBar->sprite = gf2d_sprite_load_image("images/player_ui/HealthBar.png");
+    //health = gf2d_ui_new();
+    //health->sprite = gf2d_sprite_load_image("images/player_ui/Health.png");
+    //exp = gf2d_ui_new();
+    //exp->sprite = gf2d_sprite_load_image("images/player_ui/exp.png");
+
+    //sword = gf2d_ui_new();
+    //sword->sprite = gf2d_sprite_load_image("images/player_ui/Sword.png");
+    //sword->position = gfc_vector2d(334, 606);
+
+    //bow = gf2d_ui_new();
+    //bow->sprite = gf2d_sprite_load_image("images/player_ui/Bow.png");
+    //bow->position = gfc_vector2d(462, 606);
+
+    //flamethrower = gf2d_ui_new();
+    //flamethrower->sprite = gf2d_sprite_load_image("images/player_ui/Flamethrower.png");
+    //flamethrower->position = gfc_vector2d(590, 606);
+
+    //bomb = gf2d_ui_new();
+    //bomb->sprite = gf2d_sprite_load_image("images/player_ui/Bomb.png");
+    //bomb->position = gfc_vector2d(718, 606);
+
+    //rocks = gf2d_ui_new();
+    //rocks->sprite = gf2d_sprite_load_image("images/player_ui/Rocks.png");
+    //rocks->position = gfc_vector2d(846, 606);
+
+    //border = gf2d_ui_new();
+    //border->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");
+
+    map_generate_level();
+
+    Entity* transparentTest;
+    transparentTest = entity_new();
+    transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
+    transparentTest->name = "TransparentTest";
+    transparentTest->position = gfc_vector3d(10, 10, -100);
+    transparentTest->scale = gfc_vector3d(5, 5, 5);
+    transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
+    transparentTest->ignoreCollisions = 1;
+
+    Entity* billboard;
+    billboard = entity_new();
+    billboard->isStatic = 1;
+    billboard->name = "billboard";
+    billboard = gf3d_billboard_load(billboard, "images/comic_effects/thwam_test.png");
+    billboard->entity_pipe = gf3d_mesh_get_billboard_pipeline();
+    billboard->position = gfc_vector3d(10, 10, -90);
+    billboard->scale = gfc_vector3d(20, 20, 10);
+
+    player->think = player_think;
+    player->attack = player_flamethrower;
+    
+    player->position = gfc_vector3d(0, 0, 0);
+
+    SDL_SetRelativeMouseMode(true);
+
+    main_menu->sprite = NULL;
+    main_menu->click = NULL;
+    main_menu->think = NULL;
+}
+
 void main_menu_button(UIElement* ui)
 {
-    scene_set_active(ui->data);
+    create_level();
 }
 
 int main(int argc,char *argv[])
@@ -351,7 +425,6 @@ int main(int argc,char *argv[])
     }
 
     //local variables
-    UIElement *healthBar, *health, *exp, *sword, *bow, *flamethrower, *bomb, *rocks, *border;
     //initializtion    
     parse_arguments(argc,argv);
     init_logger("gf3d.log",0);
@@ -370,58 +443,6 @@ int main(int argc,char *argv[])
     scene_init(32);
     gf2d_ui_init(100);
 
-    Scene* scene_1;
-    scene_1 = scene_new();
-    scene_set_active(scene_1);
-
-    Scene* scene_2;
-    scene_2 = scene_new();
-
-    //SDL_SetRelativeMouseMode(SDL_TRUE);
-    
-    //game init
-    srand(SDL_GetTicks());
-    slog_sync();
-
-    /*healthBar->sprite = gf2d_sprite_load_image("images/player_ui/HealthBar.png");
-    health->sprite = gf2d_sprite_load_image("images/player_ui/Health.png");
-    exp->sprite = gf2d_sprite_load_image("images/player_ui/exp.png");*/
-
-    sword = gf2d_ui_new();
-    sword->sprite = gf2d_sprite_load_image("images/player_ui/Sword.png");
-    sword->position = gfc_vector2d(334, 606);
-
-    bow = gf2d_ui_new();
-    bow->sprite = gf2d_sprite_load_image("images/player_ui/Bow.png");
-    bow->position = gfc_vector2d(462, 606);
-
-    flamethrower = gf2d_ui_new();
-    flamethrower->sprite = gf2d_sprite_load_image("images/player_ui/Flamethrower.png");
-    flamethrower->position = gfc_vector2d(590, 606);
-
-    bomb = gf2d_ui_new();
-    bomb->sprite = gf2d_sprite_load_image("images/player_ui/Bomb.png");
-    bomb->position = gfc_vector2d(718, 606);
-
-    rocks = gf2d_ui_new();
-    rocks->sprite = gf2d_sprite_load_image("images/player_ui/Rocks.png");
-    rocks->position = gfc_vector2d(846, 606);
-
-    UIElement* button;
-    button = gf2d_ui_button();
-    button->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");
-    button->position = gfc_vector2d(100, 100);
-    button->click = main_menu_button;
-    button->data = scene_2;
-
-    UIElement* cursor;
-    cursor = gf2d_ui_cursor();
-    cursor->sprite = gf2d_sprite_load_image("images/player_ui/Cursor.png");
-
-    /*border->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");*/
-
-    map_generate_level();   
-
     Mesh* skyMesh;
     Texture* skyTexture;
     MeshUBO skyUBO;
@@ -432,39 +453,28 @@ int main(int argc,char *argv[])
     gfc_matrix4_identity(skyMat);
     skyUBO = gf3d_mesh_get_ubo(skyMat, GFC_COLOR_WHITE);
     
-    //Mesh* alphaMesh;
-    //Texture* alphaTexture;
-    //MeshUBO alphaUBO;
-    //GFC_Matrix4 alphaMat;
+    //game init
+    srand(SDL_GetTicks());
+    slog_sync();
 
-    //alphaMesh = gf3d_mesh_load_obj("models/primitives/cube.obj");
-    //alphaTexture = gf3d_texture_load("models/primitives/flatred.png");
-    //gfc_matrix4_identity(alphaMat);
-    //alphaUBO = gf3d_mesh_get_ubo(alphaMat, GFC_COLOR_WHITE);
-
-    Entity* transparentTest;
-    transparentTest = entity_new();
-    transparentTest = gf3d_model_load(transparentTest, "models/dino.model");
-    transparentTest->name = "TransparentTest";
-    transparentTest->position = gfc_vector3d(10, 10, -90);
-    transparentTest->scale = gfc_vector3d(5, 5, 5);
-    transparentTest->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
-    transparentTest->ignoreCollisions = 1;
-
-    Entity* billboard;
-    billboard = entity_new();
-    billboard->isStatic = 1;
-    billboard->name = "billboard";
-    billboard = gf3d_billboard_load(billboard, "images/comic_effects/thwam_test.png");
-    billboard->entity_pipe = gf3d_mesh_get_billboard_pipeline();
-    billboard->position = gfc_vector3d(10, 10, -90);
-    billboard->scale = gfc_vector3d(20, 20, 10);
-
-    Entity* player;
+    Scene* scene_2;
+    scene_2 = scene_new();
+    scene_set_active(scene_2);    
+    
     player = entity_new();
     player_init(player);
-    //player->think = player_think;
-    player->attack = player_sword;
+    player->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
+
+    main_menu = gf2d_ui_button();
+    main_menu->sprite = gf2d_sprite_load_image("images/player_ui/Border.png");
+    main_menu->position = gfc_vector2d(450, 250);
+    main_menu->scale = gfc_vector2d(3, 3);
+    strcpy(main_menu->text, "Start Game");
+    main_menu->click = main_menu_button;
+
+    UIElement* cursor;
+    cursor = gf2d_ui_cursor();
+    cursor->sprite = gf2d_sprite_load_image("images/player_ui/Cursor.png");
 
     //player->entity_pipe = gf3d_mesh_get_comic_mesh_pipeline();
 

@@ -10,20 +10,25 @@ void map_generate_level()
 	// TODO: Entity update order is not good
 	// TODO: Optimize and restructure the code. This demonstrates horrible coding practices
 
-	int map_height[SIZE * 2][SIZE * 2];
+	int scale = 16;
+	int size = 8;
+	int height = 2;
+	int slopes = 4;
 
-	for (int i = (SIZE * -1); i < SIZE; i++)
+	int map_height[8][8];
+
+	for (int i = (size * -1); i < size; i++)
 	{
-		for (int j = (SIZE * -1); j < SIZE; j++)
+		for (int j = (size * -1); j < size; j++)
 		{
 			int blockHeight;
-			if (i == SIZE * -1 || i == SIZE - 1 || j == SIZE * -1 || j == SIZE - 1)
+			if (i == size * -1 || i == size - 1 || j == size * -1 || j == size - 1)
 			{
-				blockHeight = HEIGHT + 1;
+				blockHeight = height + 1;
 			}
 			else
 			{
-				blockHeight = gfc_random_int(HEIGHT);
+				blockHeight = gfc_random_int(height);
 			}
 
 			map_height[i][j] = blockHeight;
@@ -36,23 +41,23 @@ void map_generate_level()
 				block->name = "Grid Block";
 				block = gf3d_model_load(block, "models/primitives/cube.model");
 
-				gfc_vector3d_scale(block->scale, block->scale, SCALE);
-				gfc_vector3d_add(block->position, block->position, gfc_vector3d((2 * SCALE * i), (2 * SCALE * j), (k * 2 * SCALE) - 150));
+				gfc_vector3d_scale(block->scale, block->scale, scale);
+				gfc_vector3d_add(block->position, block->position, gfc_vector3d((2 * scale * i), (2 * scale * j), (k * 2 * scale) - 150));
 
 				entity_update(block);
 			}
 		}
 	}
 
-	for (int i = (SIZE * -1); i < SIZE; i++)
+	for (int i = (size * -1); i < size; i++)
 	{
-		for (int j = (SIZE * -1); j < SIZE; j++)
+		for (int j = (size * -1); j < size; j++)
 		{
-			int chance = gfc_random_int(SLOPES);
+			int chance = gfc_random_int(slopes);
 
 			if (chance == 0)
 			{
-				if (map_height[i + 1][j] - map_height[i - 1][j] == 1 && map_height[i][j] != HEIGHT - 1)
+				if (map_height[i + 1][j] - map_height[i - 1][j] == 1 && map_height[i][j] != height - 1)
 				{
 					Entity* slope;
 					slope = entity_new();
@@ -61,13 +66,13 @@ void map_generate_level()
 					slope->name = "Slope Block";
 					slope = gf3d_model_load(slope, "models/slope.model");
 
-					gfc_vector3d_scale(slope->scale, slope->scale, SCALE);
-					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * SCALE * i), (2 * SCALE * j), ((map_height[i][j] + 1) * 2 * SCALE) - 150));
+					gfc_vector3d_scale(slope->scale, slope->scale, scale);
+					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * scale * i), (2 * scale * j), ((map_height[i][j] + 1) * 2 * scale) - 150));
 				}
 			}
 			if (chance == 1)
 			{
-				if (map_height[i - 1][j] - map_height[i + 1][j] == 1 && map_height[i][j] != HEIGHT - 1)
+				if (map_height[i - 1][j] - map_height[i + 1][j] == 1 && map_height[i][j] != height - 1)
 				{
 					Entity* slope;
 					slope = entity_new();
@@ -78,13 +83,13 @@ void map_generate_level()
 
 					slope->rotation.z = GFC_PI;
 
-					gfc_vector3d_scale(slope->scale, slope->scale, SCALE);
-					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * SCALE * i), (2 * SCALE * j), ((map_height[i][j] + 1) * 2 * SCALE) - 150));
+					gfc_vector3d_scale(slope->scale, slope->scale, scale);
+					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * scale * i), (2 * scale * j), ((map_height[i][j] + 1) * 2 * scale) - 150));
 				}
 			}
 			if (chance == 1)
 			{
-				if (map_height[i][j + 1] - map_height[i][j - 1] == 1 && map_height[i][j] != HEIGHT - 1)
+				if (map_height[i][j + 1] - map_height[i][j - 1] == 1 && map_height[i][j] != height - 1)
 				{
 					Entity* slope;
 					slope = entity_new();
@@ -95,13 +100,13 @@ void map_generate_level()
 
 					slope->rotation.z = GFC_HALF_PI;
 
-					gfc_vector3d_scale(slope->scale, slope->scale, SCALE);
-					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * SCALE * i), (2 * SCALE * j), ((map_height[i][j] + 1) * 2 * SCALE) - 150));
+					gfc_vector3d_scale(slope->scale, slope->scale, scale);
+					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * scale * i), (2 * scale * j), ((map_height[i][j] + 1) * 2 * scale) - 150));
 				}
 			}
 			if (chance == 3)
 			{
-				if (map_height[i][j - 1] - map_height[i][j + 1] == 1 && map_height[i][j] != HEIGHT - 1)
+				if (map_height[i][j - 1] - map_height[i][j + 1] == 1 && map_height[i][j] != height - 1)
 				{
 					Entity* slope;
 					slope = entity_new();
@@ -112,16 +117,16 @@ void map_generate_level()
 
 					slope->rotation.z = GFC_PI_HALFPI;
 
-					gfc_vector3d_scale(slope->scale, slope->scale, SCALE);
-					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * SCALE * i), (2 * SCALE * j), ((map_height[i][j] + 1) * 2 * SCALE) - 150));
+					gfc_vector3d_scale(slope->scale, slope->scale, scale);
+					gfc_vector3d_add(slope->position, slope->position, gfc_vector3d((2 * scale * i), (2 * scale * j), ((map_height[i][j] + 1) * 2 * scale) - 150));
 				}
 			}
 		}
 	}
 
-	//for (int i = (SIZE * -1); i < SIZE; i++)
+	//for (int i = (size * -1); i < size; i++)
 	//{
-	//	for (int j = (SIZE * -1); j < SIZE; j++)
+	//	for (int j = (size * -1); j < size; j++)
 	//	{
 	//		if (gfc_random_int(4) == 0)
 	//		{
@@ -154,5 +159,5 @@ void spawn_random(int row, int column, int height)
 		//enemy_create_climber(enemy);
 	}
 	//if (!enemy->ent) return;
-	//enemy->ent->position = gfc_vector3d((row * SCALE * 2) + gfc_random_int(64), (column * SCALE * 2) + gfc_random_int(64), (height * SCALE * 2) - 150);
+	//enemy->ent->position = gfc_vector3d((row * scale * 2) + gfc_random_int(64), (column * scale * 2) + gfc_random_int(64), (height * scale * 2) - 150);
 }
